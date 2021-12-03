@@ -1,0 +1,485 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;1,300&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+footer {
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 90px;
+    background: rgb(2, 41, 138);
+    color: white;
+    font-weight: 400;
+
+}
+
+.vl-time {
+    position: fixed;
+    border-left: 1px solid white;
+    height: 37px;
+    right: 12%;
+    bottom: 8px;
+}
+
+.footer-time {
+    position: fixed;
+    color: red;
+    right: 5%;
+    bottom: 15px;
+    font-size: 0.9vw;
+}
+
+.footer-date {
+    position: fixed;
+    right: 8%;
+    bottom: 15px;
+    font-size: 0.9vw;
+}
+
+.footer-news {
+    margin-top: 37px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 0.8vw;
+}
+
+nav {
+    background-color: rgb(2, 41, 138);
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    color: white;
+}
+
+.logo-image {
+    margin-left: 50px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.nav-about {
+    position: absolute;
+    font-size: 19px;
+    left: 160px;
+    top: 40px;
+}
+
+.nav-language-button {
+    position: absolute;
+    border: 0;
+    border-radius: 7px;
+    background: white;
+    color: black;
+    padding: 5px 7px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    top: 55px;
+    left: 680px;
+    cursor: pointer;
+}
+
+.vl-one {
+    position: absolute;
+    border-left: 1px solid white;
+    height: 37px;
+    right: 835px;
+    top: 53px;
+}
+
+.vl-two {
+    position: absolute;
+    border-left: 1px solid white;
+    height: 37px;
+    right: 680px;
+    top: 53px;
+}
+
+.nav-page-one {
+    color: white;
+    text-decoration: none;
+    position: absolute;
+    font-size: 17.7px;
+    right: 850px;
+    top: 61px;
+}
+
+.nav-page-two {
+    color: white;
+    text-decoration: none;
+    position: absolute;
+    font-size: 17.7px;
+    right: 693px;
+    top: 61px;
+}
+
+.nav-page-three {
+    color: white;
+    text-decoration: none;
+    position: absolute;
+    font-size: 17.7px;
+    right: 510px;
+    top: 61px;
+}
+
+.nav-login-button {
+    position: absolute;
+    appearance: none;
+    border: 0;
+    border-radius: 7px;
+    background: #F73E3E;
+    color: white;
+    padding: 5px 35px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    right: 85px;
+    top: 55px;
+    cursor: pointer;
+}
+
+
+@media (max-width: 1730px) {
+    .nav-language-button {
+        position: absolute;
+        border: 0;
+        border-radius: 7px;
+        background: white;
+        color: black;
+        padding: 5px 7px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        font-size: 18px;
+        top: 55px;
+        left: 660px;
+        cursor: pointer;
+    }
+    
+    .vl-one {
+        position: absolute;
+        border-left: 1px solid white;
+        height: 37px;
+        right: 715px;
+        top: 53px;
+    }
+    
+    .vl-two {
+        position: absolute;
+        border-left: 1px solid white;
+        height: 37px;
+        right: 560px;
+        top: 53px;
+    }
+    
+    .nav-page-one {
+        color: white;
+        text-decoration: none;
+        position: absolute;
+        font-size: 17.7px;
+        right: 730px;
+        top: 61px;
+    }
+    
+    .nav-page-two {
+        color: white;
+        text-decoration: none;
+        position: absolute;
+        font-size: 17.7px;
+        right: 573px;
+        top: 61px;
+    }
+    
+    .nav-page-three {
+        color: white;
+        text-decoration: none;
+        position: absolute;
+        font-size: 17.7px;
+        right: 390px;
+        top: 61px;
+    }
+}
+
+@media (max-height: 850px) {
+    footer {
+        height: 60px;
+    }
+
+    .logo-image {
+        margin-left: 50px;
+        margin-top: -5px;
+        margin-bottom: -5px;
+        width: 63px;
+        height: auto;
+    }
+
+    .nav-about {
+        position: absolute;
+        font-size: 16px;
+        top: 16px;
+    }
+
+    .nav-language-button {
+        top: 34px;
+        font-size: 18px;
+    }
+
+    .vl-one {
+        position: absolute;
+        border-left: 1px solid white;
+        height: 37px;
+        top: 32px;
+    }
+    
+    .vl-two {
+        position: absolute;
+        border-left: 1px solid white;
+        height: 37px;
+        top: 32px;
+    }
+    
+    .nav-page-one {
+        text-decoration: none;
+        position: absolute;
+        font-size: 17.7px;
+        top: 40px;
+    }
+    
+    .nav-page-two {
+        text-decoration: none;
+        position: absolute;
+        font-size: 17.7px;
+        top: 40px;
+    }
+    
+    .nav-page-three {
+        text-decoration: none;
+        position: absolute;
+        font-size: 17.7px;
+        top: 40px;
+    }
+
+    .nav-login-button {
+        font-weight: 700;
+        font-size: 18px;
+        top: 34px;
+    }
+}
+
+@media (max-width: 1590px) {
+    .nav-language-button {
+        padding: 5px 7px;
+        left: 610px;
+    }
+    
+    .vl-one {
+        height: 37px;
+        right: 665px;
+    }
+    
+    .vl-two {
+        height: 37px;
+        right: 510px;
+    }
+    
+    .nav-page-one {
+        font-size: 17.7px;
+        right: 680px;
+    }
+    
+    .nav-page-two {
+        font-size: 17.7px;
+        right: 523px;
+    }
+    
+    .nav-page-three {
+        font-size: 17.7px;
+        right: 340px;
+    }
+
+    .nav-login-button {
+        font-size: 18px;
+        right: 85px;
+    }
+}
+
+@media (max-height: 800.98px) {
+    footer {
+        height: 50px;
+    }
+
+    .logo-image {
+        margin-left: 50px;
+        margin-top: -5px;
+        margin-bottom: -6px;
+        width: 63px;
+        height: auto;
+    }
+
+    .nav-about {
+        position: absolute;
+        font-size: 16px;
+        top: 15px;
+    }
+
+    .nav-language-button {
+        top: 34px;
+        font-size: 18px;
+    }
+
+    .vl-one {
+        position: absolute;
+        border-left: 1px solid white;
+        height: 37px;
+        top: 32px;
+    }
+    
+    .vl-two {
+        position: absolute;
+        border-left: 1px solid white;
+        height: 37px;
+        top: 32px;
+    }
+    
+    .nav-page-one {
+        text-decoration: none;
+        position: absolute;
+        font-size: 17.7px;
+        top: 40px;
+    }
+    
+    .nav-page-two {
+        text-decoration: none;
+        position: absolute;
+        font-size: 17.7px;
+        top: 40px;
+    }
+    
+    .nav-page-three {
+        text-decoration: none;
+        position: absolute;
+        font-size: 17.7px;
+        top: 40px;
+    }
+
+    .nav-login-button {
+        font-weight: 700;
+        font-size: 18px;
+        top: 34px;
+    }
+}
+
+@media (max-width: 1510px) {
+    .logo-image {
+        margin-left: 30px;
+    }
+
+    .nav-about {
+        position: absolute;
+        font-size: 16px;
+        left: 145px;
+    }
+
+    .nav-language-button {
+        font-size: 18px;
+        left: 560px;
+    }
+
+    .vl-one {
+        position: absolute;
+        border-left: 1px solid white;
+        height: 37px;
+        right: 564px;
+    }
+    
+    .vl-two {
+        position: absolute;
+        border-left: 1px solid white;
+        height: 37px;
+        right: 403px;
+    }
+    
+    .nav-page-one {
+        text-decoration: none;
+        position: absolute;
+        font-size: 17.7px;
+        right: 580px;
+    }
+    
+    .nav-page-two {
+        text-decoration: none;
+        position: absolute;
+        font-size: 17.7px;
+        right: 420px;
+    }
+    
+    .nav-page-three {
+        text-decoration: none;
+        position: absolute;
+        font-size: 17.7px;
+        right: 230px;
+    }
+
+    .nav-login-button {
+        font-weight: 700;
+        font-size: 18px;
+        right: 45px;
+    }
+}
+
+
+@media (max-height: 695px) {
+    .logo-image {
+        width: 58px;
+    }
+
+    .nav-about {
+        left: 140px;
+    }
+}
+
+
+@media (max-width: 1340px) {
+    .logo-image {
+        margin-left: 23px;
+    }
+
+    .nav-about {
+        font-size: 14px;
+        left: 126px;
+    }
+
+    .nav-language-button {
+        left: 486px;
+    }
+
+    .vl-one {
+        right: 514px;
+    }
+
+    .vl-two {
+        right: 353px;
+    }
+
+    .nav-page-one {
+        right: 530px;
+    }
+
+    .nav-page-two {
+        right: 370px;
+    }
+
+    .nav-page-three {
+        right: 180px;
+    }
+
+    .nav-login-button {
+        right: 15px;
+    }
+}
+
+

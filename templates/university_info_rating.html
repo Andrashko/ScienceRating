@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/university_info_rating.css">
+
+<h1>{{ univer.univername }}</h1>
+<button class="back-button" onclick="location.href='/university_info/{{ univer.id }}'">Назад</button>
+
+<h2>Рейтинг: {{ rating_value }}</h2>
+<table border="1" cellspacing="0">
+    <tbody>
+        <tr>
+            <th>Критерий</th>
+            <th>Значение</th>
+        </tr>
+        {% for criter in criters_values %}
+            <tr>
+                <td width=530 height=50>{{ criter[0] }}</td>
+                {% if criter[1] != 0 %}
+                    <td align="center" width=300>{{ criter[1].value }}</td>
+                {% else %}
+                    <td align="center" width=300>0</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        
+    </tbody>
+</table>
+{% endblock %}

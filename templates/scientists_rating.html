@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/css/rating.css">
+
+<p class="title-rating"><img src="/static/img/small-graphic.png" alt="Рейтинг"> Рейтинг Учёных</p>
+<br><br><br><br><br>
+
+<ul type="none">
+{% for scientist in scientists_rating %}
+    {% if loop.index < 4 %}
+        {% if loop.index % 2 != 0 %}
+            <li><div id="rectangle"><a style="color: #F63E3E; text-decoration: none" href="/scientist_info/{{ scientist[1] }}">{{ scientist[0] }}</a></div><div id="red-square">{{ loop.index }}</div></li>
+            <br><br><br>
+        {% else %}
+            <li><div id="red-square">{{ loop.index }}</div><a class="rating-text" style="color: #F63E3E; text-decoration: none" href="/scientist_info/{{ scientist[1] }}">{{ scientist[0] }}</a></li>
+            <br><br><br>
+        {% endif %}
+    {% else %}
+        {% if loop.index % 2 != 0 %}
+            <li><div id="rectangle"><a style="color: #404040; text-decoration: none" href="/scientist_info/{{ scientist[1] }}">{{ scientist[0] }}</a></div><div id="grey-square">{{ loop.index }}</div></li>
+            <br><br><br>
+        {% else %}
+            <li><a class="rating-text" style="color: #404040; text-decoration: none" href="/scientist_info/{{ scientist[1] }}">{{ scientist[0] }}</a><div id="grey-square">{{ loop.index }}</div></li>
+            <br><br><br>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+</ul>
+
+<p class="backgr-img"><img src="/static/img/backgr.png" alt="backgr"></p>
+<p class="kaz-dots"><img src="/static/img/kaz-dots.png" alt="kz"></p>
+<p class="statistic"><img src="/static/img/graphic.png" alt="statistic"></p>
+<p class="title-stat">Статистика в разрезе областей</p>
+
+<p class="scientist-title">Рейтинг ученых</p>
+
+<p class="scientist-bg-one"><img src="/static/img/scientist-top-bg.png" alt="bg"></p>
+<p class="gold-medal"><img src="/static/img/gold-medal.png" alt="gold medal"></p>
+<div class="gold-medal-lineup"></div>
+<p class="gold-scientist-name">Досжанов<br>Турганбай<br>Нурланович</p>
+<div class="gold-medal-linedown"></div>
+<p class="gold-scientist-univer">Институт зоологии<br>НАН РК</p>
+
+<p class="scientist-bg-two"><img src="/static/img/scientist-top-bg.png" alt="bg2"></p>
+<p class="silver-medal"><img src="/static/img/silver-medal.png" alt="silver medal"></p>
+<div class="silver-medal-lineup"></div>
+<p class="silver-scientist-name">Балыкбаев<br>Такир<br>Оспанович</p>
+<div class="silver-medal-linedown"></div>
+<p class="silver-scientist-univer">КазНПУ им. Абая</p>
+
+<p class="scientist-bg-three"><img src="/static/img/scientist-top-bg.png" alt="bg3"></p>
+<p class="bronze-medal"><img src="/static/img/bronze-medal.png" alt="bronze medal"></p>
+<div class="bronze-medal-lineup"></div>
+<p class="bronze-scientist-name">Ергалиев<br>Гаппар<br>Хасенович</p>
+<div class="bronze-medal-linedown"></div>
+<p class="bronze-scientist-univer">Институт<br>геологических наук</p>
+{% endblock %}

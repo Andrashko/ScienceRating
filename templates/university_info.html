@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/university_info.css">
+
+<h1>{{ univer.univername }}</h1>
+
+{% if not facult_empty or not depart_empty %}
+    <button class="univer-rating-button" onclick="location.href='/university_info_rating/{{ univer.id }}'">Рейтинг университета</button>
+
+    <table border="1" cellspacing=0>
+        <tbody>
+            <tr>
+                {% if not facult_empty %}<th style="font-size: medium;">Факультеты</th>{% endif %}
+                {% if not depart_empty %}<th style="font-size: medium;">Департаменты</th>{% endif %}
+            </tr>
+            {% for item in facult_depart %}
+                <tr>
+                    {% if item[0] %}
+                        <td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/faculty_info/{{ item[1] }}">{{ item[0] }}</a></td>
+                    {% elif not facult_empty %}
+                        <td></td>
+                    {% endif %}
+                    {% if item[2] %}<td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/department_info/{{ item[2][1] }}">{{ item[2][0] }}</a></td>{% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <h2>Нет информации</h2>
+{% endif %}
+{% endblock %}

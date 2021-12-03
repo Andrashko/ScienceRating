@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/css/rating.css">
+
+<p class="title-rating"><a style="color: black;" href="/universities"><img class="small-gr" src="/static/img/small-graphic.png" alt="Рейтинг"> Рейтинг ВУЗов</a></p>
+<br><br><br><br><br>
+
+<ul type="none">
+{% for univer in univers_rating %}
+    {% if loop.index < 4 %}
+        {% if loop.index % 2 != 0 %}
+            <li><p><div id="rectangle"><a style="color: #F63E3E; text-decoration: none" href="/university_info/{{ univer[2] }}">{{ univer[0] }}</a></div><div id="red-square">{{ loop.index }}</div></p></li>
+            <br>
+        {% else %}
+            <li><p><div id="red-square">{{ loop.index }}</div><a class="rating-text" style="color: #F63E3E; text-decoration: none" href="/university_info/{{ univer[2] }}">{{ univer[0] }}</a></p></li>
+            <br>
+        {% endif %}
+    {% else %}
+        {% if loop.index % 2 != 0 %}
+            <li><p><div id="rectangle"><a style="color: #404040; text-decoration: none" href="/university_info/{{ univer[2] }}">{{ univer[0] }}</a></div><div id="grey-square">{{ loop.index }}</div></p></li>
+            <br>
+        {% else %}
+            {% if loop.index == 10 %}
+                <li><p><a class="rating-text" style="color: #404040; text-decoration: none" href="/university_info/{{ univer[2] }}">{{ univer[0] }}</a><div id="square-ten">{{ loop.index }}</div></p></li>
+            {% else %}
+                <li><p><a class="rating-text" style="color: #404040; text-decoration: none" href="/university_info/{{ univer[2] }}">{{ univer[0] }}</a><div id="grey-square">{{ loop.index }}</div></p></li>
+            {% endif %}
+            <br>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+</ul>
+
+<h3 class="scientist-title">Рейтинг ученых</h3>
+
+<p class="scientist-bg-one"><img src="/static/img/scientist-top-bg.png" alt="bg"></p>
+<p class="gold-medal"><img src="/static/img/gold-medal.png" alt="gold medal"></p>
+<div class="gold-medal-lineup"></div>
+<p class="gold-scientist-name"><a style="color: white; text-decoration: none;" href="/scientist_info/{{ scientists[0][1] }}">{% for i in scientists[0][0] %}{{ i }}<br>{% endfor %}</a></p>
+<div class="gold-medal-linedown"></div>
+
+<p class="scientist-bg-two"><img src="/static/img/scientist-top-bg.png" alt="bg2"></p>
+<p class="silver-medal"><img src="/static/img/gold-medal.png" alt="gold medal"></p>
+<div class="silver-medal-lineup"></div>
+<p class="silver-scientist-name"><a style="color: white; text-decoration: none;" href="/scientist_info/{{ scientists[1][1] }}">{% for i in scientists[1][0] %}{{ i }}<br>{% endfor %}</a></p>
+<div class="silver-medal-linedown"></div>
+
+<p class="scientist-bg-three"><img src="/static/img/scientist-top-bg.png" alt="bg3"></p>
+<p class="bronze-medal"><img src="/static/img/gold-medal.png" alt="gold medal"></p>
+<div class="bronze-medal-lineup"></div>
+<p class="bronze-scientist-name"><a style="color: white; text-decoration: none;" href="/scientist_info/{{ scientists[2][1] }}">{% for i in scientists[2][0] %}{{ i }}<br>{% endfor %}</a></p>
+<div class="bronze-medal-linedown"></div>
+
+
+
+<p class="scientist-bg-four"><img src="/static/img/scientist-top-bg.png" alt="bg"></p>
+<p class="silver-medal-first"><img src="/static/img/silver-medal.png" alt="silver medal"></p>
+<div class="silver-medal-lineup-first"></div>
+<p class="silver-scientist-name-first"><a style="color: white; text-decoration: none;" href="/scientist_info/{{ scientists[3][1] }}">{% for i in scientists[3][0] %}{{ i }}<br>{% endfor %}</a></p>
+<div class="silver-medal-linedown-first"></div>
+
+<p class="scientist-bg-five"><img src="/static/img/scientist-top-bg.png" alt="bg2"></p>
+<p class="silver-medal-second"><img src="/static/img/silver-medal.png" alt="silver medal"></p>
+<div class="silver-medal-lineup-second"></div>
+<p class="silver-scientist-name-second"><a style="color: white; text-decoration: none;" href="/scientist_info/{{ scientists[4][1] }}">{% for i in scientists[4][0] %}{{ i }}<br>{% endfor %}</a></p>
+<div class="silver-medal-linedown-second"></div>
+
+<p class="scientist-bg-six"><img src="/static/img/scientist-top-bg.png" alt="bg3"></p>
+<p class="silver-medal-third"><img src="/static/img/silver-medal.png" alt="silver medal"></p>
+<div class="silver-medal-lineup-third"></div>
+<p class="silver-scientist-name-third"><a style="color: white; text-decoration: none;" href="/scientist_info/{{ scientists[5][1] }}">{% for i in scientists[5][0] %}{{ i }}<br>{% endfor %}</a></p>
+<div class="silver-medal-linedown-third"></div>
+
+
+
+<p class="scientist-bg-seven"><img src="/static/img/scientist-top-bg.png" alt="bg"></p>
+<p class="bronze-medal-first"><img src="/static/img/bronze-medal.png" alt="bronze medal"></p>
+<div class="bronze-medal-lineup-first"></div>
+<p class="bronze-scientist-name-first"><a style="color: white; text-decoration: none;" href="/scientist_info/{{ scientists[6][1] }}">{% for i in scientists[6][0] %}{{ i }}<br>{% endfor %}</a></p>
+<div class="bronze-medal-linedown-first"></div>
+
+<p class="scientist-bg-eight"><img src="/static/img/scientist-top-bg.png" alt="bg2"></p>
+<p class="bronze-medal-second"><img src="/static/img/bronze-medal.png" alt="bronze medal"></p>
+<div class="bronze-medal-lineup-second"></div>
+<p class="bronze-scientist-name-second"><a style="color: white; text-decoration: none;" href="/scientist_info/{{ scientists[7][1] }}">{% for i in scientists[7][0] %}{{ i }}<br>{% endfor %}</a></p>
+<div class="bronze-medal-linedown-second"></div>
+
+<p class="scientist-bg-nine"><img src="/static/img/scientist-top-bg.png" alt="bg3"></p>
+<p class="bronze-medal-third"><img src="/static/img/bronze-medal.png" alt="bronze medal"></p>
+<div class="bronze-medal-lineup-third"></div>
+<p class="bronze-scientist-name-third"><a style="color: white; text-decoration: none;" href="/scientist_info/{{ scientists[8][1] }}">{% for i in scientists[8][0] %}{{ i }}<br>{% endfor %}</a></p>
+<div class="bronze-medal-linedown-third"></div>
+{% endblock %}

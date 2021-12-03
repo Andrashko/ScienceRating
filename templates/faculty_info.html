@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/faculty_info.css">
+
+<h1>{{ faculty.faculty_name }}</h1>
+
+<button class="back-button" onclick="location.href='/university_info/{{ faculty.univer_id }}'">Университет</button>
+
+<h2>Департаменты</h2>
+<ul type=none>
+    {% for i in faculty.departments %}
+        <li style="margin-bottom: 7px;"><a style="color: black; text-decoration: none;" href="/department_info/{{ i.id }}">{{ i.department_name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

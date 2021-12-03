@@ -1,0 +1,181 @@
+a {
+    color: black;
+}
+
+.profile-photo {
+    position: absolute;
+    top: 195px;
+    left: 86px;
+}
+
+.name {
+    position: absolute;
+    top: 150px;
+    left: 192px;
+    font-size: 38px;
+}
+
+.univer-button {
+    position: absolute;
+    border: 0;
+    border-radius: 7px;
+    background: #F73E3E;
+    color: white;
+    padding: 5px 15px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    top: 350px;
+    left: 20px;
+    cursor: pointer;
+}
+
+.depart-button {
+    position: absolute;
+    border: 0;
+    border-radius: 7px;
+    background: #F73E3E;
+    color: white;
+    padding: 5px 15px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    top: 350px;
+    left: 180px;
+    cursor: pointer;
+}
+
+.about-title {
+    position: absolute;
+    top: 150px;
+    right: 260px;
+}
+
+.urls-title {
+    position: absolute;
+    top: 320px;
+    right: 540px;
+}
+
+.urls-list {
+    position: absolute;
+    top: 360px;
+    right: 474px;
+}
+
+.univer {
+    position: absolute;
+    top: 210px;
+    right: 270px;
+}
+
+.univer-value {
+    position: absolute;
+    top: 240px;
+    right: 30px;
+}
+
+.degree {
+    position: absolute;
+    top: 320px;
+    right: 322px;
+}
+
+.degree-value {
+    position: absolute;
+    top: 350px;
+    right: 280px;
+}
+
+.science {
+    position: absolute;
+    top: 320px;
+    right: 120px;
+}
+
+.science-value {
+    position: absolute;
+    top: 350px;
+    right: 20px;
+}
+
+.google-articles {
+    position: absolute;
+    top: 410px;
+    left: 19px;
+    font-size: smaller;
+}
+
+.publon-articles {
+    position: absolute;
+    top: 485px;
+    left: 691px;
+    font-size: smaller;
+}
+
+.publon-title {
+    position: absolute;
+    top: 444px;
+    left: 921.5px;
+}
+
+footer {
+    display: none;
+}
+
+
+
+@media (max-height: 850.20px) {
+    .profile-photo {
+        top: 125px;
+    }
+    
+    .name {
+        top: 80px;
+        font-size: 38px;
+    }
+
+    .about-title {
+        top: 90px;
+    }
+    
+    .urls-title {
+        top: 260px;
+    }
+    
+    .urls-list {
+        top: 300px;
+    }
+    
+    .univer {
+        top: 150px;
+    }
+    
+    .univer-value {
+        top: 190px;
+    }
+    
+    .degree {
+        top: 260px;
+    }
+    
+    .degree-value {
+        top: 290px;
+    }
+    
+    .science {
+        top: 260px;
+    }
+    
+    .science-value {
+        top: 290px;
+    }
+
+    .univer-button {
+        top: 280px;
+    }
+
+    .depart-button {
+        top: 280px;
+    }
+}

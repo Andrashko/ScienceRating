@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/department_info.css">
+
+<h1>{{ depart.department_name }}</h1>
+
+<button class="back-button" onclick="location.href='/university_info/{{ univer_id }}'">Университет</button>
+<button class="faculty-button" onclick="location.href='/faculty_info/{{ depart.faculty_id }}'">Факультет</button>
+
+<h2>Учёные</h2>
+<ul type=none>
+    {% for i in depart.scientists %}
+        <li style="margin-bottom: 7px;"><a style="color: black; text-decoration: none;" href="/scientist_info/{{ i.id }}">{{ i.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

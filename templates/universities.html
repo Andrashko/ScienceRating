@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/universities.css">
+
+<table border="1" cellspacing=0>
+    <tbody>
+        <tr>
+            <th style="font-size: 16px;">Университеты</th>
+        </tr>
+        {% for i in univers %}
+            <tr>
+                <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[1] }}">{{ i[0] }}</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="shortcut icon" href="/static/img/ScienceRaitingLogo.ico" type="image/x-icon">
+    
+    <title>Science Rating</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <p>
+                <a href="/"><img class="logo-image" src="/static/img/ScienceRaitingLogo.png" alt="logo"></a>
+
+                <p class="nav-about">СИСТЕМА ОЦЕНКИ<br>НАУЧНОЙ ДЕЯТЕЛЬНОСТИ ВУЗОВ И НИИ</p>
+
+                <button class="nav-language-button">RU</button>
+
+                <a class="nav-page-one"  style="color: {{ color_page_one }};" href="/">Рейтинг ВУЗов</a>
+                <div class="vl-one"></div>
+                <a class="nav-page-two" href="" style="color: {{ color_page_two }};">Рейтинг НИИ</a>
+                <div class="vl-two"></div>
+                <a class="nav-page-three" href="" style="color: {{ color_page_three }};">Рейтинг ученых</a>
+
+                <button class="nav-login-button" onclick="">Войти</button>
+            </p>
+        </nav>
+    </header>
+
+    <main role="main">
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p class="footer-news"></p>
+<!--        <div class="vl-time"></div>-->
+        <p class="footer-date"></p><p class="footer-time"></p>
+    </footer>
+</body>
+</html>
