@@ -104,6 +104,7 @@ a {
     top: 410px;
     left: 19px;
     font-size: smaller;
+    white-space: nowrap;
 }
 
 .publon-articles {
@@ -111,6 +112,7 @@ a {
     top: 485px;
     left: 691px;
     font-size: smaller;
+    white-space: nowrap;
 }
 
 .publon-title {
@@ -177,5 +179,57 @@ footer {
 
     .depart-button {
         top: 280px;
+    }
+}
+
+
+@media (max-width: 1250px) {
+    .about-title {
+        left: 750px;
+        white-space: nowrap;
+    }
+    
+    .urls-title {
+        left: 557px;
+        white-space: nowrap;
+    }
+    
+    .urls-list {
+        left: 557px;
+        white-space: nowrap;
+    }
+    
+    .univer {
+        left: 550px;
+        white-space: nowrap;
+    }
+    
+    .univer-value {
+        left: 550px;
+        white-space: nowrap;
+    }
+    
+    .degree {
+        left: 752px;
+        white-space: nowrap;
+    }
+    
+    .degree-value {
+        left: 752px;
+        white-space: nowrap;
+    }
+    
+    .science {
+        left: 999px;
+        white-space: nowrap;
+    }
+    
+    .science-value {
+        left: 954px;
+        white-space: nowrap;
+    }
+
+    nav {
+        width: 1300px;
     }
 }

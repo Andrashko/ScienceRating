@@ -15,7 +15,9 @@
     {% endfor %}
 </ul>
 
+{% if univer_id %}
 <button class="univer-button" onclick="location.href='/university_info/{{ univer_id }}'">Университет</button>
+{% endif %}
 {% if depart_id %}
     <button class="depart-button" onclick="location.href='/department_info/{{ depart_id }}'">Департамент</button>
 {% endif %}
@@ -84,8 +86,10 @@
     {% endif %}
 </ul>
 
+{% if univer_id %}
 <h2 class="univer">Университет</h2>
 <h3 class="univer-value">{{ scientist[4] }}</h3>
+{% endif %}
 
 {% if scientist[5] %}
     <h2 class="degree">Степень</h2>

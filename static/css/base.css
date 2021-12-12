@@ -127,6 +127,22 @@ nav {
     top: 61px;
 }
 
+.search-button {
+    position: absolute;
+    appearance: none;
+    border: 0;
+    border-radius: 7px;
+    background: #F73E3E;
+    color: white;
+    padding: 5px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    right: 220px;
+    top: 55px;
+    cursor: pointer;
+}
+
 .nav-login-button {
     position: absolute;
     appearance: none;
@@ -268,6 +284,10 @@ nav {
         font-size: 18px;
         top: 34px;
     }
+
+    .search-button {
+        top: 34px;
+    }
 }
 
 @media (max-width: 1590px) {
@@ -393,41 +413,73 @@ nav {
         position: absolute;
         border-left: 1px solid white;
         height: 37px;
-        right: 564px;
+        right: 634px;
     }
     
     .vl-two {
         position: absolute;
         border-left: 1px solid white;
         height: 37px;
-        right: 403px;
+        right: 473px;
     }
     
     .nav-page-one {
         text-decoration: none;
         position: absolute;
         font-size: 17.7px;
-        right: 580px;
+        right: 650px;
     }
     
     .nav-page-two {
         text-decoration: none;
         position: absolute;
         font-size: 17.7px;
-        right: 420px;
+        right: 490px;
     }
     
     .nav-page-three {
         text-decoration: none;
         position: absolute;
         font-size: 17.7px;
-        right: 230px;
+        right: 300px;
     }
 
     .nav-login-button {
         font-weight: 700;
         font-size: 18px;
         right: 45px;
+    }
+
+    .search-button {
+        right: 180px;
+    }
+}
+
+
+@media (max-width: 1410px) {
+    .vl-one {
+        height: 37px;
+        right: 588px;
+    }
+    
+    .vl-two {
+        height: 37px;
+        right: 444px;
+    }
+    
+    .nav-page-one {
+        font-size: 16px;
+        right: 604px;
+    }
+    
+    .nav-page-two {
+        font-size: 16px;
+        right: 457px;
+    }
+    
+    .nav-page-three {
+        font-size: 16px;
+        right: 290px;
     }
 }
 
@@ -454,32 +506,44 @@ nav {
     }
 
     .nav-language-button {
-        left: 486px;
+        left: 466px;
     }
 
     .vl-one {
-        right: 514px;
+        height: 37px;
+        right: 558px;
     }
-
+    
     .vl-two {
-        right: 353px;
+        height: 37px;
+        right: 414px;
     }
-
+    
     .nav-page-one {
-        right: 530px;
+        right: 574px;
     }
-
+    
     .nav-page-two {
-        right: 370px;
+        right: 427px;
     }
-
+    
     .nav-page-three {
-        right: 180px;
+        right: 260px;
     }
 
     .nav-login-button {
         right: 15px;
+        font-size: 16px;
+    }
+
+    .search-button {
+        right: 150px;
+        font-size: 16px;
     }
 }
 
-
+@media (max-width: 1220px) {
+    nav {
+        width: 1220px;
+    }
+}

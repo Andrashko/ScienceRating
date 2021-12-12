@@ -2,6 +2,7 @@ ul {
     position: absolute;
     top: 290px;
     left: 20px;
+    white-space: nowrap;
 }
 
 h1 {
@@ -9,6 +10,7 @@ h1 {
     top: 150px;
     left: 20px;
     color: #F63E3E;
+    white-space: nowrap;
 }
 
 h2 {

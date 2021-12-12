@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, session, redirect
 import requests
 import json
 from bs4 import BeautifulSoup as BS
@@ -16,6 +16,7 @@ from data.database.criteria import Criterias
 db_session.global_init("db/database.db")
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'rating_sk'
 
 
 @app.route('/')
@@ -50,13 +51,117 @@ def universities_rating():
                            scientists=scientists)
 
 
+@app.route('/add_compare/<int:univer_id>')
+def add_compare(univer_id):
+    if 'univers' not in session:
+        session['univers'] = [univer_id]
+    else:
+        if len(session['univers']) < 5 and univer_id not in session['univers']:
+            univers = session['univers']
+            univers.append(univer_id)
+            session['univers'] = univers
+
+    return redirect('/universities')
+
+
+@app.route('/delete_compare/<int:univer_id>')
+def delete_compare(univer_id):
+    if 'univers' in session:
+        if session['univers']:
+            univers = session['univers']
+            univers.pop(univers.index(univer_id))
+            session['univers'] = univers
+
+    return redirect('/universities')
+
+
 @app.route('/universities')
 def all_universities():
     db_sess = db_session.create_session()
 
+    univers_compare = []
+    univers_js = {'students': [], 'scientists': [],
+                  'faculties': [], 'rating': [], 'departments': [],
+                  'univers': []}
+    if 'univers' in session:
+        univers_compare = [[db_sess.query(Ukraine_Universities).get(i).univername, i] for i in session['univers']]
+    else:
+        session['univers'] = []
+
+    for i in univers_compare:
+        univer = db_sess.query(Ukraine_Universities).get(i[1])
+
+        if len(univer.univername) > 50:
+            univers_js['univers'].append(univer.univername[:50].strip() + '...')
+        else:
+            univers_js['univers'].append(univer.univername)
+        if univer.students_bak and univer.students_mag:
+            univers_js['students'].append(f'{univer.students_bak + univer.students_mag}')
+        else:
+            univers_js['students'].append('0')
+
+        faculty_rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'faculty').filter(
+            ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.univer_id == univer.id)
+
+        department_rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'department').filter(
+            ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.univer_id == univer.id)
+
+        faculties = []
+        if faculty_rating:
+            for j in faculty_rating:
+                if (' - без факультету' not in db_sess.query(UkraineFaculties).get(j.item_id).faculty_name) and \
+                        (not db_sess.query(UkraineFaculties).get(j.item_id).faculty_name.isdigit()):
+                    faculties.append(db_sess.query(UkraineFaculties).get(j.item_id).faculty_name)
+
+        departments = []
+        if department_rating:
+            for j in department_rating:
+                departments.append(db_sess.query(UkraineDepartments).get(j.item_id).department_name)
+
+        univers_js['faculties'].append(f'{len(faculties)}')
+        univers_js['departments'].append(f'{len(departments)}')
+        univers_js['scientists'].append(f'{len(univer.scientists)}')
+
+        rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'university').filter(
+            ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.item_id == i[1]).first()
+        try:
+            univers_js['rating'].append(f'{int(rating.value) * 100 / len(univer.scientists)}')
+        except ZeroDivisionError:
+            univers_js['rating'].append('0')
+        except AttributeError:
+            univers_js['rating'].append('0')
+
+    for i in range(len(univers_compare)):
+        if len(univers_compare[i][0]) > 50:
+            univers_compare[i][0] = univers_compare[i][0][:50].strip() + '...'
+
     universities = sorted([[i.univername, i.id] for i in db_sess.query(Ukraine_Universities)], key=lambda x: x[0])
 
-    return render_template('universities.html', color_page_one='#F63E3E', univers=universities)
+    return render_template('universities.html', color_page_one='#F63E3E', univers=universities,
+                           univers_compare=univers_compare, univers_js=univers_js)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    db_sess = db_session.create_session()
+    inp = ''
+    univers = []
+    scientists = []
+
+    if request.method == 'POST':
+        if 'inp_val' in request.form.keys():
+            inp = request.form['inp_val'].strip()
+
+        if inp:
+            univers = sorted(
+                [[i.univername, i.id] for i in db_sess.query(Ukraine_Universities).all() if inp.lower() in
+                 i.univername.lower()], key=lambda x: x[0])[:500]
+
+            scientists = sorted([[i.name, i.id] for i in db_sess.query(Ukraine_Scientists).all()
+                                 if inp.lower() in i.name.lower()],
+                                key=lambda x: x[0])[:500]
+
+    return render_template('search.html', value=inp, univers=univers, scientists=scientists)
 
 
 @app.route('/university_info/<int:university_id>')
@@ -182,7 +287,10 @@ def scientist_info(scientist_id):
     else:
         info.append(False)
 
-    info.append(db_sess.query(Ukraine_Universities).get(scientist.univer_id).univername)
+    try:
+        info.append(db_sess.query(Ukraine_Universities).get(scientist.univer_id).univername)
+    except AttributeError:
+        info.append('')
     if scientist.degree and ('немає' not in scientist.degree):
         info.append(scientist.degree)
     else:
@@ -274,4 +382,4 @@ def scientist_info(scientist_id):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run()

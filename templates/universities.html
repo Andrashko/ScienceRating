@@ -2,6 +2,127 @@
 {% block content %}
 <link rel="stylesheet" href="/static/css/universities.css">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script>
+<script>
+    function output() {
+        let radios = document.querySelectorAll('input[type="radio"]');
+
+        for (let radio of radios) {
+            if (radio.checked && radio.value == 'rating') {
+                var info = {'students': [{{ ', '.join(univers_js['students']) }}], 'scientists': [{{ ', '.join(univers_js['scientists']) }}],
+                'faculties': [{{ ', '.join(univers_js['faculties']) }}], 'rating': [{{ ', '.join(univers_js['rating']) }}], 'departments': [{{ ', '.join(univers_js['departments']) }}],
+                'univers': '{{ '|'.join(univers_js['univers']) }}'.split('|')};
+                if (info['univers'][0] == '') {
+                    return
+                }
+
+                let d = document.getElementById('canvas_div').style.width='800px';
+
+                let el1 = document.getElementById('canvas_div');
+                let el2 = document.getElementById('myChart');
+                el1.removeChild(el2);
+                let el3 = document.createElement('canvas');
+                el3.id = 'myChart';
+                el1.appendChild(el3);
+
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: info['univers'],
+                        datasets: [{
+                            data: info[radio.value],
+                            backgroundColor: ['#e91e63', '#00e676', '#ff5722', '#1e88e5', '#ffd600'],
+                            borderWidth: 1,
+                            borderColor: '#00'
+                        }]
+                    },
+
+                    options: {
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Рейтинг',
+                            }
+                        }
+                    }
+                });
+            } else if (radio.checked) {
+                var info = {'students': [{{ ', '.join(univers_js['students']) }}], 'scientists': [{{ ', '.join(univers_js['scientists']) }}],
+                'faculties': [{{ ', '.join(univers_js['faculties']) }}], 'rating': [{{ ', '.join(univers_js['rating']) }}], 'departments': [{{ ', '.join(univers_js['departments']) }}],
+                'univers': '{{ '|'.join(univers_js['univers']) }}'.split('|')};
+                if (info['univers'][0] == '') {
+                    return
+                }
+
+                let d = document.getElementById('canvas_div').style.width='400px';
+
+                let el1 = document.getElementById('canvas_div');
+                let el2 = document.getElementById('myChart');
+                el1.removeChild(el2);
+                let el3 = document.createElement('canvas');
+                el3.id = 'myChart';
+                el1.appendChild(el3);
+
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: info['univers'],
+                        datasets: [{
+                            data: info[radio.value],
+                            backgroundColor: ['#e91e63', '#00e676', '#ff5722', '#1e88e5', '#ffd600'],
+                            borderWidth: 1,
+                            borderColor: '#00'
+                        }]
+                    },
+
+                    options: {
+                        plugins: {
+                            legend: {
+                                display: true
+                            },
+                            title: {
+                                display: false,
+                                text: 'Рейтинг',
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    }
+</script>
+
+
+<div id="canvas_div">
+    <canvas id="myChart"></canvas>
+</div>
+
+<div class="radios-btn">
+    <input type="radio" id="type-students" name="info-type" value="students">
+    <label for="type-students">Кол-во студентов</label>
+
+    <input type="radio" id="type-scientists" name="info-type" value="scientists">
+    <label for="type-scientists">Кол-во учёных</label>
+
+    <input type="radio" id="type-faculties" name="info-type" value="faculties">
+    <label for="type-faculties">Кол-во факультетов</label>
+
+    <input type="radio" id="type-departments" name="info-type" value="departments">
+    <label for="type-departments">Кол-во департаментов</label>
+
+    <input type="radio" id="type-rating" name="info-type" value="rating">
+    <label for="type-rating">Рейтинг</label>
+
+    <p><input type="button" value="Сравнить" onclick="output()"> (макс. 5){% if univers_compare %} - {% endif %}{% for i in univers_compare %}<a href="/university_info/{{ i[1] }}">{{ i[0] }}</a> <button onclick="location.href='/delete_compare/{{ i[1] }}'">Удалить</button>{% if loop.index != univers_compare|length %}, {% endif %}{% endfor %}</p>
+</div>
+
+
 <table border="1" cellspacing=0>
     <tbody>
         <tr>
@@ -9,7 +130,7 @@
         </tr>
         {% for i in univers %}
             <tr>
-                <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[1] }}">{{ i[0] }}</a></td>
+                <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[1] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[1] }}'">Добавить</button></td>
             </tr>
         {% endfor %}
     </tbody>

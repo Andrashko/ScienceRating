@@ -9,12 +9,14 @@ h1 {
     top: 150px;
     left: 20px;
     color: #F63E3E;
+    white-space: nowrap;
 }
 
 h2 {
     position: absolute;
     top: 260px;
     left: 20px;
+    white-space: nowrap;
 }
 
 .univer-rating-button {

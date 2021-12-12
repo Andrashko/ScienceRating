@@ -2443,3 +2443,233 @@ li {
         font-size: 12px;
     }
 }
+
+@media (max-width: 1220px) {
+    .scientist-title {
+        left: 833px;
+        white-space: nowrap;
+    }
+
+    .scientist-bg-one {
+        left: 602px;
+    }
+    
+    .scientist-bg-two {
+        left: 807px;
+    }
+    
+    .scientist-bg-three {
+        left: 1012px;
+    }
+
+    .scientist-bg-four {
+        left: 602px;
+    }
+
+    .scientist-bg-five {
+        left: 807px;
+    }
+
+    .scientist-bg-six {
+        left: 1012px;
+    }
+
+    .scientist-bg-seven {
+        left: 602px;
+    }
+
+    .scientist-bg-eight {
+        left: 807px;
+    }
+
+    .scientist-bg-nine {
+        left: 1012px;
+    }
+    
+    .gold-medal {
+        left: 624px;
+    }
+    
+    .gold-medal-lineup {
+        width: 91.8px;
+        left: 683px;
+    }
+    
+    .gold-medal-linedown {
+        width: 91.8px;
+        left: 683px;
+    }
+    
+    .gold-scientist-name {
+        font-size: 12px;
+        left: 700px;
+    }
+    
+    
+    .silver-medal {
+        left: 830px;
+    }
+    
+    .silver-medal-lineup {
+        width: 91.8px;
+        left: 887px;
+    }
+    
+    .silver-medal-linedown {
+        width: 91.8px;
+        left: 887px;
+    }
+    
+    .silver-scientist-name {
+        left: 903px;
+    }
+    
+    
+    .bronze-medal {
+        left: 1036px;
+    }
+    
+    .bronze-medal-lineup {
+        width: 91.8px;
+        left: 1092px;
+    }
+    
+    .bronze-medal-linedown {
+        width: 91.8px;
+        left: 1092px;
+    }
+    
+    .bronze-scientist-name {
+        left: 1111px;
+    }
+    .bronze-scientist-name {
+        font-size: 12px;
+    }
+
+
+    .silver-medal-first {
+        left: 624px;
+    }
+
+    .silver-medal-lineup-first {
+        width: 91.8px;
+        left: 683px;
+    }
+
+    .silver-medal-lineup-second {
+        width: 91.8px;
+        left: 887px;
+    }
+
+    .silver-medal-lineup-third {
+        width: 91.8px;
+        left: 1092px;
+    }
+
+    .silver-medal-linedown-first {
+        width: 91.8px;
+        left: 683px;
+    }
+
+    .silver-medal-linedown-second {
+        width: 91.8px;
+        left: 887px;
+    }
+
+    .silver-medal-linedown-third {
+        width: 91.8px;
+        left: 1092px;
+    }
+
+    .silver-scientist-name-first {
+        left: 684px;
+    }
+    .silver-scientist-name-first {
+        font-size: 12px;
+    }
+
+    .silver-scientist-name-second {
+        left: 892px;
+    }
+    .silver-scientist-name-second {
+        font-size: 12px;
+    }
+
+    .silver-scientist-name-third {
+        left: 1091px;
+    }
+    .silver-scientist-name-third {
+        font-size: 12px;
+    }
+
+    .silver-medal-second {
+        left: 830px;
+    }
+
+    .silver-medal-third {
+        left: 1036px;
+    }
+
+
+
+    .bronze-medal-first {
+        left: 624px;
+    }
+
+    .bronze-medal-second {
+        left: 830px;
+    }
+
+    .bronze-medal-third {
+        left: 1036px;
+    }
+
+    .bronze-medal-lineup-first {
+        width: 91.8px;
+        left: 683px;
+    }
+
+    .bronze-medal-lineup-second {
+        width: 91.8px;
+        left: 887px;
+    }
+
+    .bronze-medal-lineup-third {
+        width: 91.8px;
+        left: 1092px;
+    }
+
+    .bronze-medal-linedown-first {
+        width: 91.8px;
+        left: 684px;
+    }
+
+    .bronze-medal-linedown-second {
+        width: 91.8px;
+        left: 887px;
+    }
+
+    .bronze-medal-linedown-third {
+        width: 91.8px;
+        left: 1092px;
+    }
+
+    .bronze-scientist-name-first {
+        left: 692px;
+    }
+    .bronze-scientist-name-first {
+        font-size: 12px;
+    }
+
+    .bronze-scientist-name-second {
+        left: 888px;
+    }
+    .bronze-scientist-name-second {
+        font-size: 12px;
+    }
+
+    .bronze-scientist-name-third {
+        left: 1109px;
+        font-size: 12px;
+    }
+}
