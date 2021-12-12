@@ -61,7 +61,7 @@ def add_compare(univer_id):
             univers.append(univer_id)
             session['univers'] = univers
 
-    return redirect('/universities')
+    return redirect('http://science-rating.co.ua/universities')
 
 
 @app.route('/delete_compare/<int:univer_id>')
@@ -72,7 +72,7 @@ def delete_compare(univer_id):
             univers.pop(univers.index(univer_id))
             session['univers'] = univers
 
-    return redirect('/universities')
+    return redirect('http://science-rating.co.ua/universities')
 
 
 @app.route('/universities')
