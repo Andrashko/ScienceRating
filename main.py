@@ -3,9 +3,17 @@ import requests
 import json
 from bs4 import BeautifulSoup as BS
 from sqlalchemy import or_
+from dotenv import load_dotenv
+import threading
 
 from data.Standart import db_session
+from mail_sender import send_mail
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from data.Forms.Login import LoginForm
+from data.Forms.Registration import RegisterForm
+from data.database.user import User
 from data.database.kaz_universities import Kaz_Universities
+from data.database.univer_projects import UniverProjects
 from data.database.items_and_criteria import ItemsAndCriteria
 from data.database.ukraine_universities import Ukraine_Universities
 from data.database.ukraine_faculties import UkraineFaculties
@@ -17,6 +25,64 @@ db_session.global_init("db/database.db")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'rating_sk'
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    db_sess = db_session.create_session()
+    return db_sess.query(User).get(user_id)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect('http://science-rating.co.ua/')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.login == form.login.data).first()
+        if user and user.check_password(form.password.data):
+            login_user(user)
+            return redirect('http://science-rating.co.ua/')
+        return render_template('login.html', msg='Неправильный логин или пароль', form=form)
+    return render_template('login.html', form=form)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        if form.password.data != form.password_again.data:
+            return render_template('register.html', form=form, msg='Пароли не совпадают')
+        for i in form.login.data:
+            if i.isdigit():
+                return render_template('register.html', form=form, msg='Логин не может состоять только из цифр')
+            if (not i.isdigit()) and (not i.isalpha()):
+                return render_template('register.html', form=form, msg='В логине могут быть только цифры и буквы')
+        db_sess = db_session.create_session()
+        if db_sess.query(User).filter(User.user_email == form.email.data).first():
+            return render_template('register.html', form=form, msg='Пользователь с этой почтой уже существует')
+        if db_sess.query(User).filter(User.login == form.login.data).first():
+            return render_template('register.html', form=form, msg='Такой пользователь уже есть')
+        user = User(
+            login=form.login.data,
+            user_email=form.email.data
+        )
+        user.set_password(form.password.data)
+        db_sess.add(user)
+        db_sess.commit()
+        threading.Thread(target=send_mail, args=[form.email.data, 'Регистрация прошла успешно',
+                                                 f'Ваш логин: {form.login.data}']).start()
+        return redirect('http://science-rating.co.ua/login')
+    return render_template('register.html', form=form)
 
 
 @app.route('/')
@@ -72,7 +138,7 @@ def delete_compare(univer_id):
             univers.pop(univers.index(univer_id))
             session['univers'] = univers
 
-    return redirect('http://science-rating.co.ua/universities')
+    return  redirect('http://science-rating.co.ua/universities')
 
 
 @app.route('/universities')
@@ -376,9 +442,23 @@ def scientist_info(scientist_id):
     except KeyError:
         publon = 'no access'
 
+    scopus = []
+    SIZE = 60
+    with open('db/scopus.json', encoding='utf-8') as file:
+        scop = json.load(file)
+    for i in scop:
+        if i['name'] == scientist.name:
+            for j in i['publications']:
+                artic_name = j['title']
+                if len(artic_name) > SIZE:
+                    artic_name = artic_name[:SIZE].strip() + '...'
+
+                scopus.append([artic_name, j['journal'], j['meta'], j['citations'],
+                               [[l['name'], l['url']] for l in j['coauthors']]])
+
     return render_template('scientist_info.html', scientist=info, google_articles=google_scholar,
                            publon_articles=publon, photo=photo, univer_id=scientist.univer_id,
-                           depart_id=scientist.department_id)
+                           depart_id=scientist.department_id, scopus_articles=scopus)
 
 
 if __name__ == '__main__':

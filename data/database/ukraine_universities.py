@@ -14,3 +14,4 @@ class Ukraine_Universities(SqlAlchemyBase):
 
     faculties = orm.relationship('UkraineFaculties', backref='univer')
     scientists = orm.relationship('Ukraine_Scientists', backref='univer')
+    projects = orm.relationship('UniverProjects', backref='univer')

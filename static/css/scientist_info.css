@@ -15,6 +15,12 @@ a {
     font-size: 38px;
 }
 
+.radios-btn {
+    position: absolute;
+    top: 420px;
+    left: 400px;
+}
+
 .univer-button {
     position: absolute;
     border: 0;
@@ -101,24 +107,38 @@ a {
 
 .google-articles {
     position: absolute;
-    top: 410px;
-    left: 19px;
+    top: 500px;
+    left: 300px;
     font-size: smaller;
     white-space: nowrap;
 }
 
 .publon-articles {
     position: absolute;
-    top: 485px;
-    left: 691px;
+    top: 570px;
+    left: 300px;
     font-size: smaller;
     white-space: nowrap;
 }
 
 .publon-title {
     position: absolute;
-    top: 444px;
-    left: 921.5px;
+    top: 530px;
+    left: 540px;
+}
+
+.scopus-articles {
+    position: absolute;
+    top: 570px;
+    left: 300px;
+    font-size: smaller;
+    white-space: nowrap;
+}
+
+.scopus-title {
+    position: absolute;
+    top: 530px;
+    left: 540px;
 }
 
 footer {

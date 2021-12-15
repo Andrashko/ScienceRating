@@ -1,6 +1,61 @@
 {% extends "base.html" %}
 
 {% block content %}
+<script>
+    function radio_check() {
+        let show_article = document.querySelectorAll('input[type="radio"]');
+
+        for (radio of show_article) {
+            if (radio.checked && radio.value == 'google') {
+                let art = document.getElementById('google');
+                if (art) {
+                    art.style.display='block';
+                }
+
+                let art2 = document.getElementById('publon');
+                if (art2) {
+                    art2.style.display='none';
+                }
+                
+                let art3 = document.getElementById('scopus');
+                if (art3) {
+                    art3.style.display='none';
+                }
+            } else if (radio.checked && radio.value == 'publon') {
+                let art = document.getElementById('publon');
+                if (art) {
+                    art.style.display='';
+                }
+
+                let art2 = document.getElementById('scopus');
+                if (art2) {
+                    art2.style.display='none';
+                }
+
+                let art3 = document.getElementById('google');
+                if (art3) {
+                    art3.style.display='none';
+                }
+            } else if (radio.checked && radio.value == 'scopus') {
+                let art = document.getElementById('scopus');
+                if (art) {
+                    art.style.display='';
+                }
+
+                let art2 = document.getElementById('google');
+                if (art2) {
+                    art2.style.display='none';
+                }
+
+                let art3 = document.getElementById('publon');
+                if (art3) {
+                    art3.style.display='none';
+                }
+            }
+        }
+    }
+</script>
+
 <link rel="stylesheet" href="/static/css/scientist_info.css">
 
 {% if photo %}
@@ -15,56 +70,94 @@
     {% endfor %}
 </ul>
 
+
+<div class="radios-btn">
+    {% if google_articles or publon_articles or scopus_articles %}
+    <p>Статьи</p>
+    {% endif %}
+    {% if google_articles %}
+        <input onclick="radio_check()" type="radio" id="google-article" name="article-to-show" value="google">
+        <label for="google-article">Google Scholar</label>
+    {% endif %}
+
+    {% if publon_articles %}
+        <input onclick="radio_check()" type="radio" id="publon-article" name="article-to-show" value="publon">
+        <label for="publon-article">Publons</label>
+    {% endif %}
+
+    {% if scopus_articles %}
+        <input onclick="radio_check()" type="radio" id="scopus-article" name="article-to-show" value="scopus">
+        <label for="scopus-article">Scopus</label>
+    {% endif %}
+</div>
+
+
 {% if univer_id %}
-<button class="univer-button" onclick="location.href='/university_info/{{ univer_id }}'">Университет</button>
+    <button class="univer-button" onclick="location.href='/university_info/{{ univer_id }}'">Университет</button>
 {% endif %}
 {% if depart_id %}
     <button class="depart-button" onclick="location.href='/department_info/{{ depart_id }}'">Департамент</button>
 {% endif %}
 
-{% if google_articles %}
-    <table class="google-articles">
-        <tbody>
-            <tr>
-                <th colspan="3" height=80px style="font-size: large;">Google Scholar</th>
-            </tr>
-            <tr>
-                <th>Название</th>
-                <th>Процитировано</th>
-                <th>Год</th>
-            </tr>
-            {% for article in google_articles %}
+<div id="google" style="display: none;">
+    {% if google_articles %}
+        <table class="google-articles">
+            <tbody>
                 <tr>
-                    <td>
-                        <a href="{{ article[0][1] }}">{{ article[0][0] }}</a>
-                        <br>
-                        <div>{{ article[1] }}</div>
-                        <div>{{ article[2] }}</div>
-                    </td>
-                    <td align="center" height=60px><a href="{{ article[3][1] }}">{{ article[3][0] }}</a></td>
-                    <td align="center">{{ article[4] }}</td>
+                    <th colspan="3" height=80px style="font-size: large;">Google Scholar</th>
                 </tr>
+                <tr>
+                    <th>Название</th>
+                    <th>Процитировано</th>
+                    <th>Год</th>
+                </tr>
+                {% for article in google_articles %}
+                    <tr>
+                        <td>
+                            <a href="{{ article[0][1] }}">{{ article[0][0] }}</a>
+                            <br>
+                            <div>{{ article[1] }}</div>
+                            <div>{{ article[2] }}</div>
+                        </td>
+                        <td align="center" height=60px><a href="{{ article[3][1] }}">{{ article[3][0] }}</a></td>
+                        <td align="center">{{ article[4] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+
+
+<div id="publon" style="display: none;">
+    {% if publon_articles and publon_articles != "no access" %}
+        <div class="publon-title">Publons</div>
+
+        <ul class="publon-articles" type=none>
+            {% for article in publon_articles %}
+                <li><a href="{{ article[0] }}">{{ article[1] }}</a><br>Опубликовано: {{ article[2] }} в <a href="{{ article[3] }}">{{ article[4] }}</a></li>
+                <br>
             {% endfor %}
-        </tbody>
-    </ul>
-{% endif %}
+        </ul>
+    {% elif publon_articles == "no access" %}
+        <div class="publon-title">Publons</div>
+        <h3 style="position: absolute; top: 485px; left: 900px; font-size: medium;">Не доступен</h3>
+    {% endif %}
+</div>
 
 
+<div id="scopus" style="display: none;">
+    {% if scopus_articles %}
+        <div class="scopus-title">Scopus</div>
 
-{% if publon_articles and publon_articles != "no access" %}
-    <div class="publon-title">Publons</div>
-
-    <ul class="publon-articles" type=none>
-        {% for article in publon_articles %}
-            <li><a href="{{ article[0] }}">{{ article[1] }}</a><br>Опубликовано: {{ article[2] }} в <a href="{{ article[3] }}">{{ article[4] }}</a></li>
-            <br>
-        {% endfor %}
-    </ul>
-{% elif publon_articles == "no access" %}
-    <div class="publon-title">Publons</div>
-    <h3 style="position: absolute; top: 485px; left: 900px; font-size: medium;">Не доступен</h3>
-{% endif %}
-
+        <ul class="scopus-articles" type=none>
+            {% for artic in scopus_articles %}
+                <li>{{ artic[0] }}<br><br>Опубликовано в {{ artic[1] }}<br>{{ artic[2] }}<br>Цитировано: {{ artic[3] }}<br>Соавторы: {% for j in artic[4] %}<a href="{{ j[1] }}">{{ j[0] }}</a>{% if loop.index != artic[4]|length %}, {% endif %}{% endfor %}</li>
+                <br>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
 
 
 <h1 class="about-title">Об учёном</h1>

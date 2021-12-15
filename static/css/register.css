@@ -1,0 +1,31 @@
+.register-form {
+    position: absolute;
+    top: 150px;
+    width: 98%;
+    display: flex;
+    justify-content: center;
+}
+
+.reg-button {
+    appearance: none;
+    border: 0;
+    border-radius: 7px;
+    background: #F73E3E;
+    color: white;
+    padding: 5px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.error-text {
+    font-size: 12px;
+    width: 200px;
+}
+
+@media (max-width: 1220px) {
+    .register-form {
+        width: 1220px;
+    }
+}

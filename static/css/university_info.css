@@ -19,6 +19,12 @@ h2 {
     white-space: nowrap;
 }
 
+h3 {
+    position: absolute;
+    top: 210px;
+    left: 430px;
+}
+
 .univer-rating-button {
     position: absolute;
     border: 0;
@@ -50,6 +56,12 @@ footer {
     h2 {
         top: 220px;
     }
+    
+    h3 {
+        top: 185px;
+        left: 315px;
+        font-size: 15px;
+    }
 
     .univer-rating-button {
         top: 195px;
@@ -70,6 +82,11 @@ footer {
 
     h2 {
         top: 170px;
+    }
+
+    h3 {
+        top: 135px;
+        font-size: 15px;
     }
 
     table {

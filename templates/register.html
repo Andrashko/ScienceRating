@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/css/register.css">
+
+<div class="register-form">
+    <form action="" method="post">
+        <h1>Регистрация</h1>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.login.label }}<br>
+            {{ form.login(class="form-control") }}<br>
+        </p>
+        <p>
+            {{ form.email.label }}<br>
+            {{ form.email(class="form-control", type="email") }}<br>
+        </p>
+        <p>
+            {{ form.password.label }}<br>
+            {{ form.password(class="form-control", type="password") }}<br>
+        </p>
+        <p>
+            {{ form.password_again.label }}<br>
+            {{ form.password_again(class="form-control", type="password") }}<br>
+        </p>
+        <p>{{ form.submit(type="submit", class="reg-button") }}</p>
+        <div class="error-text">{{ msg }}</div>
+    </form>
+</div>
+{% endblock %}

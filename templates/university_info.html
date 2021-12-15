@@ -3,6 +3,9 @@
 <link rel="stylesheet" href="/static/css/university_info.css">
 
 <h1>{{ univer.univername }}</h1>
+{% if univer.projects | length != 0 %}
+    <h3>Проектов университета: {{ univer.projects | length }}</h2>
+{% endif %}
 
 {% if not facult_empty or not depart_empty %}
     <button class="univer-rating-button" onclick="location.href='/university_info_rating/{{ univer.id }}'">Рейтинг университета</button>
