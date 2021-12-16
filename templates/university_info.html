@@ -4,7 +4,7 @@
 
 <h1>{{ univer.univername }}</h1>
 {% if univer.projects | length != 0 %}
-    <h3>Проектов университета: {{ univer.projects | length }}</h2>
+    <h3><a style="color: black;" href="/university_projects/{{ univer.id }}">Проектов университета: {{ univer.projects | length }}</a></h2>
 {% endif %}
 
 {% if not facult_empty or not depart_empty %}

@@ -138,7 +138,7 @@ def delete_compare(univer_id):
             univers.pop(univers.index(univer_id))
             session['univers'] = univers
 
-    return  redirect('http://science-rating.co.ua/universities')
+    return redirect('http://science-rating.co.ua/universities')
 
 
 @app.route('/universities')
@@ -286,6 +286,13 @@ def university_info(university_id):
 
     return render_template('university_info.html', facult_depart=facult_depart, univer=university,
                            facult_empty=facult_empty, depart_empty=depart_empty)
+
+
+@app.route('/university_projects/<int:univer_id>')
+def university_projects(univer_id):
+    db_sess = db_session.create_session()
+    univer = db_sess.query(Ukraine_Universities).get(univer_id)
+    return render_template('university_projects.html', univer=univer)
 
 
 @app.route('/faculty_info/<int:faculty_id>')
