@@ -62,9 +62,9 @@ def register():
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
             return render_template('register.html', form=form, msg='Пароли не совпадают')
+        if form.login.data.isdigit():
+            return render_template('register.html', form=form, msg='Логин не может состоять только из цифр')
         for i in form.login.data:
-            if i.isdigit():
-                return render_template('register.html', form=form, msg='Логин не может состоять только из цифр')
             if (not i.isdigit()) and (not i.isalpha()):
                 return render_template('register.html', form=form, msg='В логине могут быть только цифры и буквы')
         db_sess = db_session.create_session()
@@ -119,6 +119,9 @@ def universities_rating():
 
 @app.route('/add_compare/<int:univer_id>')
 def add_compare(univer_id):
+    if not current_user.is_authenticated:
+        return redirect('http://science-rating.co.ua/login')
+
     if 'univers' not in session:
         session['univers'] = [univer_id]
     else:
@@ -132,6 +135,9 @@ def add_compare(univer_id):
 
 @app.route('/delete_compare/<int:univer_id>')
 def delete_compare(univer_id):
+    if not current_user.is_authenticated:
+        return redirect('http://science-rating.co.ua/login')
+
     if 'univers' in session:
         if session['univers']:
             univers = session['univers']
@@ -143,6 +149,9 @@ def delete_compare(univer_id):
 
 @app.route('/universities')
 def all_universities():
+    if not current_user.is_authenticated:
+        return redirect('http://science-rating.co.ua/login')
+
     db_sess = db_session.create_session()
 
     univers_compare = []
@@ -209,6 +218,9 @@ def all_universities():
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
+    if not current_user.is_authenticated:
+        return redirect('http://science-rating.co.ua/login')
+
     db_sess = db_session.create_session()
     inp = ''
     univers = []
@@ -232,6 +244,9 @@ def search():
 
 @app.route('/university_info/<int:university_id>')
 def university_info(university_id):
+    if not current_user.is_authenticated:
+        return redirect('http://science-rating.co.ua/login')
+
     db_sess = db_session.create_session()
     university = db_sess.query(Ukraine_Universities).get(university_id)
     scientists = len(list(university.scientists))
@@ -290,6 +305,9 @@ def university_info(university_id):
 
 @app.route('/university_projects/<int:univer_id>')
 def university_projects(univer_id):
+    if not current_user.is_authenticated:
+        return redirect('http://science-rating.co.ua/login')
+
     db_sess = db_session.create_session()
     univer = db_sess.query(Ukraine_Universities).get(univer_id)
     return render_template('university_projects.html', univer=univer)
@@ -297,6 +315,9 @@ def university_projects(univer_id):
 
 @app.route('/faculty_info/<int:faculty_id>')
 def faculty_info(faculty_id):
+    if not current_user.is_authenticated:
+        return redirect('http://science-rating.co.ua/login')
+
     db_sess = db_session.create_session()
     faculty = db_sess.query(UkraineFaculties).get(faculty_id)
     return render_template('faculty_info.html', faculty=faculty)
@@ -304,6 +325,9 @@ def faculty_info(faculty_id):
 
 @app.route('/department_info/<int:depart_id>')
 def department_info(depart_id):
+    if not current_user.is_authenticated:
+        return redirect('http://science-rating.co.ua/login')
+
     db_sess = db_session.create_session()
     depart = db_sess.query(UkraineDepartments).get(depart_id)
     univer_id = db_sess.query(UkraineFaculties).get(depart.faculty_id).univer_id
@@ -312,6 +336,9 @@ def department_info(depart_id):
 
 @app.route('/university_info_rating/<int:university_id>')
 def university_info_rating(university_id):
+    if not current_user.is_authenticated:
+        return redirect('http://science-rating.co.ua/login')
+
     db_sess = db_session.create_session()
 
     university = db_sess.query(Ukraine_Universities).get(university_id)
@@ -340,6 +367,9 @@ def university_info_rating(university_id):
 
 @app.route('/scientist_info/<int:scientist_id>')
 def scientist_info(scientist_id):
+    if not current_user.is_authenticated:
+        return redirect('http://science-rating.co.ua/login')
+
     db_sess = db_session.create_session()
 
     scientist = db_sess.query(Ukraine_Scientists).get(scientist_id)
