@@ -11,7 +11,7 @@ from data.database.criteria import Criterias
 db_session.global_init("db/database.db")
 db_sess = db_session.create_session()
 
-with open('data.json', encoding='utf-8') as file:
+with open('db/data.json', encoding='utf-8') as file:
     res = json.load(file)
 
 # университеты
