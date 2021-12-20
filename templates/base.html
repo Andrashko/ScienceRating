@@ -14,21 +14,21 @@
             <p>
                 <a href="/"><img class="logo-image" src="/static/img/ScienceRaitingLogo.png" alt="logo"></a>
 
-                <p class="nav-about">СИСТЕМА ОЦЕНКИ<br>НАУЧНОЙ ДЕЯТЕЛЬНОСТИ ВУЗОВ И НИИ</p>
+                <p class="nav-about">СИСТЕМА ОЦІНЮВАННЯ<br>НАУКОВО-ДОСЛІДНОЇ РОБОТИ</p>
 
-                <button class="nav-language-button">RU</button>
+                <button class="nav-language-button">UA</button>
 
-                <a class="nav-page-one"  style="color: {{ color_page_one }};" href="/">Рейтинг ВУЗов</a>
+                <a class="nav-page-one"  style="color: {{ color_page_one }};" href="/">Рейтинг ЗВО</a>
                 <div class="vl-one"></div>
-                <a class="nav-page-two" href="" style="color: {{ color_page_two }};">Рейтинг НИИ</a>
-                <div class="vl-two"></div>
-                <a class="nav-page-three" href="" style="color: {{ color_page_three }};">Рейтинг ученых</a>
+                <!-- <a class="nav-page-two" href="" style="color: {{ color_page_two }};">Рейтинг НИИ</a> -->
+                <!-- <div class="vl-two"></div> -->
+                <a class="nav-page-three" href="" style="color: {{ color_page_three }};">Рейтинг вчених</a>
 
-                <button class="search-button" onclick="location.href='/search'">Поиск</button>
+                <button class="search-button" onclick="location.href='/search'">Пошук</button>
                 {% if current_user.is_authenticated %}
-                    <button class="nav-login-button" onclick="location.href='/logout'">Выйти</button>
+                    <button class="nav-login-button" onclick="location.href='/logout'">Вийти</button>
                 {% else %}
-                    <button class="nav-login-button" onclick="location.href='/login'">Войти</button>
+                    <button class="nav-login-button" onclick="location.href='/login'">Увійти</button>
                 {% endif %}
             </p>
         </nav>
@@ -38,9 +38,26 @@
         {% block content %}{% endblock %}
     </main>
     <footer>
-        <p class="footer-news"></p>
+        <p>
+            Розробка методів аналізу якості науково-дослідної роботи вчених, ЗВО МОН України та окремих структурних підрозділів 
+        </p>
+        <p>
+            Керівник НДР д.т.н., доц. Олександр КУЧАНСЬКИЙ kuczanski@gmail.com
+        </p>
+        <p class="footer-news">
+      
+        </p>
 <!--        <div class="vl-time"></div>-->
-        <p class="footer-date"></p><p class="footer-time"></p>
+        <p class="footer-date">
+            Київський національний університет імені Тараса Шевченка<br>
+            2021
+        </p>
+        <p class="footer-time">
+            
+        </p>
+        <p>
+          
+        </p>
     </footer>
 </body>
 </html>

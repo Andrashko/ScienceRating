@@ -5,7 +5,7 @@
 
 <div class="login-form">
     <form action="" method="post">
-        <h1>Авторизация</h1>
+        <h1>Авторизація</h1>
         {{ form.hidden_tag() }}
         <p>
             {{ form.login.label }}<br>
@@ -16,8 +16,8 @@
             {{ form.password(class="form-control", type="password") }}<br>
         </p>
         <p>{{ form.submit(type="submit", class="log-button") }}</p>
-        <p>Или</p>
-        <a href="/register">Зарегистрироваться</a>
+        <p>або</p>
+        <a href="/register">Зареєструватися</a>
         <p class="error-text">{{ msg }}</p>
     </form>
 </div>

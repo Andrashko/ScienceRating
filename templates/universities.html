@@ -105,32 +105,32 @@
 
 <div class="radios-btn">
     <input type="radio" id="type-students" name="info-type" value="students">
-    <label for="type-students">Кол-во студентов</label>
+    <label for="type-students">К-сть студентів</label>
 
     <input type="radio" id="type-scientists" name="info-type" value="scientists">
-    <label for="type-scientists">Кол-во учёных</label>
+    <label for="type-scientists">К-сть вчених</label>
 
     <input type="radio" id="type-faculties" name="info-type" value="faculties">
-    <label for="type-faculties">Кол-во факультетов</label>
+    <label for="type-faculties">К-сть факультетів</label>
 
     <input type="radio" id="type-departments" name="info-type" value="departments">
-    <label for="type-departments">Кол-во департаментов</label>
+    <label for="type-departments">К-сть кафедр</label>
 
     <input type="radio" id="type-rating" name="info-type" value="rating">
     <label for="type-rating">Рейтинг</label>
 
-    <p><input type="button" value="Сравнить" onclick="output()"> (макс. 5){% if univers_compare %} - {% endif %}{% for i in univers_compare %}<a href="/university_info/{{ i[1] }}">{{ i[0] }}</a> <button onclick="location.href='/delete_compare/{{ i[1] }}'">Удалить</button>{% if loop.index != univers_compare|length %}, {% endif %}{% endfor %}</p>
+    <p><input type="button" value="Порівняти" onclick="output()"> (макс. 5){% if univers_compare %} - {% endif %}{% for i in univers_compare %}<a href="/university_info/{{ i[1] }}">{{ i[0] }}</a> <button onclick="location.href='/delete_compare/{{ i[1] }}'">Вилучити</button>{% if loop.index != univers_compare|length %}, {% endif %}{% endfor %}</p>
 </div>
 
 
 <table border="1" cellspacing=0>
     <tbody>
         <tr>
-            <th style="font-size: 16px;">Университеты</th>
+            <th style="font-size: 16px;">Університети</th>
         </tr>
         {% for i in univers %}
             <tr>
-                <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[1] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[1] }}'">Добавить</button></td>
+                <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[1] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[1] }}'">Додати</button></td>
             </tr>
         {% endfor %}
     </tbody>
