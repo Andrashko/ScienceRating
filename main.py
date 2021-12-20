@@ -20,13 +20,14 @@ from data.database.ukraine_faculties import UkraineFaculties
 from data.database.ukraine_departments import UkraineDepartments
 from data.database.ukraine_scientists import Ukraine_Scientists
 from data.database.criteria import Criterias
+from rating import calculate_university_rating
 
 db_session.global_init("db/database.db")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'rating_sk'
 BASE_URL="http://science-rating.co.ua" # необходимо для роботы редиректа на хостинге
-# BASE_URL="" # Для роботы на локахосте
+BASE_URL="" # Для роботы на локахосте
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -108,13 +109,15 @@ def universities_rating():
             values = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'university').filter(
                 ItemsAndCriteria.item_id == university.id)
 
-            rating_value = 0
-            for i in values:
-                if i.criteria_id == 7 and university.scientists:
-                    rating_value += int(int(i.value) * 100 / len(university.scientists))
-                elif db_sess.query(Criterias).get(i.criteria_id).number in [str(_) for _ in range(1, 16)]:
-                    rating_value += int(i.value)
-            rating_value += len(university.projects)
+            # rating_value = 0
+            # for i in values:
+            #     if i.criteria_id == 7 and university.scientists:
+            #         rating_value += int(int(i.value) * 100 / len(university.scientists))
+            #     elif db_sess.query(Criterias).get(i.criteria_id).number in [str(_) for _ in range(1, 16)]:
+            #         rating_value += int(i.value)
+            # rating_value += len(university.projects)
+
+            rating_value = calculate_university_rating(university)
 
             if len(university.univername) > 63:
                 universities.append([university.univername[:62].strip() + '...',
@@ -206,22 +209,23 @@ def all_universities():
         univers_js['departments'].append(f'{len(departments)}')
         univers_js['scientists'].append(f'{len(univer.scientists)}')
 
-        rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'university').filter(
-            ItemsAndCriteria.item_id == univer.id)
-        try:
-            rating_value = 0
-            for j in rating:
-                if j.criteria_id == 7 and univer.scientists:
-                    rating_value += int(int(j.value) * 100 / len(univer.scientists))
-                elif db_sess.query(Criterias).get(j.criteria_id).number in [str(_) for _ in range(1, 16)]:
-                    rating_value += int(j.value)
-            rating_value += len(univer.projects)
+        # rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'university').filter(
+        #     ItemsAndCriteria.item_id == univer.id)
+        # try:
+        #     rating_value = 0
+        #     for j in rating:
+        #         if j.criteria_id == 7 and univer.scientists:
+        #             rating_value += int(int(j.value) * 100 / len(univer.scientists))
+        #         elif db_sess.query(Criterias).get(j.criteria_id).number in [str(_) for _ in range(1, 16)]:
+        #             rating_value += int(j.value)
+        #     rating_value += len(univer.projects)
 
-            univers_js['rating'].append(f'{rating_value}')
-        except ZeroDivisionError:
-            univers_js['rating'].append('0')
-        except AttributeError:
-            univers_js['rating'].append('0')
+        #     univers_js['rating'].append(f'{rating_value}')
+        # except ZeroDivisionError:
+        #     univers_js['rating'].append('0')
+        # except AttributeError:
+        #     univers_js['rating'].append('0')
+        univers_js['rating'].append(f'{calculate_university_rating(univer)}')
 
     for i in range(len(univers_compare)):
         if len(univers_compare[i][0]) > 50:
@@ -371,13 +375,14 @@ def university_info_rating(university_id):
         except AttributeError:
             criters_values.append([i.name, 0])
 
-    rating_value = 0
-    for i in values:
-        if i.criteria_id == 7 and scientists:
-            rating_value += int(int(i.value) * 100 / scientists)
-        elif db_sess.query(Criterias).get(i.criteria_id).number in [str(_) for _ in range(1, 16)]:
-            rating_value += int(i.value)
-    rating_value += len(university.projects)
+    # rating_value = 0
+    # for i in values:
+    #     if i.criteria_id == 7 and scientists:
+    #         rating_value += int(int(i.value) * 100 / scientists)
+    #     elif db_sess.query(Criterias).get(i.criteria_id).number in [str(_) for _ in range(1, 16)]:
+    #         rating_value += int(i.value)
+    # rating_value += len(university.projects)
+    rating_value = calculate_university_rating(university)
 
     return render_template('university_info_rating.html', univer=university, criters_values=criters_values,
                            rating_value=rating_value)
