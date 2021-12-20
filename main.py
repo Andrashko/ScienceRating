@@ -40,7 +40,7 @@ def load_user(user_id):
 @login_required
 def logout():
     logout_user()
-    return redirect('http://science-rating.co.ua/')
+    return redirect('/')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -51,7 +51,7 @@ def login():
         user = db_sess.query(User).filter(User.login == form.login.data).first()
         if user and user.check_password(form.password.data):
             login_user(user)
-            return redirect('http://science-rating.co.ua/')
+            return redirect('/')
         return render_template('login.html', msg='Неправильный логин или пароль', form=form)
     return render_template('login.html', form=form)
 
@@ -81,7 +81,7 @@ def register():
         db_sess.commit()
         threading.Thread(target=send_mail, args=[form.email.data, 'Регистрация прошла успешно',
                                                  f'Ваш логин: {form.login.data}']).start()
-        return redirect('http://science-rating.co.ua/login')
+        return redirect('/login')
     return render_template('register.html', form=form)
 
 
@@ -96,21 +96,31 @@ def universities_rating():
         if get.google_scholar != '-' and get.publon != '-' and get.scopus != '-':
             scientists.append([get.name.split(), i])
 
-    rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'university').filter(
-        ItemsAndCriteria.criteria_id == 7)
     universities = []
-    for i in rating:
-        university = db_sess.query(Ukraine_Universities).get(i.item_id)
+    for university in db_sess.query(Ukraine_Universities):
+        depart = []
+        for i in university.faculties:
+            for j in i.departments:
+                depart.append(j)
+        if depart:
+            values = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'university').filter(
+                ItemsAndCriteria.item_id == university.id)
 
-        try:
-            if len(university.univername) > 65:
-                universities.append([university.univername[:65].strip() + '...',
-                                     int(i.value) * 100 / len(list(university.scientists)), i.item_id])
+            rating_value = 0
+            for i in values:
+                if i.criteria_id == 7 and university.scientists:
+                    rating_value += int(int(i.value) * 100 / len(university.scientists))
+                elif db_sess.query(Criterias).get(i.criteria_id).number in [str(_) for _ in range(1, 16)]:
+                    rating_value += int(i.value)
+            rating_value += len(university.projects)
+
+            if len(university.univername) > 63:
+                universities.append([university.univername[:62].strip() + '...',
+                                     rating_value, university.id])
             else:
                 universities.append([university.univername,
-                                     int(i.value) * 100 / len(list(university.scientists)), i.item_id])
-        except ZeroDivisionError:
-            pass
+                                     rating_value, university.id])
+
     universities = sorted(universities, key=lambda x: x[1], reverse=True)[:10]
 
     return render_template('universities_rating.html', color_page_one='#F63E3E', univers_rating=universities,
@@ -120,7 +130,7 @@ def universities_rating():
 @app.route('/add_compare/<int:univer_id>')
 def add_compare(univer_id):
     if not current_user.is_authenticated:
-        return redirect('http://science-rating.co.ua/login')
+        return redirect('/login')
 
     if 'univers' not in session:
         session['univers'] = [univer_id]
@@ -130,13 +140,13 @@ def add_compare(univer_id):
             univers.append(univer_id)
             session['univers'] = univers
 
-    return redirect('http://science-rating.co.ua/universities')
+    return redirect('/universities')
 
 
 @app.route('/delete_compare/<int:univer_id>')
 def delete_compare(univer_id):
     if not current_user.is_authenticated:
-        return redirect('http://science-rating.co.ua/login')
+        return redirect('/login')
 
     if 'univers' in session:
         if session['univers']:
@@ -144,13 +154,13 @@ def delete_compare(univer_id):
             univers.pop(univers.index(univer_id))
             session['univers'] = univers
 
-    return redirect('http://science-rating.co.ua/universities')
+    return redirect('/universities')
 
 
 @app.route('/universities')
 def all_universities():
     if not current_user.is_authenticated:
-        return redirect('http://science-rating.co.ua/login')
+        return redirect('/login')
 
     db_sess = db_session.create_session()
 
@@ -175,32 +185,37 @@ def all_universities():
         else:
             univers_js['students'].append('0')
 
-        faculty_rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'faculty').filter(
-            ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.univer_id == univer.id)
+        faculty = db_sess.query(UkraineFaculties).filter(UkraineFaculties.univer_id == univer.id)
 
-        department_rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'department').filter(
-            ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.univer_id == univer.id)
+        department = [j for l in faculty for j in l.departments]
 
         faculties = []
-        if faculty_rating:
-            for j in faculty_rating:
-                if (' - без факультету' not in db_sess.query(UkraineFaculties).get(j.item_id).faculty_name) and \
-                        (not db_sess.query(UkraineFaculties).get(j.item_id).faculty_name.isdigit()):
-                    faculties.append(db_sess.query(UkraineFaculties).get(j.item_id).faculty_name)
+        if faculty:
+            for j in faculty:
+                if (' - без факультету' not in j.faculty_name) and (not j.faculty_name.isdigit()):
+                    faculties.append(j.faculty_name)
 
         departments = []
-        if department_rating:
-            for j in department_rating:
-                departments.append(db_sess.query(UkraineDepartments).get(j.item_id).department_name)
+        if department:
+            for j in department:
+                departments.append(j.department_name)
 
         univers_js['faculties'].append(f'{len(faculties)}')
         univers_js['departments'].append(f'{len(departments)}')
         univers_js['scientists'].append(f'{len(univer.scientists)}')
 
         rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'university').filter(
-            ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.item_id == i[1]).first()
+            ItemsAndCriteria.item_id == univer.id)
         try:
-            univers_js['rating'].append(f'{int(rating.value) * 100 / len(univer.scientists)}')
+            rating_value = 0
+            for j in rating:
+                if j.criteria_id == 7 and univer.scientists:
+                    rating_value += int(int(j.value) * 100 / len(univer.scientists))
+                elif db_sess.query(Criterias).get(j.criteria_id).number in [str(_) for _ in range(1, 16)]:
+                    rating_value += int(j.value)
+            rating_value += len(univer.projects)
+
+            univers_js['rating'].append(f'{rating_value}')
         except ZeroDivisionError:
             univers_js['rating'].append('0')
         except AttributeError:
@@ -210,7 +225,15 @@ def all_universities():
         if len(univers_compare[i][0]) > 50:
             univers_compare[i][0] = univers_compare[i][0][:50].strip() + '...'
 
-    universities = sorted([[i.univername, i.id] for i in db_sess.query(Ukraine_Universities)], key=lambda x: x[0])
+    universities = []
+    for i in db_sess.query(Ukraine_Universities):
+        depart = []
+        for j in i.faculties:
+            for d in j.departments:
+                depart.append(d)
+        if depart:
+            universities.append([i.univername, i.id])
+    universities = sorted(universities, key=lambda x: x[0])
 
     return render_template('universities.html', color_page_one='#F63E3E', univers=universities,
                            univers_compare=univers_compare, univers_js=univers_js)
@@ -219,7 +242,7 @@ def all_universities():
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if not current_user.is_authenticated:
-        return redirect('http://science-rating.co.ua/login')
+        return redirect('/login')
 
     db_sess = db_session.create_session()
     inp = ''
@@ -231,9 +254,15 @@ def search():
             inp = request.form['inp_val'].strip()
 
         if inp:
-            univers = sorted(
-                [[i.univername, i.id] for i in db_sess.query(Ukraine_Universities).all() if inp.lower() in
-                 i.univername.lower()], key=lambda x: x[0])[:500]
+            for i in db_sess.query(Ukraine_Universities):
+                depart = []
+                for j in i.faculties:
+                    for d in j.departments:
+                        depart.append(d)
+                if depart:
+                    univers.append([i.univername, i.id])
+
+            univers = sorted(univers, key=lambda x: x[0])[:500]
 
             scientists = sorted([[i.name, i.id] for i in db_sess.query(Ukraine_Scientists).all()
                                  if inp.lower() in i.name.lower()],
@@ -245,39 +274,25 @@ def search():
 @app.route('/university_info/<int:university_id>')
 def university_info(university_id):
     if not current_user.is_authenticated:
-        return redirect('http://science-rating.co.ua/login')
+        return redirect('/login')
 
     db_sess = db_session.create_session()
     university = db_sess.query(Ukraine_Universities).get(university_id)
-    scientists = len(list(university.scientists))
 
-    faculty_rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'faculty').filter(
-        ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.univer_id == university_id)
+    faculty = db_sess.query(UkraineFaculties).filter(UkraineFaculties.univer_id == university_id)
 
-    department_rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'department').filter(
-        ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.univer_id == university_id)
+    department = [j for i in faculty for j in i.departments]
 
     faculties = []
-    if faculty_rating:
-        for i in faculty_rating:
-            if (' - без факультету' not in db_sess.query(UkraineFaculties).get(i.item_id).faculty_name) and \
-                    (not db_sess.query(UkraineFaculties).get(i.item_id).faculty_name.isdigit()):
-                try:
-                    faculties.append([db_sess.query(UkraineFaculties).get(i.item_id).faculty_name, i.item_id,
-                                      int(i.value) * 100 / scientists])
-                except ZeroDivisionError:
-                    faculties.append([' ', -1])
-        faculties = sorted(faculties, key=lambda x: x[2], reverse=True)
+    if faculty:
+        for i in faculty:
+            if (' - без факультету' not in i.faculty_name) and (not i.faculty_name.isdigit()):
+                faculties.append([i.faculty_name, i.id])
 
     departments = []
-    if department_rating:
-        for i in department_rating:
-            try:
-                departments.append([db_sess.query(UkraineDepartments).get(i.item_id).department_name, i.item_id,
-                                    int(i.value) * 100 / scientists])
-            except ZeroDivisionError:
-                departments.append([' ', -1])
-        departments = sorted(departments, key=lambda x: x[2], reverse=True)
+    if department:
+        for i in department:
+            departments.append([i.department_name, i.id])
 
     facult_depart = []
     facult_empty = True
@@ -306,7 +321,7 @@ def university_info(university_id):
 @app.route('/university_projects/<int:univer_id>')
 def university_projects(univer_id):
     if not current_user.is_authenticated:
-        return redirect('http://science-rating.co.ua/login')
+        return redirect('/login')
 
     db_sess = db_session.create_session()
     univer = db_sess.query(Ukraine_Universities).get(univer_id)
@@ -316,7 +331,7 @@ def university_projects(univer_id):
 @app.route('/faculty_info/<int:faculty_id>')
 def faculty_info(faculty_id):
     if not current_user.is_authenticated:
-        return redirect('http://science-rating.co.ua/login')
+        return redirect('/login')
 
     db_sess = db_session.create_session()
     faculty = db_sess.query(UkraineFaculties).get(faculty_id)
@@ -326,7 +341,7 @@ def faculty_info(faculty_id):
 @app.route('/department_info/<int:depart_id>')
 def department_info(depart_id):
     if not current_user.is_authenticated:
-        return redirect('http://science-rating.co.ua/login')
+        return redirect('/login')
 
     db_sess = db_session.create_session()
     depart = db_sess.query(UkraineDepartments).get(depart_id)
@@ -337,38 +352,39 @@ def department_info(depart_id):
 @app.route('/university_info_rating/<int:university_id>')
 def university_info_rating(university_id):
     if not current_user.is_authenticated:
-        return redirect('http://science-rating.co.ua/login')
+        return redirect('/login')
 
     db_sess = db_session.create_session()
 
     university = db_sess.query(Ukraine_Universities).get(university_id)
     scientists = len(list(university.scientists))
-    criterias = db_sess.query(Criterias).filter(or_(Criterias.number == '2.1.1.', Criterias.number == '2.1.2.',
-                                                    Criterias.number == '2.1.3.', Criterias.number == '2.2.',
-                                                    Criterias.number == '2.3.'))
+    criterias = db_sess.query(Criterias)
     values = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'university').filter(
         ItemsAndCriteria.item_id == university.id)
 
     criters_values = []
-    index = 0
-    for i in range(8, 13):
-        criters_values.append([criterias[index].name, values.filter(ItemsAndCriteria.criteria_id == i).first()])
-        index += 1
+    for i in criterias:
+        try:
+            criters_values.append([i.name, int(values.filter(ItemsAndCriteria.criteria_id == i.id).first().value)])
+        except AttributeError:
+            criters_values.append([i.name, 0])
 
-    for i in range(1, 8):
-        criters_values.append([db_sess.query(Criterias).get(i).name, 0])
-    for i in range(14, 54):
-        criters_values.append([db_sess.query(Criterias).get(i).name, 0])
+    rating_value = 0
+    for i in values:
+        if i.criteria_id == 7 and scientists:
+            rating_value += int(int(i.value) * 100 / scientists)
+        elif db_sess.query(Criterias).get(i.criteria_id).number in [str(_) for _ in range(1, 16)]:
+            rating_value += int(i.value)
+    rating_value += len(university.projects)
 
     return render_template('university_info_rating.html', univer=university, criters_values=criters_values,
-                           rating_value=int(
-                               int(values.filter(ItemsAndCriteria.criteria_id == 7).first().value) * 100 / scientists))
+                           rating_value=rating_value)
 
 
 @app.route('/scientist_info/<int:scientist_id>')
 def scientist_info(scientist_id):
     if not current_user.is_authenticated:
-        return redirect('http://science-rating.co.ua/login')
+        return redirect('/login')
 
     db_sess = db_session.create_session()
 
