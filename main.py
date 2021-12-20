@@ -25,6 +25,8 @@ db_session.global_init("db/database.db")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'rating_sk'
+BASE_URL="http://science-rating.co.ua" # необходимо для роботы редиректа на хостинге
+# BASE_URL="" # Для роботы на локахосте
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -40,7 +42,7 @@ def load_user(user_id):
 @login_required
 def logout():
     logout_user()
-    return redirect('/')
+    return redirect(BASE_URL+'/')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -51,7 +53,7 @@ def login():
         user = db_sess.query(User).filter(User.login == form.login.data).first()
         if user and user.check_password(form.password.data):
             login_user(user)
-            return redirect('/')
+            return redirect(BASE_URL+'/')
         return render_template('login.html', msg='Неправильный логин или пароль', form=form)
     return render_template('login.html', form=form)
 
@@ -81,7 +83,7 @@ def register():
         db_sess.commit()
         threading.Thread(target=send_mail, args=[form.email.data, 'Регистрация прошла успешно',
                                                  f'Ваш логин: {form.login.data}']).start()
-        return redirect('/login')
+        return redirect(BASE_URL+'/login')
     return render_template('register.html', form=form)
 
 
@@ -130,7 +132,7 @@ def universities_rating():
 @app.route('/add_compare/<int:univer_id>')
 def add_compare(univer_id):
     if not current_user.is_authenticated:
-        return redirect('/login')
+        return redirect(BASE_URL+'/login')
 
     if 'univers' not in session:
         session['univers'] = [univer_id]
@@ -140,13 +142,13 @@ def add_compare(univer_id):
             univers.append(univer_id)
             session['univers'] = univers
 
-    return redirect('/universities')
+    return redirect(BASE_URL+'/universities')
 
 
 @app.route('/delete_compare/<int:univer_id>')
 def delete_compare(univer_id):
     if not current_user.is_authenticated:
-        return redirect('/login')
+        return redirect(BASE_URL+'/login')
 
     if 'univers' in session:
         if session['univers']:
@@ -154,13 +156,13 @@ def delete_compare(univer_id):
             univers.pop(univers.index(univer_id))
             session['univers'] = univers
 
-    return redirect('/universities')
+    return redirect(BASE_URL+'/universities')
 
 
 @app.route('/universities')
 def all_universities():
     if not current_user.is_authenticated:
-        return redirect('/login')
+        return redirect(BASE_URL+'/login')
 
     db_sess = db_session.create_session()
 
@@ -242,7 +244,7 @@ def all_universities():
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if not current_user.is_authenticated:
-        return redirect('/login')
+        return redirect(BASE_URL+'/login')
 
     db_sess = db_session.create_session()
     inp = ''
@@ -274,7 +276,7 @@ def search():
 @app.route('/university_info/<int:university_id>')
 def university_info(university_id):
     if not current_user.is_authenticated:
-        return redirect('/login')
+        return redirect(BASE_URL+'/login')
 
     db_sess = db_session.create_session()
     university = db_sess.query(Ukraine_Universities).get(university_id)
@@ -321,7 +323,7 @@ def university_info(university_id):
 @app.route('/university_projects/<int:univer_id>')
 def university_projects(univer_id):
     if not current_user.is_authenticated:
-        return redirect('/login')
+        return redirect(BASE_URL+'/login')
 
     db_sess = db_session.create_session()
     univer = db_sess.query(Ukraine_Universities).get(univer_id)
@@ -331,7 +333,7 @@ def university_projects(univer_id):
 @app.route('/faculty_info/<int:faculty_id>')
 def faculty_info(faculty_id):
     if not current_user.is_authenticated:
-        return redirect('/login')
+        return redirect(BASE_URL+'/login')
 
     db_sess = db_session.create_session()
     faculty = db_sess.query(UkraineFaculties).get(faculty_id)
@@ -341,7 +343,7 @@ def faculty_info(faculty_id):
 @app.route('/department_info/<int:depart_id>')
 def department_info(depart_id):
     if not current_user.is_authenticated:
-        return redirect('/login')
+        return redirect(BASE_URL+'/login')
 
     db_sess = db_session.create_session()
     depart = db_sess.query(UkraineDepartments).get(depart_id)
@@ -352,7 +354,7 @@ def department_info(depart_id):
 @app.route('/university_info_rating/<int:university_id>')
 def university_info_rating(university_id):
     if not current_user.is_authenticated:
-        return redirect('/login')
+        return redirect(BASE_URL+'/login')
 
     db_sess = db_session.create_session()
 
@@ -384,7 +386,7 @@ def university_info_rating(university_id):
 @app.route('/scientist_info/<int:scientist_id>')
 def scientist_info(scientist_id):
     if not current_user.is_authenticated:
-        return redirect('/login')
+        return redirect(BASE_URL+'/login')
 
     db_sess = db_session.create_session()
 
