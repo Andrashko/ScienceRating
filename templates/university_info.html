@@ -4,17 +4,17 @@
 
 <h1>{{ univer.univername }}</h1>
 {% if univer.projects | length != 0 %}
-    <h3><a style="color: black;" href="/university_projects/{{ univer.id }}">Кількість наукових проектів: {{ univer.projects | length }}</a></h2>
+    <h3><a style="color: black;" href="/university_projects/{{ univer.id }}">Проектов университета: {{ univer.projects | length }}</a></h2>
 {% endif %}
 
 {% if not facult_empty or not depart_empty %}
-    <button class="univer-rating-button" onclick="location.href='/university_info_rating/{{ univer.id }}'">Рейтинг університета</button>
+    <button class="univer-rating-button" onclick="location.href='/university_info_rating/{{ univer.id }}'">Рейтинг университета</button>
 
     <table border="1" cellspacing=0>
         <tbody>
             <tr>
-                {% if not facult_empty %}<th style="font-size: medium;">Факультети</th>{% endif %}
-                {% if not depart_empty %}<th style="font-size: medium;">Кафедри</th>{% endif %}
+                {% if not facult_empty %}<th style="font-size: medium;">Факультеты</th>{% endif %}
+                {% if not depart_empty %}<th style="font-size: medium;">Департаменты</th>{% endif %}
             </tr>
             {% for item in facult_depart %}
                 <tr>
@@ -29,6 +29,6 @@
         </tbody>
     </table>
 {% else %}
-    <h2>Нема даних</h2>
+    <h2>Нет информации</h2>
 {% endif %}
 {% endblock %}

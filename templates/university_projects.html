@@ -6,7 +6,7 @@
 <button class="back-button" onclick="location.href='/university_info/{{ univer.id }}'">Назад</button>
 
 <ul type=none>
-    <p style="font-size: larger;">Проекти:</p>
+    <p style="font-size: larger;">Проекты:</p>
     {% for i in univer.projects %}
         <li>{{ i.project_name }}</li><br>
     {% endfor %}

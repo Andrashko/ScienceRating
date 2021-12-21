@@ -6,95 +6,217 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script>
 <script>
     function output() {
-        let radios = document.querySelectorAll('input[type="radio"]');
-
-        for (let radio of radios) {
-            if (radio.checked && radio.value == 'rating') {
-                var info = {'students': [{{ ', '.join(univers_js['students']) }}], 'scientists': [{{ ', '.join(univers_js['scientists']) }}],
+        let radios = document.querySelectorAll('input[type="checkbox"]');
+        var info = {'students': [{{ ', '.join(univers_js['students']) }}], 'scientists': [{{ ', '.join(univers_js['scientists']) }}],
                 'faculties': [{{ ', '.join(univers_js['faculties']) }}], 'rating': [{{ ', '.join(univers_js['rating']) }}], 'departments': [{{ ', '.join(univers_js['departments']) }}],
                 'univers': '{{ '|'.join(univers_js['univers']) }}'.split('|')};
-                if (info['univers'][0] == '') {
-                    return
-                }
+        
+        
+        if (info['univers'][0] == '') {
+            return
+        }
 
-                let d = document.getElementById('canvas_div').style.width='800px';
+        let d = document.getElementById('canvas_div').style='width: 300px; display: none;';
+        let el1 = document.getElementById('canvas_div');
+        let el2 = document.getElementById('myChart');
+        el1.removeChild(el2);
+        let el3 = document.createElement('canvas');
+        el3.id = 'myChart';
+        el1.appendChild(el3);
 
-                let el1 = document.getElementById('canvas_div');
-                let el2 = document.getElementById('myChart');
-                el1.removeChild(el2);
-                let el3 = document.createElement('canvas');
-                el3.id = 'myChart';
-                el1.appendChild(el3);
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: info['univers'],
+                datasets: [{
+                    data: info['students'],
+                    backgroundColor: ['#e91e63', '#00e676', '#ff5722', '#1e88e5', '#ffd600'],
+                    borderWidth: 1,
+                    borderColor: '#00'
+                }]
+            },
 
-                var ctx = document.getElementById('myChart').getContext('2d');
-                var myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: info['univers'],
-                        datasets: [{
-                            data: info[radio.value],
-                            backgroundColor: ['#e91e63', '#00e676', '#ff5722', '#1e88e5', '#ffd600'],
-                            borderWidth: 1,
-                            borderColor: '#00'
-                        }]
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
                     },
-
-                    options: {
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            title: {
-                                display: true,
-                                text: 'Рейтинг',
-                            }
-                        }
+                    title: {
+                        display: true,
+                        text: 'Кол-во студентов',
                     }
-                });
-            } else if (radio.checked) {
-                var info = {'students': [{{ ', '.join(univers_js['students']) }}], 'scientists': [{{ ', '.join(univers_js['scientists']) }}],
-                'faculties': [{{ ', '.join(univers_js['faculties']) }}], 'rating': [{{ ', '.join(univers_js['rating']) }}], 'departments': [{{ ', '.join(univers_js['departments']) }}],
-                'univers': '{{ '|'.join(univers_js['univers']) }}'.split('|')};
-                if (info['univers'][0] == '') {
-                    return
                 }
+            }
+        });
 
-                let d = document.getElementById('canvas_div').style.width='400px';
 
-                let el1 = document.getElementById('canvas_div');
-                let el2 = document.getElementById('myChart');
-                el1.removeChild(el2);
-                let el3 = document.createElement('canvas');
-                el3.id = 'myChart';
-                el1.appendChild(el3);
+        let d2 = document.getElementById('canvas_div2').style='width: 300px; display: none;';
 
-                var ctx = document.getElementById('myChart').getContext('2d');
-                var myChart = new Chart(ctx, {
-                    type: 'pie',
-                    data: {
-                        labels: info['univers'],
-                        datasets: [{
-                            data: info[radio.value],
-                            backgroundColor: ['#e91e63', '#00e676', '#ff5722', '#1e88e5', '#ffd600'],
-                            borderWidth: 1,
-                            borderColor: '#00'
-                        }]
+        let el12 = document.getElementById('canvas_div2');
+        let el22 = document.getElementById('myChart2');
+        el12.removeChild(el22);
+        let el32 = document.createElement('canvas');
+        el32.id = 'myChart2';
+        el12.appendChild(el32);
+
+        var ctx2 = document.getElementById('myChart2').getContext('2d');
+        var myChart2 = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: info['univers'],
+                datasets: [{
+                    data: info['scientists'],
+                    backgroundColor: ['#e91e63', '#00e676', '#ff5722', '#1e88e5', '#ffd600'],
+                    borderWidth: 1,
+                    borderColor: '#00'
+                }]
+            },
+
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
                     },
-
-                    options: {
-                        plugins: {
-                            legend: {
-                                display: true
-                            },
-                            title: {
-                                display: false,
-                                text: 'Рейтинг',
-                            }
-                        }
+                    title: {
+                        display: true,
+                        text: 'Кол-во учёных',
                     }
-                });
+                }
+            }
+        });
+
+
+        let d3 = document.getElementById('canvas_div3').style='width: 300px; display: none;';
+
+        let el13 = document.getElementById('canvas_div3');
+        let el23 = document.getElementById('myChart3');
+        el13.removeChild(el23);
+        let el33 = document.createElement('canvas');
+        el33.id = 'myChart3';
+        el13.appendChild(el33);
+
+        var ctx3 = document.getElementById('myChart3').getContext('2d');
+        var myChart3 = new Chart(ctx3, {
+            type: 'pie',
+            data: {
+                labels: info['univers'],
+                datasets: [{
+                    data: info['faculties'],
+                    backgroundColor: ['#e91e63', '#00e676', '#ff5722', '#1e88e5', '#ffd600'],
+                    borderWidth: 1,
+                    borderColor: '#00'
+                }]
+            },
+
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Кол-во факультетов',
+                    }
+                }
+            }
+        });
+
+
+        let d4 = document.getElementById('canvas_div4').style='width: 300px; display: none;';
+
+        let el14 = document.getElementById('canvas_div4');
+        let el24 = document.getElementById('myChart4');
+        el14.removeChild(el24);
+        let el34 = document.createElement('canvas');
+        el34.id = 'myChart4';
+        el14.appendChild(el34);
+
+        var ctx4 = document.getElementById('myChart4').getContext('2d');
+        var myChart4 = new Chart(ctx4, {
+            type: 'pie',
+            data: {
+                labels: info['univers'],
+                datasets: [{
+                    data: info['departments'],
+                    backgroundColor: ['#e91e63', '#00e676', '#ff5722', '#1e88e5', '#ffd600'],
+                    borderWidth: 1,
+                    borderColor: '#00'
+                }]
+            },
+
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Кол-во департаментов',
+                    }
+                }
+            }
+        });
+
+
+        let d5 = document.getElementById('canvas_div5').style='width: 300px; display: none;';
+
+        let el15 = document.getElementById('canvas_div5');
+        let el25 = document.getElementById('myChart5');
+        el15.removeChild(el25);
+        let el35 = document.createElement('canvas');
+        el35.id = 'myChart5';
+        el15.appendChild(el35);
+
+        var ctx5 = document.getElementById('myChart5').getContext('2d');
+        var myChart5 = new Chart(ctx5, {
+            type: 'bar',
+            data: {
+                labels: info['univers'],
+                datasets: [{
+                    data: info['departments'],
+                    backgroundColor: ['#e91e63', '#00e676', '#ff5722', '#1e88e5', '#ffd600'],
+                    borderWidth: 1,
+                    borderColor: '#00'
+                }]
+            },
+
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Рейтинг',
+                    }
+                }
+            }
+        });
+
+
+        for (box of radios) {
+            if (box.checked && box.value == 'students') {
+                let d = document.getElementById('canvas_div').style='width: 220px; display: block';
+            }
+
+            if (box.checked && box.value == 'scientists') {
+                let d2 = document.getElementById('canvas_div2').style='width: 220px; display: block';
+            }
+
+            if (box.checked && box.value == 'faculties') {
+                let d3 = document.getElementById('canvas_div3').style='width: 220px; display: block';
+            }
+
+            if (box.checked && box.value == 'departments') {
+                let d4 = document.getElementById('canvas_div4').style='width: 220px; display: block';
+            }
+
+            if (box.checked && box.value == 'rating') {
+                let d5 = document.getElementById('canvas_div5').style='width: 570px; display: block';
             }
         }
+        
     }
 </script>
 
@@ -103,34 +225,51 @@
     <canvas id="myChart"></canvas>
 </div>
 
+<div id="canvas_div2">
+    <canvas id="myChart2"></canvas>
+</div>
+
+<div id="canvas_div3">
+    <canvas id="myChart3"></canvas>
+</div>
+
+<div id="canvas_div4">
+    <canvas id="myChart4"></canvas>
+</div>
+
+<div id="canvas_div5">
+    <canvas id="myChart5"></canvas>
+</div>
+
+
 <div class="radios-btn">
-    <input type="radio" id="type-students" name="info-type" value="students">
-    <label for="type-students">К-сть студентів</label>
+    <input type="checkbox" id="type-students" name="info-type" value="students">
+    <label for="type-students">Кол-во студентов</label>
 
-    <input type="radio" id="type-scientists" name="info-type" value="scientists">
-    <label for="type-scientists">К-сть вчених</label>
+    <input type="checkbox" id="type-scientists" name="info-type" value="scientists">
+    <label for="type-scientists">Кол-во учёных</label>
 
-    <input type="radio" id="type-faculties" name="info-type" value="faculties">
-    <label for="type-faculties">К-сть факультетів</label>
+    <input type="checkbox" id="type-faculties" name="info-type" value="faculties">
+    <label for="type-faculties">Кол-во факультетов</label>
 
-    <input type="radio" id="type-departments" name="info-type" value="departments">
-    <label for="type-departments">К-сть кафедр</label>
+    <input type="checkbox" id="type-departments" name="info-type" value="departments">
+    <label for="type-departments">Кол-во департаментов</label>
 
-    <input type="radio" id="type-rating" name="info-type" value="rating">
+    <input type="checkbox" id="type-rating" name="info-type" value="rating">
     <label for="type-rating">Рейтинг</label>
 
-    <p><input type="button" value="Порівняти" onclick="output()"> (макс. 5){% if univers_compare %} - {% endif %}{% for i in univers_compare %}<a href="/university_info/{{ i[1] }}">{{ i[0] }}</a> <button onclick="location.href='/delete_compare/{{ i[1] }}'">Вилучити</button>{% if loop.index != univers_compare|length %}, {% endif %}{% endfor %}</p>
+    <p><input type="button" value="Сравнить" onclick="output()"> (макс. 5){% if univers_compare %} - {% endif %}{% for i in univers_compare %}<a href="/university_info/{{ i[1] }}">{{ i[0] }}</a> <button onclick="location.href='/delete_compare/{{ i[1] }}'">Удалить</button>{% if loop.index != univers_compare|length %}, {% endif %}{% endfor %}</p>
 </div>
 
 
 <table border="1" cellspacing=0>
     <tbody>
         <tr>
-            <th style="font-size: 16px;">Університети</th>
+            <th style="font-size: 16px;">Университеты</th>
         </tr>
         {% for i in univers %}
             <tr>
-                <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[1] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[1] }}'">Додати</button></td>
+                <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[1] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[1] }}'">Добавить</button></td>
             </tr>
         {% endfor %}
     </tbody>

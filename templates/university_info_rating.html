@@ -9,14 +9,14 @@
 <table border="1" cellspacing="0">
     <tbody>
         <tr>
-            <th>Критерій</th>
-            <th>Значенння</th>
+            <th>Критерий</th>
+            <th>Значение</th>
         </tr>
         {% for criter in criters_values %}
             <tr>
                 <td width=530 height=50>{{ criter[0] }}</td>
                 {% if criter[1] != 0 %}
-                    <td align="center" width=300>{{ criter[1] }}</td>
+                    <td align="center" width=300>{{ criter[1].value }}</td>
                 {% else %}
                     <td align="center" width=300>0</td>
                 {% endif %}

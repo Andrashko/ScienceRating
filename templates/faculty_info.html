@@ -4,9 +4,9 @@
 
 <h1>{{ faculty.faculty_name }}</h1>
 
-<button class="back-button" onclick="location.href='/university_info/{{ faculty.univer_id }}'">Університет</button>
+<button class="back-button" onclick="location.href='/university_info/{{ faculty.univer_id }}'">Университет</button>
 
-<h2>Кафедри</h2>
+<h2>Департаменты</h2>
 <ul type=none>
     {% for i in faculty.departments %}
         <li style="margin-bottom: 7px;"><a style="color: black; text-decoration: none;" href="/department_info/{{ i.id }}">{{ i.department_name }}</a></li>
