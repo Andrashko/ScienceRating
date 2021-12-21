@@ -11,6 +11,7 @@ class Ukraine_Universities(SqlAlchemyBase):
     univername = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     students_bak = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     students_mag = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
+    region = sqlalchemy.Column(sqlalchemy.String, nullable=False)
 
     faculties = orm.relationship('UkraineFaculties', backref='univer')
     scientists = orm.relationship('Ukraine_Scientists', backref='univer')
