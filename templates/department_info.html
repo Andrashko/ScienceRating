@@ -6,7 +6,7 @@
 
 <button class="back-button" onclick="location.href='/university_info/{{ univer_id }}'">Университет</button>
 <button class="faculty-button" onclick="location.href='/faculty_info/{{ depart.faculty_id }}'">Факультет</button>
-
+<img src="data:image/png;base64, {{keywords_cloud}}"  class="keywords_cloud" alt = "cloud"/> 
 <h2>Учёные</h2>
 <ul type=none>
     {% for i in depart.scientists %}

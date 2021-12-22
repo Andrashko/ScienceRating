@@ -6,6 +6,11 @@ from sqlalchemy import or_
 from dotenv import load_dotenv
 import threading
 
+# Для построения хмары слов
+from wordcloud import WordCloud
+import io
+import base64
+
 from data.Standart import db_session
 from mail_sender import send_mail
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
@@ -22,12 +27,13 @@ from data.database.ukraine_scientists import Ukraine_Scientists
 from data.database.criteria import Criterias
 from rating import calculate_university_rating
 
+
 db_session.global_init("db/database.db")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'rating_sk'
 BASE_URL="http://science-rating.co.ua" # необходимо для роботы редиректа на хостинге
-# BASE_URL="" # Для роботы на локахосте
+BASE_URL="" # Для роботы на локахосте
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -104,7 +110,7 @@ def universities_rating():
     universities = []
     mid = []
     map_uk = {
-        "ua-kc":-2000000
+        "ua-kc":-1000000
     }
     for university in db_sess.query(Ukraine_Universities).all():
         rating = calculate_university_rating(university) 
@@ -113,7 +119,7 @@ def universities_rating():
         else:
             map_uk[university.region] = rating
         if len(university.univername) > 65:
-            universities.append([university.univername[:65].strip() + '...', rating])
+            universities.append([university.univername[:65].strip() + '...', rating, university.id])
         else:
             universities.append([university.univername,rating, university.id])
         mid.append(rating)
@@ -346,7 +352,28 @@ def faculty_info(faculty_id):
 
     db_sess = db_session.create_session()
     faculty = db_sess.query(UkraineFaculties).get(faculty_id)
-    return render_template('faculty_info.html', faculty=faculty)
+    with open('db/scopus.json', encoding='utf-8') as file:
+        scop = json.load(file)
+    keywords_frequency = {"science":1}
+    for department in db_sess.query(UkraineDepartments).filter(UkraineDepartments.faculty_id == faculty_id).all():
+        for scientist in db_sess.query(Ukraine_Scientists).filter(Ukraine_Scientists.department_id==department.id).all():
+            for i in scop:
+                if i['name'] == scientist.name:
+                #Строим облако слов
+                    keywords = i.get("keywords")
+                    if keywords:
+                        count = 20
+                        for kw in keywords:
+                            if keywords_frequency.get(kw):
+                                keywords_frequency [kw] += count
+                            else: 
+                                keywords_frequency [kw] = count
+                            if count <= 10:
+                                count -=1
+                            else:
+                                count -=5
+    keywords_cloud = get_word_cloud(keywords_frequency)
+    return render_template('faculty_info.html', faculty=faculty, keywords_cloud=keywords_cloud)
 
 
 @app.route('/department_info/<int:depart_id>')
@@ -357,7 +384,28 @@ def department_info(depart_id):
     db_sess = db_session.create_session()
     depart = db_sess.query(UkraineDepartments).get(depart_id)
     univer_id = db_sess.query(UkraineFaculties).get(depart.faculty_id).univer_id
-    return render_template('department_info.html', depart=depart, univer_id=univer_id)
+    with open('db/scopus.json', encoding='utf-8') as file:
+        scop = json.load(file)
+    keywords_frequency = {"science":1}
+    for scientist in db_sess.query(Ukraine_Scientists).filter(Ukraine_Scientists.department_id==depart_id).all():
+        for i in scop:
+            if i['name'] == scientist.name:
+            #Строим облако слов
+                keywords = i.get("keywords")
+                if keywords:
+                    count = 20
+                    for kw in keywords:
+                        if keywords_frequency.get(kw):
+                            keywords_frequency [kw] += count
+                        else: 
+                            keywords_frequency [kw] = count
+                        if count <= 10:
+                            count -=1
+                        else:
+                            count -=5
+    keywords_cloud = get_word_cloud(keywords_frequency)
+
+    return render_template('department_info.html', depart=depart, univer_id=univer_id, keywords_cloud=keywords_cloud)
 
 
 @app.route('/university_info_rating/<int:university_id>')
@@ -518,6 +566,7 @@ def scientist_info(scientist_id):
     SIZE = 60
     with open('db/scopus.json', encoding='utf-8') as file:
         scop = json.load(file)
+    keywords_frequency = {"science":1}
     for i in scop:
         if i['name'] == scientist.name:
             for j in i['publications']:
@@ -527,11 +576,31 @@ def scientist_info(scientist_id):
 
                 scopus.append([artic_name, j['journal'], j['meta'], j['citations'],
                                [[l['name'], l['url']] for l in j['coauthors']]])
+            #Строим облако слов
+            keywords = i.get("keywords")
+            if keywords:
+                count = 20
+                for kw in keywords:
+                    keywords_frequency [kw] = count
+                    if count <= 10:
+                        count -=1
+                    else:
+                        count -=5
+    keywords_cloud = get_word_cloud(keywords_frequency)
 
     return render_template('scientist_info.html', scientist=info, google_articles=google_scholar,
                            publon_articles=publon, photo=photo, univer_id=scientist.univer_id,
-                           depart_id=scientist.department_id, scopus_articles=scopus, h_index=h_index)
+                           depart_id=scientist.department_id, scopus_articles=scopus, h_index=h_index,
+                           keywords_cloud = keywords_cloud)
 
+#строит облако слов по заданой частоте
+def get_word_cloud(freq):
+    pil_img = WordCloud(width=300, height=200, background_color="white", max_words=10).generate_from_frequencies(freq).to_image()
+    img = io.BytesIO()
+    pil_img.save(img, "PNG")
+    img.seek(0)
+    img_base64 = base64.b64encode(img.getvalue()).decode()
+    return img_base64
 
 if __name__ == '__main__':
     app.run()

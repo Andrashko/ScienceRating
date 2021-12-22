@@ -5,3 +5,4 @@ beautifulsoup4==4.10.0
 Werkzeug==2.0.2
 WTForms==3.0.0
 python-dotenv==0.19.2
+wordcloud==1.8.1

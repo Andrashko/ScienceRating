@@ -212,6 +212,7 @@
 
 <h1 class="about-title">Об учёном</h1>
 
+
 {% if scientist[1] or scientist[2] or scientist[3] %}
     <h2 class="urls-title">Ссылки</h2>
 {% endif %}
@@ -242,5 +243,8 @@
 {% if scientist[6] %}
     <h2 class="science">Наука</h2>
     <h3 class="science-value">{{ scientist[6] }}</h3>
+    <img src="data:image/png;base64, {{keywords_cloud}}"  class="keywords_cloud" alt = "{{ scientist[6] }}"/> 
 {% endif %}
+
+
 {% endblock %}

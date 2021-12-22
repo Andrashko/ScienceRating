@@ -155,6 +155,12 @@ footer {
     display: none;
 }
 
+.keywords_cloud{
+    position: absolute;
+    top: 700px;
+    right: 20px;
+}
+
 
 
 @media (max-height: 850.20px) {

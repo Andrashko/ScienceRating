@@ -102,3 +102,9 @@ footer {
         top: 220px;
     }
 }
+
+.keywords_cloud{
+    position: absolute;
+    top: 300px;
+    right: 20px;
+}
