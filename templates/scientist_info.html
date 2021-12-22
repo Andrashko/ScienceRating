@@ -1,7 +1,52 @@
 {% extends "base.html" %}
 
 {% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script>
 <script>
+    function show_h() {
+        var info = {{ h_index | tojson }};
+        if (info['years']) {
+            let d = document.getElementById('canvas_div');
+
+            let el1 = document.getElementById('canvas_div');
+            let el2 = document.getElementById('myChart');
+            el1.removeChild(el2);
+            let el3 = document.createElement('canvas');
+            el3.id = 'myChart';
+            el1.appendChild(el3);
+
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: info['years'],
+                    datasets: [{
+                        data: info['h'],
+                        backgroundColor: info['colors'],
+                        borderWidth: 1,
+                        borderColor: '#00'
+                    }]
+                },
+
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'h-индекс',
+                        }
+                    }
+                }
+            });
+        }
+    };
+    window.onload = function() {
+        show_h();
+    };
+
     function radio_check() {
         let show_article = document.querySelectorAll('input[type="radio"]');
 
@@ -69,6 +114,11 @@
         <li>{{ i }}</li>
     {% endfor %}
 </ul>
+
+
+<div id="canvas_div">
+    <canvas id="myChart"></canvas>
+</div>
 
 
 <div class="radios-btn">

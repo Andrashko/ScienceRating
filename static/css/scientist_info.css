@@ -2,6 +2,15 @@ a {
     color: black;
 }
 
+
+#canvas_div {
+    position: absolute;
+    top: 440px;
+    right: 20px;
+    width: 500px;
+}
+
+
 .profile-photo {
     position: absolute;
     top: 195px;
@@ -18,7 +27,8 @@ a {
 .radios-btn {
     position: absolute;
     top: 420px;
-    left: 400px;
+    left: 120px;
+    white-space: nowrap;
 }
 
 .univer-button {
@@ -108,7 +118,7 @@ a {
 .google-articles {
     position: absolute;
     top: 500px;
-    left: 300px;
+    left: 20px;
     font-size: smaller;
     white-space: nowrap;
 }
@@ -116,7 +126,7 @@ a {
 .publon-articles {
     position: absolute;
     top: 570px;
-    left: 300px;
+    left: 20px;
     font-size: smaller;
     white-space: nowrap;
 }
@@ -124,13 +134,13 @@ a {
 .publon-title {
     position: absolute;
     top: 530px;
-    left: 540px;
+    left: 260px;
 }
 
 .scopus-articles {
     position: absolute;
     top: 570px;
-    left: 300px;
+    left: 20px;
     font-size: smaller;
     white-space: nowrap;
 }
@@ -138,7 +148,7 @@ a {
 .scopus-title {
     position: absolute;
     top: 530px;
-    left: 540px;
+    left: 260px;
 }
 
 footer {
@@ -204,6 +214,10 @@ footer {
 
 
 @media (max-width: 1250px) {
+    #canvas_div {
+        left: 770px;
+    }
+
     .about-title {
         left: 750px;
         white-space: nowrap;
