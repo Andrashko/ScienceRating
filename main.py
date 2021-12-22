@@ -115,7 +115,7 @@ def universities_rating():
         if len(university.univername) > 65:
             universities.append([university.univername[:65].strip() + '...', rating])
         else:
-            universities.append([university.univername,rating])
+            universities.append([university.univername,rating, university.id])
         mid.append(rating)
     # for i in rating:
     #     university = db_sess.query(Ukraine_Universities).get(i.item_id)
