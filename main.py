@@ -5,11 +5,8 @@ from bs4 import BeautifulSoup as BS
 from sqlalchemy import or_
 from dotenv import load_dotenv
 import threading
-
-# Для построения хмары слов
-from wordcloud import WordCloud
-import io
-import base64
+from rating import calculate_university_rating
+from data_load import universities, map_uk
 
 from data.Standart import db_session
 from mail_sender import send_mail
@@ -25,15 +22,13 @@ from data.database.ukraine_faculties import UkraineFaculties
 from data.database.ukraine_departments import UkraineDepartments
 from data.database.ukraine_scientists import Ukraine_Scientists
 from data.database.criteria import Criterias
-from rating import calculate_university_rating
-
 
 db_session.global_init("db/database.db")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'rating_sk'
-BASE_URL="http://science-rating.co.ua" # необходимо для роботы редиректа на хостинге
-# BASE_URL="" # Для роботы на локахосте
+BASE_URL = "http://science-rating.co.ua"  # необходимо для роботы редиректа на хостинге
+BASE_URL="" # Для роботы на локахосте
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -49,7 +44,7 @@ def load_user(user_id):
 @login_required
 def logout():
     logout_user()
-    return redirect(BASE_URL+'/')
+    return redirect(BASE_URL + '/')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -60,8 +55,8 @@ def login():
         user = db_sess.query(User).filter(User.login == form.login.data).first()
         if user and user.check_password(form.password.data):
             login_user(user)
-            return redirect(BASE_URL+'/')
-        return render_template('login.html', msg='Неправильный логин или пароль', form=form)
+            return redirect(BASE_URL + '/')
+        return render_template('login.html', msg='Неправильний логін або пароль', form=form)
     return render_template('login.html', form=form)
 
 
@@ -70,17 +65,17 @@ def register():
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
-            return render_template('register.html', form=form, msg='Пароли не совпадают')
+            return render_template('register.html', form=form, msg='Паролі не співпадають')
         if form.login.data.isdigit():
-            return render_template('register.html', form=form, msg='Логин не может состоять только из цифр')
+            return render_template('register.html', form=form, msg='Логін не може складатися лише з цифр')
         for i in form.login.data:
             if (not i.isdigit()) and (not i.isalpha()):
-                return render_template('register.html', form=form, msg='В логине могут быть только цифры и буквы')
+                return render_template('register.html', form=form, msg='У логіні можуть бути лише цифри та літери')
         db_sess = db_session.create_session()
         if db_sess.query(User).filter(User.user_email == form.email.data).first():
-            return render_template('register.html', form=form, msg='Пользователь с этой почтой уже существует')
+            return render_template('register.html', form=form, msg='Користувач із цією поштою вже існує')
         if db_sess.query(User).filter(User.login == form.login.data).first():
-            return render_template('register.html', form=form, msg='Такой пользователь уже есть')
+            return render_template('register.html', form=form, msg='Такий користувач уже є')
         user = User(
             login=form.login.data,
             user_email=form.email.data
@@ -88,70 +83,36 @@ def register():
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
-        threading.Thread(target=send_mail, args=[form.email.data, 'Регистрация прошла успешно',
-                                                 f'Ваш логин: {form.login.data}']).start()
-        return redirect(BASE_URL+'/login')
+        threading.Thread(target=send_mail, args=[form.email.data, 'Реєстрація пройшла успішно',
+                                                 f'Ваш логін: {form.login.data}']).start()
+        return redirect(BASE_URL + '/login')
     return render_template('register.html', form=form)
 
 
 @app.route('/')
 def universities_rating():
+    univers = []
+    for i in universities[:10]:
+        if len(i[0]) > 65:
+            univers.append([i[0][:65].strip() + '...', i[1], i[2]])
+        else:
+            univers.append([i[0], i[1], i[2]])
+    return render_template('universities_rating.html', color_page_one='#F63E3E', univers_rating=univers,
+                           map_uk=map_uk)
+
+
+@app.route('/scientists')
+def all_scientists():
     db_sess = db_session.create_session()
 
-    # scientists = []
-    # for i in range(1, 33):
-    #     get = db_sess.query(Ukraine_Scientists).get(i)
-
-    #     if get.google_scholar != '-' and get.publon != '-' and get.scopus != '-':
-    #         scientists.append([get.name.split(), i])
-
-    # rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'university').filter(
-    #     ItemsAndCriteria.criteria_id == 7)
-    universities = []
-    mid = []
-    map_uk = {
-        "ua-kc":-1000000
-    }
-    for university in db_sess.query(Ukraine_Universities).all():
-        rating = calculate_university_rating(university) 
-        if university.region in map_uk.keys():
-            map_uk[university.region] += rating
-        else:
-            map_uk[university.region] = rating
-        if len(university.univername) > 65:
-            universities.append([university.univername[:65].strip() + '...', rating, university.id])
-        else:
-            universities.append([university.univername,rating, university.id])
-        mid.append(rating)
-    # for i in rating:
-    #     university = db_sess.query(Ukraine_Universities).get(i.item_id)
-    #     if university.region in map_uk.keys():
-    #         map_uk[university.region] += int(int(i.value) * 100 / len(list(university.scientists)))
-    #     else:
-    #         map_uk[university.region] = int(int(i.value) * 100 / len(list(university.scientists)))
-
-    #     try:
-    #         if len(university.univername) > 65:
-    #             universities.append([university.univername[:65].strip() + '...',
-    #                                  int(i.value) * 100 / len(list(university.scientists)), i.item_id])
-    #         else:
-    #             universities.append([university.univername,
-    #                                  int(i.value) * 100 / len(list(university.scientists)), i.item_id])
-
-    #         mid.append(int(i.value) * 100 / len(list(university.scientists)))
-    #     except ZeroDivisionError:
-    #         pass
-    universities = sorted(universities, key=lambda x: x[1], reverse=True)[:10]
-    mid = '%.2f' % (sum(mid) / len(mid))
-
-    return render_template('universities_rating.html', color_page_one='#F63E3E', univers_rating=universities,
-                          map_uk=map_uk, mid=mid)
+    scientists = list(sorted([[i.name, i.id] for i in db_sess.query(Ukraine_Scientists)], key=lambda x: x[0]))[:100]
+    return render_template('scientists.html', scientists=scientists, color_page_three='#F63E3E')
 
 
 @app.route('/add_compare/<int:univer_id>')
 def add_compare(univer_id):
     if not current_user.is_authenticated:
-        return redirect(BASE_URL+'/login')
+        return redirect(BASE_URL + '/login')
 
     if 'univers' not in session:
         session['univers'] = [univer_id]
@@ -161,13 +122,13 @@ def add_compare(univer_id):
             univers.append(univer_id)
             session['univers'] = univers
 
-    return redirect(BASE_URL+'/universities')
+    return redirect(BASE_URL + '/universities')
 
 
 @app.route('/delete_compare/<int:univer_id>')
 def delete_compare(univer_id):
     if not current_user.is_authenticated:
-        return redirect(BASE_URL+'/login')
+        return redirect(BASE_URL + '/login')
 
     if 'univers' in session:
         if session['univers']:
@@ -175,13 +136,13 @@ def delete_compare(univer_id):
             univers.pop(univers.index(univer_id))
             session['univers'] = univers
 
-    return redirect(BASE_URL+'/universities')
+    return redirect(BASE_URL + '/universities')
 
 
 @app.route('/universities')
 def all_universities():
     if not current_user.is_authenticated:
-        return redirect(BASE_URL+'/login')
+        return redirect(BASE_URL + '/login')
 
     db_sess = db_session.create_session()
 
@@ -197,8 +158,8 @@ def all_universities():
     for i in univers_compare:
         univer = db_sess.query(Ukraine_Universities).get(i[1])
 
-        if len(univer.univername) > 35:
-            univers_js['univers'].append(univer.univername[:35].strip() + '...')
+        if len(univer.univername) > 32:
+            univers_js['univers'].append(univer.univername[:32].strip() + '...')
         else:
             univers_js['univers'].append(univer.univername)
         if univer.students_bak and univer.students_mag:
@@ -230,7 +191,7 @@ def all_universities():
 
         # rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'university').filter(
         #     ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.item_id == i[1]).first()
-        rating = calculate_university_rating(univer)
+        rating = universities[[j[0] for j in universities].index(i[0])][1]
         try:
             univers_js['rating'].append(f'{rating}')
         except ZeroDivisionError:
@@ -242,16 +203,18 @@ def all_universities():
         if len(univers_compare[i][0]) > 50:
             univers_compare[i][0] = univers_compare[i][0][:50].strip() + '...'
 
-    universities = sorted([[i.univername, i.id] for i in db_sess.query(Ukraine_Universities)], key=lambda x: x[0])
+    universities_rev = list(reversed(universities))
+    universities_name = sorted([[i.univername, i.id] for i in db_sess.query(Ukraine_Universities)], key=lambda x: x[0])
 
-    return render_template('universities.html', color_page_one='#F63E3E', univers=universities,
+    return render_template('universities.html', color_page_one='#F63E3E',
+                           univers=universities, univers_rev=universities_rev, univers_name=universities_name,
                            univers_compare=univers_compare, univers_js=univers_js)
 
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if not current_user.is_authenticated:
-        return redirect(BASE_URL+'/login')
+        return redirect(BASE_URL + '/login')
 
     db_sess = db_session.create_session()
     inp = ''
@@ -277,7 +240,7 @@ def search():
 @app.route('/university_info/<int:university_id>')
 def university_info(university_id):
     if not current_user.is_authenticated:
-        return redirect(BASE_URL+'/login')
+        return redirect(BASE_URL + '/login')
 
     db_sess = db_session.create_session()
     university = db_sess.query(Ukraine_Universities).get(university_id)
@@ -290,26 +253,34 @@ def university_info(university_id):
         ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.univer_id == university_id)
 
     faculties = []
+    faculties_rev = []
+    faculties_name = []
     if faculty_rating:
         for i in faculty_rating:
             if (' - без факультету' not in db_sess.query(UkraineFaculties).get(i.item_id).faculty_name) and \
                     (not db_sess.query(UkraineFaculties).get(i.item_id).faculty_name.isdigit()):
                 try:
                     faculties.append([db_sess.query(UkraineFaculties).get(i.item_id).faculty_name, i.item_id,
-                                      int(i.value) * 100 / scientists])
+                                      int(int(i.value) * 100 / scientists)])
                 except ZeroDivisionError:
-                    faculties.append([' ', -1])
+                    faculties.append([' ', -1, 0])
         faculties = sorted(faculties, key=lambda x: x[2], reverse=True)
+        faculties_rev = faculties[::-1]
+        faculties_name = sorted(faculties, key=lambda x: x[0])
 
     departments = []
+    departments_rev = []
+    departments_name = []
     if department_rating:
         for i in department_rating:
             try:
                 departments.append([db_sess.query(UkraineDepartments).get(i.item_id).department_name, i.item_id,
-                                    int(i.value) * 100 / scientists])
+                                    int(int(i.value) * 100 / scientists)])
             except ZeroDivisionError:
-                departments.append([' ', -1])
+                departments.append([' ', -1, 0])
         departments = sorted(departments, key=lambda x: x[2], reverse=True)
+        departments_rev = departments[::-1]
+        departments_name = sorted(departments, key=lambda x: x[0])
 
     facult_depart = []
     facult_empty = True
@@ -320,25 +291,63 @@ def university_info(university_id):
             break
 
         try:
-            facult_depart.append([faculties[i][0], faculties[i][1]])
+            facult_depart.append([faculties[i][0], faculties[i][1], faculties[i][2]])
             facult_empty = False
         except IndexError:
-            facult_depart.append(['', -1])
+            facult_depart.append(['', -1, 0])
 
         try:
-            facult_depart[i].append([departments[i][0], departments[i][1]])
+            facult_depart[i].append([departments[i][0], departments[i][1], departments[i][2]])
             depart_empty = False
         except IndexError:
-            facult_depart[i].append(' ')
+            facult_depart[i].append([' ', -1, 0])
 
-    return render_template('university_info.html', facult_depart=facult_depart, univer=university,
-                           facult_empty=facult_empty, depart_empty=depart_empty)
+    facult_depart_rev = []
+    for i in range(len(departments)):
+        if not departments and not faculties:
+            facult_depart_rev = []
+            break
+
+        try:
+            facult_depart_rev.append([faculties_rev[i][0], faculties_rev[i][1], faculties_rev[i][2]])
+            facult_empty = False
+        except IndexError:
+            facult_depart_rev.append(['', -1, 0])
+
+        try:
+            facult_depart_rev[i].append([departments_rev[i][0], departments_rev[i][1], departments_rev[i][2]])
+            depart_empty = False
+        except IndexError:
+            facult_depart_rev[i].append([' ', -1, 0])
+
+    facult_depart_name = []
+    for i in range(len(departments)):
+        if not departments and not faculties:
+            facult_depart_name = []
+            break
+
+        try:
+            facult_depart_name.append([faculties_name[i][0], faculties_name[i][1]])
+            facult_empty = False
+        except IndexError:
+            facult_depart_name.append(['', -1])
+
+        try:
+            facult_depart_name[i].append([departments_name[i][0], departments_name[i][1]])
+            depart_empty = False
+        except IndexError:
+            facult_depart_name[i].append(' ')
+
+    return render_template('university_info.html',
+                           facult_depart=facult_depart, facult_depart_rev=facult_depart_rev,
+                           facult_depart_name=facult_depart_name, univer=university, facult_empty=facult_empty,
+                           depart_empty=depart_empty)
 
 
 @app.route('/university_projects/<int:univer_id>')
 def university_projects(univer_id):
     if not current_user.is_authenticated:
-        return redirect(BASE_URL+'/login')
+        return redirect(BASE_URL + '/login')
 
     db_sess = db_session.create_session()
     univer = db_sess.query(Ukraine_Universities).get(univer_id)
@@ -348,70 +357,48 @@ def university_projects(univer_id):
 @app.route('/faculty_info/<int:faculty_id>')
 def faculty_info(faculty_id):
     if not current_user.is_authenticated:
-        return redirect(BASE_URL+'/login')
+        return redirect(BASE_URL + '/login')
 
     db_sess = db_session.create_session()
     faculty = db_sess.query(UkraineFaculties).get(faculty_id)
-    with open('db/scopus.json', encoding='utf-8') as file:
-        scop = json.load(file)
-    keywords_frequency = {"science":1}
-    for department in db_sess.query(UkraineDepartments).filter(UkraineDepartments.faculty_id == faculty_id).all():
-        for scientist in db_sess.query(Ukraine_Scientists).filter(Ukraine_Scientists.department_id==department.id).all():
-            for i in scop:
-                if i['name'] == scientist.name:
-                #Строим облако слов
-                    keywords = i.get("keywords")
-                    if keywords:
-                        count = 20
-                        for kw in keywords:
-                            if keywords_frequency.get(kw):
-                                keywords_frequency [kw] += count
-                            else: 
-                                keywords_frequency [kw] = count
-                            if count <= 10:
-                                count -=1
-                            else:
-                                count -=5
-    keywords_cloud = get_word_cloud(keywords_frequency)
-    return render_template('faculty_info.html', faculty=faculty, keywords_cloud=keywords_cloud)
+    scientists = len(db_sess.query(Ukraine_Universities).get(faculty.univer_id).scientists)
+
+    department_rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'department').filter(
+        ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.univer_id == faculty.univer_id)
+
+    departments = []
+    departments_rev = []
+    departments_name = []
+    if department_rating:
+        for i in department_rating:
+            try:
+                departments.append([db_sess.query(UkraineDepartments).get(i.item_id).department_name, i.item_id,
+                                    int(int(i.value) * 100 / scientists)])
+            except ZeroDivisionError:
+                departments.append([' ', -1])
+        departments = sorted(departments, key=lambda x: x[2], reverse=True)
+        departments_rev = list(reversed(departments))
+        departments_name = sorted(departments, key=lambda x: x[0])
+
+    return render_template('faculty_info.html', departments=departments, departments_rev=departments_rev,
+                           departments_name=departments_name, faculty=faculty)
 
 
 @app.route('/department_info/<int:depart_id>')
 def department_info(depart_id):
     if not current_user.is_authenticated:
-        return redirect(BASE_URL+'/login')
+        return redirect(BASE_URL + '/login')
 
     db_sess = db_session.create_session()
     depart = db_sess.query(UkraineDepartments).get(depart_id)
     univer_id = db_sess.query(UkraineFaculties).get(depart.faculty_id).univer_id
-    with open('db/scopus.json', encoding='utf-8') as file:
-        scop = json.load(file)
-    keywords_frequency = {"science":1}
-    for scientist in db_sess.query(Ukraine_Scientists).filter(Ukraine_Scientists.department_id==depart_id).all():
-        for i in scop:
-            if i['name'] == scientist.name:
-            #Строим облако слов
-                keywords = i.get("keywords")
-                if keywords:
-                    count = 20
-                    for kw in keywords:
-                        if keywords_frequency.get(kw):
-                            keywords_frequency [kw] += count
-                        else: 
-                            keywords_frequency [kw] = count
-                        if count <= 10:
-                            count -=1
-                        else:
-                            count -=5
-    keywords_cloud = get_word_cloud(keywords_frequency)
-
-    return render_template('department_info.html', depart=depart, univer_id=univer_id, keywords_cloud=keywords_cloud)
+    return render_template('department_info.html', depart=depart, univer_id=univer_id)
 
 
 @app.route('/university_info_rating/<int:university_id>')
 def university_info_rating(university_id):
     if not current_user.is_authenticated:
-        return redirect(BASE_URL+'/login')
+        return redirect(BASE_URL + '/login')
 
     db_sess = db_session.create_session()
 
@@ -429,8 +416,8 @@ def university_info_rating(university_id):
         criteria = db_sess.query(Criterias).get(i)
         value = values.filter(ItemsAndCriteria.criteria_id == i).first()
         if criteria and value:
-           criters_values.append([criteria.name, value]) 
-    # index = 0
+            criters_values.append([criteria.name, value])
+            # index = 0
     # for i in range(8, 13):
     #     criters_values.append([criterias[index].name, values.filter(ItemsAndCriteria.criteria_id == i).first()])
     #     index += 1
@@ -447,7 +434,7 @@ def university_info_rating(university_id):
 @app.route('/scientist_info/<int:scientist_id>')
 def scientist_info(scientist_id):
     if not current_user.is_authenticated:
-        return redirect(BASE_URL+'/login')
+        return redirect(BASE_URL + '/login')
 
     db_sess = db_session.create_session()
 
@@ -484,14 +471,18 @@ def scientist_info(scientist_id):
 
     SIZE = 60
     google_scholar = []
-    h_index = {}
+    graph = False
+    stat_info = []
     if scientist.google_scholar and (scientist.google_scholar != '-'):
         res = requests.get(scientist.google_scholar)
         html = BS(res.content, 'html.parser')
 
-        h_index = {'years': [i.text for i in html.find_all('span', class_='gsc_g_t')],
-                   'h': [i.text for i in html.find_all('span', class_='gsc_g_al')],
-                   'colors': ['#F63E3E' for i in range(len(html.find_all('span', class_='gsc_g_t')))]}
+        graph = {'years': [i.text for i in html.find_all('span', class_='gsc_g_t')],
+                 'gr': [i.text for i in html.find_all('span', class_='gsc_g_al')],
+                 'colors': ['#F63E3E' for i in range(len(html.find_all('span', class_='gsc_g_t')))]}
+        stat_info = [f"Статистика цитування: {html.find_all('td', class_='gsc_rsb_std')[0].text}",
+                     f"h-індекс: {html.find_all('td', class_='gsc_rsb_std')[2].text}",
+                     f"i10-індекс: {html.find_all('td', class_='gsc_rsb_std')[4].text}"]
 
         for i in html.find_all('tr', class_='gsc_a_tr'):
             try:
@@ -566,7 +557,6 @@ def scientist_info(scientist_id):
     SIZE = 60
     with open('db/scopus.json', encoding='utf-8') as file:
         scop = json.load(file)
-    keywords_frequency = {"science":1}
     for i in scop:
         if i['name'] == scientist.name:
             for j in i['publications']:
@@ -576,31 +566,11 @@ def scientist_info(scientist_id):
 
                 scopus.append([artic_name, j['journal'], j['meta'], j['citations'],
                                [[l['name'], l['url']] for l in j['coauthors']]])
-            #Строим облако слов
-            keywords = i.get("keywords")
-            if keywords:
-                count = 20
-                for kw in keywords:
-                    keywords_frequency [kw] = count
-                    if count <= 10:
-                        count -=1
-                    else:
-                        count -=5
-    keywords_cloud = get_word_cloud(keywords_frequency)
 
     return render_template('scientist_info.html', scientist=info, google_articles=google_scholar,
                            publon_articles=publon, photo=photo, univer_id=scientist.univer_id,
-                           depart_id=scientist.department_id, scopus_articles=scopus, h_index=h_index,
-                           keywords_cloud = keywords_cloud)
+                           depart_id=scientist.department_id, scopus_articles=scopus, graph=graph, stat_info=stat_info)
 
-#строит облако слов по заданой частоте
-def get_word_cloud(freq):
-    pil_img = WordCloud(width=300, height=200, background_color="white", max_words=10).generate_from_frequencies(freq).to_image()
-    img = io.BytesIO()
-    pil_img.save(img, "PNG")
-    img.seek(0)
-    img_base64 = base64.b64encode(img.getvalue()).decode()
-    return img_base64
 
 if __name__ == '__main__':
     app.run()

@@ -4,8 +4,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script>
 <script>
-    function show_h() {
-        var info = {{ h_index | tojson }};
+    function show_cit() {
+        var info = {{ graph | tojson }};
         if (info['years']) {
             let d = document.getElementById('canvas_div');
 
@@ -22,7 +22,7 @@
                 data: {
                     labels: info['years'],
                     datasets: [{
-                        data: info['h'],
+                        data: info['gr'],
                         backgroundColor: info['colors'],
                         borderWidth: 1,
                         borderColor: '#00'
@@ -36,7 +36,7 @@
                         },
                         title: {
                             display: true,
-                            text: 'h-индекс',
+                            text: 'Посилань за рік',
                         }
                     }
                 }
@@ -44,7 +44,7 @@
         }
     };
     window.onload = function() {
-        show_h();
+        show_cit();
     };
 
     function radio_check() {
@@ -106,7 +106,7 @@
 {% if photo %}
     <img class="profile-photo" src="{{ scientist[7] }}" alt="profile">
 {% else %}
-    <h3 class="profile-photo">Нет фото</h3>
+    <h3 class="profile-photo">Немає фото</h3>
 {% endif %}
 
 <ul class="name" type=none>
@@ -121,12 +121,19 @@
 </div>
 
 
+<div id='stat-info'>
+    {% for i in stat_info %}
+        <h3>{{ i }}</h3>
+    {% endfor %}
+</div>
+
+
 <div class="radios-btn">
     {% if google_articles or publon_articles or scopus_articles %}
-    <p>Статьи</p>
+    <p>Статті</p>
     {% endif %}
     {% if google_articles %}
-        <input onclick="radio_check()" type="radio" id="google-article" name="article-to-show" value="google">
+        <input onclick="radio_check()" type="radio" id="google-article" name="article-to-show" value="google" checked>
         <label for="google-article">Google Scholar</label>
     {% endif %}
 
@@ -143,13 +150,13 @@
 
 
 {% if univer_id %}
-    <button class="univer-button" onclick="location.href='/university_info/{{ univer_id }}'">Университет</button>
+    <button class="univer-button" onclick="location.href='/university_info/{{ univer_id }}'">Університет</button>
 {% endif %}
 {% if depart_id %}
     <button class="depart-button" onclick="location.href='/department_info/{{ depart_id }}'">Департамент</button>
 {% endif %}
 
-<div id="google" style="display: none;">
+<div id="google" style="display: block;">
     {% if google_articles %}
         <table class="google-articles">
             <tbody>
@@ -157,9 +164,9 @@
                     <th colspan="3" height=80px style="font-size: large;">Google Scholar</th>
                 </tr>
                 <tr>
-                    <th>Название</th>
-                    <th>Процитировано</th>
-                    <th>Год</th>
+                    <th>Назва</th>
+                    <th>Процитовано</th>
+                    <th>Рік</th>
                 </tr>
                 {% for article in google_articles %}
                     <tr>
@@ -185,13 +192,13 @@
 
         <ul class="publon-articles" type=none>
             {% for article in publon_articles %}
-                <li><a href="{{ article[0] }}">{{ article[1] }}</a><br>Опубликовано: {{ article[2] }} в <a href="{{ article[3] }}">{{ article[4] }}</a></li>
+                <li><a href="{{ article[0] }}">{{ article[1] }}</a><br>Опубліковано: {{ article[2] }} в <a href="{{ article[3] }}">{{ article[4] }}</a></li>
                 <br>
             {% endfor %}
         </ul>
     {% elif publon_articles == "no access" %}
         <div class="publon-title">Publons</div>
-        <h3 style="position: absolute; top: 485px; left: 900px; font-size: medium;">Не доступен</h3>
+        <h3 style="position: absolute; top: 485px; left: 900px; font-size: medium;">Недоступний</h3>
     {% endif %}
 </div>
 
@@ -202,7 +209,7 @@
 
         <ul class="scopus-articles" type=none>
             {% for artic in scopus_articles %}
-                <li>{{ artic[0] }}<br><br>Опубликовано в {{ artic[1] }}<br>{{ artic[2] }}<br>Цитировано: {{ artic[3] }}<br>Соавторы: {% for j in artic[4] %}<a href="{{ j[1] }}">{{ j[0] }}</a>{% if loop.index != artic[4]|length %}, {% endif %}{% endfor %}</li>
+                <li>{{ artic[0] }}<br><br>Опубліковано в {{ artic[1] }}<br>{{ artic[2] }}<br>Цитовано: {{ artic[3] }}<br>Співавтори: {% for j in artic[4] %}<a href="{{ j[1] }}">{{ j[0] }}</a>{% if loop.index != artic[4]|length %}, {% endif %}{% endfor %}</li>
                 <br>
             {% endfor %}
         </ul>
@@ -210,11 +217,10 @@
 </div>
 
 
-<h1 class="about-title">Об учёном</h1>
-
+<h1 class="about-title">Про вченого</h1>
 
 {% if scientist[1] or scientist[2] or scientist[3] %}
-    <h2 class="urls-title">Ссылки</h2>
+    <h2 class="urls-title">Посилання</h2>
 {% endif %}
 <ul class="urls-list" type=none>
     {% if scientist[1] %}
@@ -231,20 +237,17 @@
 </ul>
 
 {% if univer_id %}
-<h2 class="univer">Университет</h2>
+<h2 class="univer">Університет</h2>
 <h3 class="univer-value">{{ scientist[4] }}</h3>
 {% endif %}
 
 {% if scientist[5] %}
-    <h2 class="degree">Степень</h2>
+    <h2 class="degree">Ступінь</h2>
     <h3 class="degree-value">{{ scientist[5] }}</h3>
 {% endif %}
 
 {% if scientist[6] %}
     <h2 class="science">Наука</h2>
     <h3 class="science-value">{{ scientist[6] }}</h3>
-    <img src="data:image/png;base64, {{keywords_cloud}}"  class="keywords_cloud" alt = "{{ scientist[6] }}"/> 
 {% endif %}
-
-
 {% endblock %}

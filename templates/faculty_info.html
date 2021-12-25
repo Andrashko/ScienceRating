@@ -1,17 +1,101 @@
 {% extends "base.html" %}
 {% block content %}
+<script>
+    function radio_check() {
+        let show_items = document.querySelectorAll('input[type="radio"]');
+
+        for (radio of show_items) {
+            if (radio.checked && radio.value == 'normal') {
+                let art = document.getElementById('normal');
+                if (art) {
+                    art.style.display='block';
+                }
+
+                let art2 = document.getElementById('rev');
+                if (art2) {
+                    art2.style.display='none';
+                }
+                
+                let art3 = document.getElementById('name');
+                if (art3) {
+                    art3.style.display='none';
+                }
+            } else if (radio.checked && radio.value == 'rev') {
+                let art = document.getElementById('rev');
+                if (art) {
+                    art.style.display='';
+                }
+
+                let art2 = document.getElementById('name');
+                if (art2) {
+                    art2.style.display='none';
+                }
+
+                let art3 = document.getElementById('normal');
+                if (art3) {
+                    art3.style.display='none';
+                }
+            } else if (radio.checked && radio.value == 'name') {
+                let art = document.getElementById('name');
+                if (art) {
+                    art.style.display='';
+                }
+
+                let art2 = document.getElementById('normal');
+                if (art2) {
+                    art2.style.display='none';
+                }
+
+                let art3 = document.getElementById('rev');
+                if (art3) {
+                    art3.style.display='none';
+                }
+            }
+        }
+    }
+</script>
+
 <link rel="stylesheet" href="/static/css/faculty_info.css">
 
 <h1>{{ faculty.faculty_name }}</h1>
 
-<button class="back-button" onclick="location.href='/university_info/{{ faculty.univer_id }}'">Университет</button>
+<button class="back-button" onclick="location.href='/university_info/{{ faculty.univer_id }}'">Університет</button>
 
-<h2>Департаменты</h2>
-<ul type=none>
-    {% for i in faculty.departments %}
-        <li style="margin-bottom: 7px;"><a style="color: black; text-decoration: none;" href="/department_info/{{ i.id }}">{{ i.department_name }}</a></li>
-    {% endfor %}
-</ul>
+<div id="radios-btn">
+    Сортування: 
+    <input onclick="radio_check()" type="radio" id="normal-rad" name="fd-show" value="normal" checked>
+    <label for="normal">За рейтингом (Вис. - Низь.)</label>
 
-<img src="data:image/png;base64, {{keywords_cloud}}"  class="keywords_cloud" alt = "cloud"/> 
+    <input onclick="radio_check()" type="radio" id="rev-rad" name="fd-show" value="rev">
+    <label for="rev">За рейтингом (Низь. - Вис.)</label>
+
+    <input onclick="radio_check()" type="radio" id="name-rad" name="fd-show" value="name">
+    <label for="name">За назвою</label>
+</div>
+
+<h2>Департаменти</h2>
+
+<div id="normal" style="display: block;">
+    <ul type=none>
+        {% for i in departments %}
+            <li style="margin-bottom: 7px;"><a style="color: black; text-decoration: none;" href="/department_info/{{ i[1] }}">{{ i[0] }} - Рейтинг: {{ i[2] }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div id="rev" style="display: none;">
+    <ul type=none>
+        {% for i in departments_rev %}
+            <li style="margin-bottom: 7px;"><a style="color: black; text-decoration: none;" href="/department_info/{{ i[1] }}">{{ i[0] }} - Рейтинг: {{ i[2] }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div id="name" style="display: none;">
+    <ul type=none>
+        {% for i in departments_name %}
+            <li style="margin-bottom: 7px;"><a style="color: black; text-decoration: none;" href="/department_info/{{ i[1] }}">{{ i[0] }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}

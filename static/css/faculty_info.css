@@ -1,7 +1,14 @@
 ul {
     position: absolute;
-    top: 290px;
+    top: 320px;
     left: 20px;
+    white-space: nowrap;
+}
+
+#radios-btn {
+    position: absolute;
+    top: 270px;
+    left: 50px;
     white-space: nowrap;
 }
 
@@ -15,7 +22,7 @@ h1 {
 
 h2 {
     position: absolute;
-    top: 250px;
+    top: 280px;
     left: 20px;
 }
 
@@ -39,8 +46,12 @@ footer {
 }
 
 @media (max-width: 1510px) {
+    #radios-btn {
+        top: 235px;
+    }
+
     ul {
-        top: 270px;
+        top: 300px;
     }
 
     h1 {
@@ -48,7 +59,7 @@ footer {
     }
 
     h2 {
-        top: 220px;
+        top: 250px;
     }
 
     .back-button {
@@ -59,6 +70,10 @@ footer {
 
 
 @media (max-height: 850px) {
+    #radios-btn {
+        top: 180px;
+    }
+
     h1 {
         top: 95px;
         font-size: 20px;
@@ -70,16 +85,10 @@ footer {
     }
 
     h2 {
-        top: 170px;
+        top: 200px;
     }
 
     ul {
-        top: 220px;
+        top: 250px;
     }
-}
-
-.keywords_cloud{
-    position: absolute;
-    top: 300px;
-    right: 20px;
 }

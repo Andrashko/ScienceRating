@@ -11,6 +11,13 @@ a {
 }
 
 
+#stat-info {
+    position: absolute;
+    top: 710px;
+    right: 100px;
+}
+
+
 .profile-photo {
     position: absolute;
     top: 195px;
@@ -155,12 +162,6 @@ footer {
     display: none;
 }
 
-.keywords_cloud{
-    position: absolute;
-    top: 700px;
-    right: 20px;
-}
-
 
 
 @media (max-height: 850.20px) {
@@ -220,6 +221,11 @@ footer {
 
 
 @media (max-width: 1250px) {
+    #stat-info {
+        left: 834px;
+        white-space: nowrap;
+    }
+
     #canvas_div {
         left: 770px;
     }

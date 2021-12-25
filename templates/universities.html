@@ -16,7 +16,7 @@
             return
         }
 
-        let d = document.getElementById('canvas_div').style='width: 300px; display: none;';
+        let d = document.getElementById('canvas_div').style='width: 400px; display: none;';
         let el1 = document.getElementById('canvas_div');
         let el2 = document.getElementById('myChart');
         el1.removeChild(el2);
@@ -51,7 +51,7 @@
         });
 
 
-        let d2 = document.getElementById('canvas_div2').style='width: 300px; display: none;';
+        let d2 = document.getElementById('canvas_div2').style='width: 400px; display: none;';
 
         let el12 = document.getElementById('canvas_div2');
         let el22 = document.getElementById('myChart2');
@@ -87,7 +87,7 @@
         });
 
 
-        let d3 = document.getElementById('canvas_div3').style='width: 300px; display: none;';
+        let d3 = document.getElementById('canvas_div3').style='width: 400px; display: none;';
 
         let el13 = document.getElementById('canvas_div3');
         let el23 = document.getElementById('myChart3');
@@ -123,7 +123,7 @@
         });
 
 
-        let d4 = document.getElementById('canvas_div4').style='width: 300px; display: none;';
+        let d4 = document.getElementById('canvas_div4').style='width: 400px; display: none;';
 
         let el14 = document.getElementById('canvas_div4');
         let el24 = document.getElementById('myChart4');
@@ -174,7 +174,7 @@
             data: {
                 labels: info['univers'],
                 datasets: [{
-                    data: info['departments'],
+                    data: info['rating'],
                     backgroundColor: ['#e91e63', '#00e676', '#ff5722', '#1e88e5', '#ffd600'],
                     borderWidth: 1,
                     borderColor: '#00'
@@ -197,26 +197,79 @@
 
         for (box of radios) {
             if (box.checked && box.value == 'students') {
-                let d = document.getElementById('canvas_div').style='width: 220px; display: block';
+                let d = document.getElementById('canvas_div').style='width: 270px; display: block';
             }
 
             if (box.checked && box.value == 'scientists') {
-                let d2 = document.getElementById('canvas_div2').style='width: 220px; display: block';
+                let d2 = document.getElementById('canvas_div2').style='width: 270px; display: block';
             }
 
             if (box.checked && box.value == 'faculties') {
-                let d3 = document.getElementById('canvas_div3').style='width: 220px; display: block';
+                let d3 = document.getElementById('canvas_div3').style='width: 270px; display: block';
             }
 
             if (box.checked && box.value == 'departments') {
-                let d4 = document.getElementById('canvas_div4').style='width: 220px; display: block';
+                let d4 = document.getElementById('canvas_div4').style='width: 270px; display: block';
             }
 
             if (box.checked && box.value == 'rating') {
-                let d5 = document.getElementById('canvas_div5').style='width: 570px; display: block';
+                let d5 = document.getElementById('canvas_div5').style='width: 560px; display: block';
             }
         }
         
+    }
+
+    function radio_check() {
+        let show_items = document.querySelectorAll('input[type="radio"]');
+
+        for (radio of show_items) {
+            if (radio.checked && radio.value == 'normal') {
+                let art = document.getElementById('normal');
+                if (art) {
+                    art.style.display='block';
+                }
+
+                let art2 = document.getElementById('rev');
+                if (art2) {
+                    art2.style.display='none';
+                }
+                
+                let art3 = document.getElementById('name');
+                if (art3) {
+                    art3.style.display='none';
+                }
+            } else if (radio.checked && radio.value == 'rev') {
+                let art = document.getElementById('rev');
+                if (art) {
+                    art.style.display='';
+                }
+
+                let art2 = document.getElementById('name');
+                if (art2) {
+                    art2.style.display='none';
+                }
+
+                let art3 = document.getElementById('normal');
+                if (art3) {
+                    art3.style.display='none';
+                }
+            } else if (radio.checked && radio.value == 'name') {
+                let art = document.getElementById('name');
+                if (art) {
+                    art.style.display='';
+                }
+
+                let art2 = document.getElementById('normal');
+                if (art2) {
+                    art2.style.display='none';
+                }
+
+                let art3 = document.getElementById('rev');
+                if (art3) {
+                    art3.style.display='none';
+                }
+            }
+        }
     }
 </script>
 
@@ -242,18 +295,31 @@
 </div>
 
 
-<div class="radios-btn">
+<div id="radios-btn">
+    Сортировка: 
+    <input onclick="radio_check()" type="radio" id="normal-rad" name="fd-show" value="normal" checked>
+    <label for="normal">За рейтингом (Вис. - Низь.)</label>
+
+    <input onclick="radio_check()" type="radio" id="rev-rad" name="fd-show" value="rev">
+    <label for="rev">За рейтингом (Низь. - Вис.)</label>
+
+    <input onclick="radio_check()" type="radio" id="name-rad" name="fd-show" value="name">
+    <label for="name">За назвою</label>
+</div>
+
+
+<div class="check-btn">
     <input type="checkbox" id="type-students" name="info-type" value="students">
-    <label for="type-students">Кол-во студентов</label>
+    <label for="type-students">Кількість студентів</label>
 
     <input type="checkbox" id="type-scientists" name="info-type" value="scientists">
-    <label for="type-scientists">Кол-во учёных</label>
+    <label for="type-scientists">Кількість вчених</label>
 
     <input type="checkbox" id="type-faculties" name="info-type" value="faculties">
-    <label for="type-faculties">Кол-во факультетов</label>
+    <label for="type-faculties">Кількість факультетів</label>
 
     <input type="checkbox" id="type-departments" name="info-type" value="departments">
-    <label for="type-departments">Кол-во департаментов</label>
+    <label for="type-departments">Кількість департаментів</label>
 
     <input type="checkbox" id="type-rating" name="info-type" value="rating">
     <label for="type-rating">Рейтинг</label>
@@ -262,16 +328,48 @@
 </div>
 
 
-<table border="1" cellspacing=0>
-    <tbody>
-        <tr>
-            <th style="font-size: 16px;">Университеты</th>
-        </tr>
-        {% for i in univers %}
+<div id="normal" style="display: block;">
+    <table border="1" cellspacing=0>
+        <tbody>
             <tr>
-                <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[1] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[1] }}'">Добавить</button></td>
+                <th style="font-size: 16px;">Університети</th>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
+            {% for i in univers %}
+                <tr>
+                    <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }} - Рейтинг: {{ i[1] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Добавить</button></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div id="rev" style="display: none;">
+    <table border="1" cellspacing=0>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_rev %}
+                <tr>
+                    <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }} - Рейтинг: {{ i[1] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Добавить</button></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div id="name" style="display: none;">
+    <table border="1" cellspacing=0>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_name %}
+                <tr>
+                    <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[1] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Добавить</button></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

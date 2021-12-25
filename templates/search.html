@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="/static/css/search.css">
 
 <form id="search-form" action="" method="post">
-    <p>Поиск университетов/учёных</p>
+    <p>Пошук університетів/науковців</p>
     <p><input class="search_inp" type="text" name="inp_val" value="{{ value }}"></p>
     <p><input class="subm-button" type="submit" value="Найти"></p>
 </form>
@@ -11,7 +11,7 @@
 {% if value %}
     <div class="univers">
         <ul type=none>
-            <p>Университеты</p>
+            <p>Університети</p>
             {% for i in univers %}
             <li><a href="/university_info/{{ i[1] }}">{{ i[0] }}</a></li>
             {% endfor %}
@@ -20,7 +20,7 @@
 
     <div class="scientists">
         <ul type=none>
-            <p>Учёные</p>
+            <p>Вчені</p>
             {% for i in scientists %}
             <li><a href="/scientist_info/{{ i[1] }}">{{ i[0] }}</a></li>
             {% endfor %}
