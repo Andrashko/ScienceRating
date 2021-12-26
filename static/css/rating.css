@@ -1,10 +1,97 @@
 #uk-map {
     position: absolute;
     top: 40px;
-    right: 50px;
-    height: 600px;
-    width: 900px;
+    right: 40px;
+    height: 590px;
+    width: 890px;
     margin: 0 auto;
+}
+
+.users {
+    position: absolute;
+    top: 655px;
+    left: 1527px;
+    white-space: nowrap;
+}
+
+.users.card {
+    padding: 0px 15px;
+}
+
+.users img {
+    margin-right: 15px;
+}
+
+
+.article {
+    position: absolute;
+    top: 655px;
+    left: 1175px;
+    white-space: nowrap;
+}
+
+.article.card {
+    padding: 0px 15px;
+}
+
+.article img {
+    margin-right: 15px;
+}
+
+
+.student {
+    position: absolute;
+    top: 655px;
+    left: 787px;
+    white-space: nowrap;
+}
+
+.student.card {
+    padding: 0px 15px;
+}
+
+.student img {
+    margin-right: 15px;
+}
+
+
+.university {
+    position: absolute;
+    top: 655px;
+    left: 38px;
+    white-space: nowrap;
+}
+
+.university.card {
+    padding: 0px 15px;
+}
+
+.university img {
+    margin-right: 15px;
+}
+
+.scientists {
+    position: absolute;
+    top: 655px;
+    left: 427px;
+}
+
+.scientists.card {
+    padding: 0px 15px;
+}
+
+.scientists img {
+    margin-right: 15px;
+}
+
+#uk-map.card {
+    padding: 10px 10px;
+}
+
+.card {
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 12px;
 }
 
 .loading {
@@ -27,6 +114,10 @@ main {
 ul {
     position: absolute;
     top: 100px;
+}
+
+ul.card {
+    padding: 10px 10px;
 }
 
 li {
@@ -99,7 +190,27 @@ li {
 
 
 
-@media (max-height: 850px) {
+@media (max-height: 855px) {
+    .university {
+        top: 590px;
+    }
+
+    .scientists {
+        top: 590px;
+    }
+
+    .student {
+        top: 590px;
+    }
+
+    .users {
+        top: 590px;
+    }
+
+    .article {
+        top: 590px;
+    }
+
     #uk-map {
         top: 10px;
         height: 500px;
@@ -115,9 +226,180 @@ li {
 }
 
 
+@media (max-width: 1880px) {
+    .users {
+        left: 1487px;
+    }
+    
+    
+    .article {
+        left: 1155px;
+    }
+
+    .university {
+        left: 78px;
+    }
+    
+    .scientists {
+        left: 447px;
+    }
+}
+
+
+@media (max-width: 1840px) {
+    .users {
+        left: 1437px;
+    }
+    
+    
+    .article {
+        left: 1105px;
+    }
+
+    .university {
+        left: 28px;
+    }
+    
+    .scientists {
+        left: 397px;
+    }
+
+    .student {
+        left: 737px;
+    }
+}
+
+
+@media (max-width: 1785px) {
+    .users {
+        left: 1317px;
+    }
+    .users img {
+        height: 70px;
+    }
+    
+    
+    .article {
+        left: 1015px;
+    }
+    .article img {
+        height: 70px;
+    }
+
+    .university {
+        left: 28px;
+    }
+    .university img {
+        height: 70px;
+    }
+    
+    .scientists {
+        left: 367px;
+    }
+    .scientists img {
+        height: 70px;
+    }
+
+    .student {
+        left: 677px;
+    }
+    .student img {
+        height: 70px;
+    }
+}
+
+
+@media (max-width: 1785px) {
+    .users {
+        left: 1026px;
+        font-size: 12px;
+    }
+    .users img {
+        height: 40px;
+    }
+    
+    
+    .article {
+        left: 792px;
+        font-size: 12px;
+    }
+    .article img {
+        height: 40px;
+    }
+
+    .university {
+        left: 28px;
+        font-size: 12px;
+    }
+    .university img {
+        height: 40px;
+    }
+    
+    .scientists {
+        left: 290px;
+        font-size: 12px;
+    }
+    .scientists img {
+        height: 40px;
+    }
+
+    .student {
+        left: 531px;
+        font-size: 12px;
+    }
+    .student img {
+        height: 40px;
+    }
+}
+
+
+@media (max-width: 1785px) {
+    .users {
+        left: 971px;
+        font-size: 12px;
+    }
+    .users img {
+        height: 40px;
+    }
+    
+    
+    .article {
+        left: 747px;
+        font-size: 12px;
+    }
+    .article img {
+        height: 40px;
+    }
+
+    .university {
+        left: 13px;
+        font-size: 12px;
+    }
+    .university img {
+        height: 40px;
+    }
+    
+    .scientists {
+        left: 265px;
+        font-size: 12px;
+    }
+    .scientists img {
+        height: 40px;
+    }
+
+    .student {
+        left: 496px;
+        font-size: 12px;
+    }
+    .student img {
+        height: 40px;
+    }
+}
+
+
 @media (max-width: 1700px) {
     #uk-map {
-        right: 50px;
+        right: 30px;
         width: 800px;
     }
 }
@@ -125,7 +407,7 @@ li {
 
 @media (max-width: 1570px) {
     #uk-map {
-        right: 50px;
+        right: 30px;
         width: 700px;
     }
 }
@@ -193,7 +475,7 @@ li {
 
 @media (max-width: 1470px) {
     #uk-map {
-        right: 50px;
+        right: 30px;
         width: 580px;
     }
 }
@@ -215,7 +497,27 @@ li {
 
 
 
-@media (max-height: 800.98px) {
+@media (max-height: 840.98px) {
+    .university {
+        top: 540px;
+    }
+
+    .scientists {
+        top: 540px;
+    }
+
+    .student {
+        top: 540px;
+    }
+
+    .users {
+        top: 540px;
+    }
+
+    .article {
+        top: 540px;
+    }
+
     .title-rating {
         top: -5px;
     }
@@ -231,7 +533,27 @@ li {
 }
 
 
-@media (max-height: 695px) {
+@media (max-height: 750px) {
+    .university {
+        top: 490px;
+    }
+
+    .scientists {
+        top: 490px;
+    }
+
+    .student {
+        top: 490px;
+    }
+
+    .users {
+        top: 490px;
+    }
+
+    .article {
+        top: 490px;
+    }
+
     #uk-map {
         top: 15px;
         height: 450px;

@@ -87,30 +87,51 @@
 <br><br><br><br><br>
 
 <ul type="none">
-{% for univer in univers_rating %}
-    {% if loop.index < 4 %}
-        {% if loop.index % 2 != 0 %}
-            <li><p><div id="rectangle"><a style="color: #F63E3E; text-decoration: none" href="/university_info/{{ univer[2] }}">{{ univer[0] }}</a></div><div id="red-square">{{ loop.index }}</div></p></li>
-            <br>
-        {% else %}
-            <li><p><div id="red-square">{{ loop.index }}</div><a class="rating-text" style="color: #F63E3E; text-decoration: none" href="/university_info/{{ univer[2] }}">{{ univer[0] }}</a></p></li>
-            <br>
-        {% endif %}
-    {% else %}
-        {% if loop.index % 2 != 0 %}
-            <li><p><div id="rectangle"><a style="color: #404040; text-decoration: none" href="/university_info/{{ univer[2] }}">{{ univer[0] }}</a></div><div id="grey-square">{{ loop.index }}</div></p></li>
-            <br>
-        {% else %}
-            {% if loop.index == 10 %}
-                <li><p><a class="rating-text" style="color: #404040; text-decoration: none" href="/university_info/{{ univer[2] }}">{{ univer[0] }}</a><div id="square-ten">{{ loop.index }}</div></p></li>
+    {% for univer in univers_rating %}
+        {% if loop.index < 4 %}
+            {% if loop.index % 2 != 0 %}
+                <li><p><div id="rectangle"><a style="color: #F63E3E; text-decoration: none" href="/university_info/{{ univer[2] }}">{{ univer[0] }}</a></div><div id="red-square">{{ loop.index }}</div></p></li>
+                <br>
             {% else %}
-                <li><p><a class="rating-text" style="color: #404040; text-decoration: none" href="/university_info/{{ univer[2] }}">{{ univer[0] }}</a><div id="grey-square">{{ loop.index }}</div></p></li>
+                <li><p><div id="red-square">{{ loop.index }}</div><a class="rating-text" style="color: #F63E3E; text-decoration: none" href="/university_info/{{ univer[2] }}">{{ univer[0] }}</a></p></li>
+                <br>
             {% endif %}
-            <br>
+        {% else %}
+            {% if loop.index % 2 != 0 %}
+                <li><p><div id="rectangle"><a style="color: #404040; text-decoration: none" href="/university_info/{{ univer[2] }}">{{ univer[0] }}</a></div><div id="grey-square">{{ loop.index }}</div></p></li>
+                <br>
+            {% else %}
+                {% if loop.index == 10 %}
+                    <li><p><a class="rating-text" style="color: #404040; text-decoration: none" href="/university_info/{{ univer[2] }}">{{ univer[0] }}</a><div id="square-ten">{{ loop.index }}</div></p></li>
+                {% else %}
+                    <li><p><a class="rating-text" style="color: #404040; text-decoration: none" href="/university_info/{{ univer[2] }}">{{ univer[0] }}</a><div id="grey-square">{{ loop.index }}</div></p></li>
+                {% endif %}
+                <br>
+            {% endif %}
         {% endif %}
-    {% endif %}
-{% endfor %}
+    {% endfor %}
 </ul>
 
 <div id="uk-map"></div>
+
+
+<div class="university card">
+    <p><img src="/static/img/university.png" alt="" align="middle">Університетів у базі: {{ univers }}</p>
+</div>
+
+<div class="scientists card">
+    <p><img src="/static/img/people.png" alt="" align="middle">Вчених у базі: {{ scientists }}</p>
+</div>
+
+<div class="student card">
+    <p><img src="/static/img/student.png" alt="" align="middle">Студентів у базі: {{ students }}</p>
+</div>
+
+<div class="article card">
+    <p><img src="/static/img/article.png" alt="" align="middle">Статті вчених: {{ articles }}</p>
+</div>
+
+<div class="users card">
+    <p><img src="/static/img/user.png" alt="" align="middle">Усього користувачів: {{ users }}</p>
+</div>
 {% endblock %}

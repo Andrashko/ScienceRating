@@ -3,18 +3,33 @@ a {
 }
 
 
+.card {
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 12px;
+}
+
+#photo-name {
+    width: 400px;
+}
+
 #canvas_div {
     position: absolute;
-    top: 440px;
+    top: 466px;
     right: 20px;
     width: 500px;
 }
 
+#canvas_div.card {
+    padding: 5px 25px;
+}
 
 #stat-info {
     position: absolute;
-    top: 710px;
-    right: 100px;
+    top: 740px;
+    right: 20px;
+    width: 300px;
+    padding: 0px 20px;
 }
 
 
@@ -34,8 +49,13 @@ a {
 .radios-btn {
     position: absolute;
     top: 420px;
-    left: 120px;
+    left: 20px;
     white-space: nowrap;
+}
+
+.radios-btn.card {
+    padding: 0px 15px;
+    padding-bottom: 15px;
 }
 
 .univer-button {
@@ -71,55 +91,78 @@ a {
 .about-title {
     position: absolute;
     top: 150px;
-    right: 260px;
+    right: 200px;
 }
 
 .urls-title {
     position: absolute;
     top: 320px;
-    right: 540px;
+    right: 488px;
 }
 
 .urls-list {
     position: absolute;
     top: 360px;
-    right: 474px;
+    right: 486px;
+}
+
+.urls-list.card {
+    padding: 10px 10px;
+    width: 128px;
 }
 
 .univer {
     position: absolute;
     top: 210px;
-    right: 270px;
+    right: 20px;
 }
 
 .univer-value {
     position: absolute;
-    top: 240px;
-    right: 30px;
+    top: 245px;
+    right: 20px;
+    width: 650px;
+}
+
+.univer-value.card {
+    padding: 10px 10px;
+    text-align: center;
 }
 
 .degree {
     position: absolute;
     top: 320px;
-    right: 322px;
+    right: 334px;
 }
 
 .degree-value {
     position: absolute;
-    top: 350px;
-    right: 280px;
+    top: 358px;
+    right: 297px;
+    width: 150px;
+}
+
+.degree-value.card {
+    padding: 5px 10px;
+    text-align: center;
 }
 
 .science {
     position: absolute;
     top: 320px;
-    right: 120px;
+    right: 132px;
 }
 
 .science-value {
     position: absolute;
-    top: 350px;
+    top: 357px;
     right: 20px;
+    width: 250px;
+    text-align: center;
+}
+
+.science-value.card {
+    padding: 5px 10px;
 }
 
 .google-articles {
@@ -220,58 +263,58 @@ footer {
 }
 
 
-@media (max-width: 1250px) {
+@media (max-width: 1270px) {
     #stat-info {
         left: 834px;
         white-space: nowrap;
     }
 
     #canvas_div {
-        left: 770px;
+        left: 730px;
     }
 
     .about-title {
-        left: 750px;
+        left: 790px;
         white-space: nowrap;
     }
     
     .urls-title {
-        left: 557px;
+        left: 597px;
         white-space: nowrap;
     }
     
     .urls-list {
-        left: 557px;
+        left: 597px;
         white-space: nowrap;
     }
     
     .univer {
-        left: 550px;
+        left: 590px;
         white-space: nowrap;
     }
     
     .univer-value {
-        left: 550px;
+        left: 590px;
         white-space: nowrap;
     }
     
     .degree {
-        left: 752px;
+        left: 792px;
         white-space: nowrap;
     }
     
     .degree-value {
-        left: 752px;
+        left: 792px;
         white-space: nowrap;
     }
     
     .science {
-        left: 999px;
+        left: 1039px;
         white-space: nowrap;
     }
     
     .science-value {
-        left: 954px;
+        left: 994px;
         white-space: nowrap;
     }
 
@@ -279,10 +322,3 @@ footer {
         width: 1300px;
     }
 }
-
-.keywords_cloud{
-    position: absolute;
-    top: 200px;
-    left: 600px;
-}
-

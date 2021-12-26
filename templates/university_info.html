@@ -78,63 +78,96 @@
     <button class="univer-rating-button" onclick="location.href='/university_info_rating/{{ univer.id }}'">Рейтинг університету</button>
 
     <div style="display: block;" id="normal">
-        <table border="1" cellspacing=0>
+        <table>
             <tbody>
                 <tr>
                     {% if not facult_empty %}<th style="font-size: medium;">Факультети</th>{% endif %}
                     {% if not depart_empty %}<th style="font-size: medium;">Департаменти</th>{% endif %}
                 </tr>
                 {% for item in facult_depart %}
-                    <tr>
-                        {% if item[0] %}
-                            <td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/faculty_info/{{ item[1] }}">{{ item[0] }} - Рейтинг: {{ item[2] }}</a></td>
-                        {% elif not facult_empty %}
-                            <td></td>
-                        {% endif %}
-                        {% if item[3] %}<td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/department_info/{{ item[3][1] }}">{{ item[3][0] }} - Рейтинг: {{ item[3][2] }}</a></td>{% endif %}
-                    </tr>
+                    {% if loop.index % 2 == 0 %}
+                        <tr style="background-color: #D1D1D1;">
+                            {% if item[0] %}
+                                <td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/faculty_info/{{ item[1] }}">{{ item[0] }} - Рейтинг: {{ item[2] }}</a></td>
+                            {% elif not facult_empty %}
+                                <td></td>
+                            {% endif %}
+                            {% if item[3] %}<td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/department_info/{{ item[3][1] }}">{{ item[3][0] }} - Рейтинг: {{ item[3][2] }}</a></td>{% endif %}
+                        </tr>
+                    {% else %}
+                        <tr>
+                            {% if item[0] %}
+                                <td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/faculty_info/{{ item[1] }}">{{ item[0] }} - Рейтинг: {{ item[2] }}</a></td>
+                            {% elif not facult_empty %}
+                                <td></td>
+                            {% endif %}
+                            {% if item[3] %}<td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/department_info/{{ item[3][1] }}">{{ item[3][0] }} - Рейтинг: {{ item[3][2] }}</a></td>{% endif %}
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             </tbody>
         </table>
     </div>
 
     <div style="display: none;" id="rev">
-        <table border="1" cellspacing=0>
+        <table>
             <tbody>
                 <tr>
                     {% if not facult_empty %}<th style="font-size: medium;">Факультети</th>{% endif %}
                     {% if not depart_empty %}<th style="font-size: medium;">Департаменти</th>{% endif %}
                 </tr>
                 {% for item in facult_depart_rev %}
-                    <tr>
-                        {% if item[0] %}
-                            <td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/faculty_info/{{ item[1] }}">{{ item[0] }} - Рейтинг: {{ item[2] }}</a></td>
-                        {% elif not facult_empty %}
-                            <td></td>
-                        {% endif %}
-                        {% if item[3] %}<td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/department_info/{{ item[3][1] }}">{{ item[3][0] }} - Рейтинг: {{ item[3][2] }}</a></td>{% endif %}
-                    </tr>
+                    {% if loop.index % 2 == 0 %}
+                        <tr style="background-color: #D1D1D1;">
+                            {% if item[0] %}
+                                <td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/faculty_info/{{ item[1] }}">{{ item[0] }} - Рейтинг: {{ item[2] }}</a></td>
+                            {% elif not facult_empty %}
+                                <td></td>
+                            {% endif %}
+                            {% if item[3] %}<td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/department_info/{{ item[3][1] }}">{{ item[3][0] }} - Рейтинг: {{ item[3][2] }}</a></td>{% endif %}
+                        </tr>
+                    {% else %}
+                        <tr>
+                            {% if item[0] %}
+                                <td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/faculty_info/{{ item[1] }}">{{ item[0] }} - Рейтинг: {{ item[2] }}</a></td>
+                            {% elif not facult_empty %}
+                                <td></td>
+                            {% endif %}
+                            {% if item[3] %}<td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/department_info/{{ item[3][1] }}">{{ item[3][0] }} - Рейтинг: {{ item[3][2] }}</a></td>{% endif %}
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             </tbody>
         </table>
     </div>
 
     <div style="display: none;" id="name">
-        <table border="1" cellspacing=0>
+        <table>
             <tbody>
                 <tr>
                     {% if not facult_empty %}<th style="font-size: medium;">Факультети</th>{% endif %}
                     {% if not depart_empty %}<th style="font-size: medium;">Департаменти</th>{% endif %}
                 </tr>
                 {% for item in facult_depart_name %}
-                    <tr>
-                        {% if item[0] %}
-                            <td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/faculty_info/{{ item[1] }}">{{ item[0] }}</a></td>
-                        {% elif not facult_empty %}
-                            <td></td>
-                        {% endif %}
-                        {% if item[2] %}<td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/department_info/{{ item[2][1] }}">{{ item[2][0] }}</a></td>{% endif %}
-                    </tr>
+                    {% if loop.index % 2 == 0 %}
+                        <tr style="background-color: #D1D1D1;">
+                            {% if item[0] %}
+                                <td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/faculty_info/{{ item[1] }}">{{ item[0] }}</a></td>
+                            {% elif not facult_empty %}
+                                <td></td>
+                            {% endif %}
+                            {% if item[2] %}<td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/department_info/{{ item[2][1] }}">{{ item[2][0] }}</a></td>{% endif %}
+                        </tr>
+                    {% else %}
+                        <tr>
+                            {% if item[0] %}
+                                <td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/faculty_info/{{ item[1] }}">{{ item[0] }}</a></td>
+                            {% elif not facult_empty %}
+                                <td></td>
+                            {% endif %}
+                            {% if item[2] %}<td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/department_info/{{ item[2][1] }}">{{ item[2][0] }}</a></td>{% endif %}
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             </tbody>
         </table>
@@ -142,6 +175,4 @@
 {% else %}
     <h2>Немає інформації</h2>
 {% endif %}
-
-<img src="data:image/png;base64, {{keywords_cloud}}" class="keywords_cloud" alt = "Keywords"/>
 {% endblock %}

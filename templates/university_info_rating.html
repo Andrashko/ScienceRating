@@ -6,21 +6,24 @@
 <button class="back-button" onclick="location.href='/university_info/{{ univer.id }}'">Назад</button>
 
 <h2>Рейтинг: {{ rating_value }}</h2>
-<table border="1" cellspacing="0">
+<table>
     <tbody>
         <tr>
             <th>Критерій</th>
             <th>Значення</th>
         </tr>
         {% for criter in criters_values %}
-            <tr>
-                <td width=530 height=50>{{ criter[0] }}</td>
-                {% if criter[1] != 0 %}
+            {% if loop.index % 2 == 0 %}
+                <tr style="background-color: #D1D1D1;">
+                    <td width=530 height=50>{{ criter[0] }}</td>
                     <td align="center" width=300>{{ criter[1].value }}</td>
-                {% else %}
-                    <td align="center" width=300>0</td>
-                {% endif %}
-            </tr>
+                </tr>
+            {% else %}
+                <tr>
+                    <td width=530 height=50>{{ criter[0] }}</td>
+                    <td align="center" width=300>{{ criter[1].value }}</td>
+                </tr>
+            {% endif %}
         {% endfor %}
         
     </tbody>

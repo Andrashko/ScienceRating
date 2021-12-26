@@ -2,6 +2,11 @@ table {
     position: absolute;
     top: 340px;
     left: 20px;
+    padding-bottom: 50px;
+}
+
+th {
+    border-bottom: 2px solid black;
 }
 
 #radios-btn {
@@ -109,10 +114,4 @@ footer {
         top: 250px;
     }
     
-}
-
-.keywords_cloud{
-    position: absolute;
-    top: 150px;
-    right: 20px;
 }

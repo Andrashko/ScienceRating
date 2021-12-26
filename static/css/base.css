@@ -128,10 +128,6 @@ nav {
     cursor: pointer;
 }
 
-.kw {
-    right:350px;
-}
-
 .nav-login-button {
     position: absolute;
     appearance: none;
@@ -194,7 +190,7 @@ nav {
     }
 }
 
-@media (max-height: 850px) {
+@media (max-height: 855px) {
     footer {
         height: 60px;
     }

@@ -104,7 +104,7 @@
 <link rel="stylesheet" href="/static/css/scientist_info.css">
 
 {% if photo %}
-    <img class="profile-photo" src="{{ scientist[7] }}" alt="profile">
+    <img class="profile-photo card" src="{{ scientist[7] }}" alt="profile">
 {% else %}
     <h3 class="profile-photo">Немає фото</h3>
 {% endif %}
@@ -116,19 +116,23 @@
 </ul>
 
 
-<div id="canvas_div">
-    <canvas id="myChart"></canvas>
-</div>
+{% if google_articles %}
+    <div id="canvas_div" class="card">
+        <canvas id="myChart"></canvas>
+    </div>
+{% endif %}
 
 
-<div id='stat-info'>
-    {% for i in stat_info %}
-        <h3>{{ i }}</h3>
-    {% endfor %}
-</div>
+{% if stat_info %}
+    <div id='stat-info' class="card">
+        {% for i in stat_info %}
+            <h3>{{ i }}</h3>
+        {% endfor %}
+    </div>
+{% endif %}
 
 
-<div class="radios-btn">
+<div class="radios-btn card">
     {% if google_articles or publon_articles or scopus_articles %}
     <p>Статті</p>
     {% endif %}
@@ -198,7 +202,7 @@
         </ul>
     {% elif publon_articles == "no access" %}
         <div class="publon-title">Publons</div>
-        <h3 style="position: absolute; top: 485px; left: 900px; font-size: medium;">Недоступний</h3>
+        <h3 style="position: absolute; top: 555px; left: 237px; font-size: medium;">Недоступний</h3>
     {% endif %}
 </div>
 
@@ -222,7 +226,7 @@
 {% if scientist[1] or scientist[2] or scientist[3] %}
     <h2 class="urls-title">Посилання</h2>
 {% endif %}
-<ul class="urls-list" type=none>
+<ul class="urls-list card" type=none>
     {% if scientist[1] %}
         <li><a href="{{ scientist[1] }}">Google Scholar</a></li>
     {% endif %}
@@ -238,18 +242,16 @@
 
 {% if univer_id %}
 <h2 class="univer">Університет</h2>
-<h3 class="univer-value">{{ scientist[4] }}</h3>
+<h3 class="univer-value card">{{ scientist[4] }}</h3>
 {% endif %}
 
 {% if scientist[5] %}
     <h2 class="degree">Ступінь</h2>
-    <h3 class="degree-value">{{ scientist[5] }}</h3>
+    <h3 class="degree-value card">{{ scientist[5] }}</h3>
 {% endif %}
 
 {% if scientist[6] %}
     <h2 class="science">Наука</h2>
-    <h3 class="science-value">{{ scientist[6] }}</h3>
+    <h3 class="science-value card">{{ scientist[6] }}</h3>
 {% endif %}
-
-<img src="data:image/png;base64, {{keywords_cloud}}" class="keywords_cloud" alt = "Keywords"/>
 {% endblock %}

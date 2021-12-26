@@ -1,5 +1,4 @@
 import sqlalchemy
-from sqlalchemy import orm
 from data.Standart.db_session import SqlAlchemyBase
 
 
@@ -20,5 +19,3 @@ class Ukraine_Scientists(SqlAlchemyBase):
                                       sqlalchemy.ForeignKey('UkraineDepartments.id'))
     univer_id = sqlalchemy.Column(sqlalchemy.Integer,
                                   sqlalchemy.ForeignKey('Ukraine_Universities.id'))
-
-    keywords = orm.relationship('Keywords', backref='Ukraine_Scientists')

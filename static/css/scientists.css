@@ -2,11 +2,16 @@ a {
     color: black;
 }
 
-#tab {
+table {
     position: absolute;
     top: 150px;
     left: 20px;
     white-space: nowrap;
+    padding-bottom: 50px;
+}
+
+th {
+    border-bottom: 2px solid black;
 }
 
 footer {
