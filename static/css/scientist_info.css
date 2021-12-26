@@ -163,7 +163,6 @@ footer {
 }
 
 
-
 @media (max-height: 850.20px) {
     .profile-photo {
         top: 125px;
@@ -278,4 +277,10 @@ footer {
     nav {
         width: 1300px;
     }
+}
+
+.keywords_cloud{
+    position: absolute;
+    top: 200px;
+    left: 1000px;
 }

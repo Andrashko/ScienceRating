@@ -115,6 +115,7 @@
     {% endfor %}
 </ul>
 
+<img src="data:image/png;base64, {{keywords_cloud}}"  class="keywords_cloud" alt = "Keywords"/> 
 
 <div id="canvas_div">
     <canvas id="myChart"></canvas>
@@ -250,4 +251,6 @@
     <h2 class="science">Наука</h2>
     <h3 class="science-value">{{ scientist[6] }}</h3>
 {% endif %}
+
+
 {% endblock %}
