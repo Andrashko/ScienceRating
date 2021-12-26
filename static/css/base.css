@@ -73,7 +73,7 @@ nav {
     position: absolute;
     border-left: 1px solid white;
     height: 37px;
-    right: 835px;
+    right: 850px;
     top: 53px;
 }
 
@@ -492,4 +492,8 @@ nav {
     nav {
         width: 1220px;
     }
+}
+
+.kw {
+    right: 345px;
 }

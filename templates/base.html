@@ -13,15 +13,16 @@
             <p>
                 <a href="/"><img class="logo-image" src="/static/img/ScienceRaitingLogo.png" alt="logo"></a>
 
-                <p class="nav-about">СИСТЕМА ОЦІНКИ<br>НАУКОВОЇ ДІЯЛЬНОСТІ ВНЗ І НДІ</p>
+                <p class="nav-about">СИСТЕМА ОЦІНКИ<br>НАУКОВОЇ ДІЯЛЬНОСТІ ЗВО</p>
 
-                <a class="nav-page-one"  style="color: {{ color_page_one }};" href="/">Рейтинг ВНЗ</a>
+                <a class="nav-page-one"  style="color: {{ color_page_one }};" href="/">Рейтинг ЗВО</a>
                 <div class="vl-one"></div>
-                <a class="nav-page-two" href="" style="color: {{ color_page_two }};">Рейтинг НДІ</a>
-                <div class="vl-two"></div>
-                <a class="nav-page-three" href="/scientists" style="color: {{ color_page_three }};">Рейтинг вчених</a>
+                <!-- <a class="nav-page-two" href="" style="color: {{ color_page_two }};">Рейтинг НДІ</a>
+                <div class="vl-two"></div> -->
+                <a class="nav-page-two" href="/scientists" style="color: {{ color_page_three }};">Рейтинг вчених</a>
 
                 <button class="search-button" onclick="location.href='/search'">Пошук</button>
+                <button class="search-button kw" onclick="location.href='/search_keyword'"">Пошук за напрямом</button>
                 {% if current_user.is_authenticated %}
                     <button class="nav-login-button" onclick="location.href='/logout'">Вийти</button>
                 {% else %}

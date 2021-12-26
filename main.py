@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 import threading
 from rating import calculate_university_rating
 from data_load import universities, map_uk, articles_main_page, students_main_page
+from kw_cloud import get_keyword_frequency_for_department, get_keyword_frequency_for_faculty, get_keyword_frequency_for_scientist, get_keyword_frequency_for_university, get_word_cloud_picture
 
 from data.Standart import db_session
 from mail_sender import send_mail
@@ -22,13 +23,14 @@ from data.database.ukraine_faculties import UkraineFaculties
 from data.database.ukraine_departments import UkraineDepartments
 from data.database.ukraine_scientists import Ukraine_Scientists
 from data.database.criteria import Criterias
+from data.database.keywords import Keywords
 
 db_session.global_init("db/database.db")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'rating_sk'
 BASE_URL = "http://science-rating.co.ua"  # необходимо для роботы редиректа на хостинге
-# BASE_URL="" # Для роботы на локахосте
+BASE_URL = "" # Для роботы на локахосте
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -375,7 +377,8 @@ def university_info(university_id):
     return render_template('university_info.html',
                            facult_depart=facult_depart, facult_depart_rev=facult_depart_rev,
                            facult_depart_name=facult_depart_name, univer=university, facult_empty=facult_empty,
-                           depart_empty=depart_empty)
+                           depart_empty=depart_empty,
+                           keywords_cloud = get_word_cloud_picture(get_keyword_frequency_for_university((university_id))))
 
 
 @app.route('/university_projects/<int:univer_id>')
@@ -415,7 +418,8 @@ def faculty_info(faculty_id):
         departments_name = sorted(departments, key=lambda x: x[0])
 
     return render_template('faculty_info.html', departments=departments, departments_rev=departments_rev,
-                           departments_name=departments_name, faculty=faculty)
+                           departments_name=departments_name, faculty=faculty,
+                            keywords_cloud = get_word_cloud_picture(get_keyword_frequency_for_faculty((faculty_id))))
 
 
 @app.route('/department_info/<int:depart_id>')
@@ -426,7 +430,8 @@ def department_info(depart_id):
     db_sess = db_session.create_session()
     depart = db_sess.query(UkraineDepartments).get(depart_id)
     univer_id = db_sess.query(UkraineFaculties).get(depart.faculty_id).univer_id
-    return render_template('department_info.html', depart=depart, univer_id=univer_id)
+    return render_template('department_info.html', depart=depart, univer_id=univer_id,
+        keywords_cloud = get_word_cloud_picture(get_keyword_frequency_for_department((depart_id))))
 
 
 @app.route('/university_info_rating/<int:university_id>')
@@ -438,10 +443,6 @@ def university_info_rating(university_id):
 
     university = db_sess.query(Ukraine_Universities).get(university_id)
     scientists = len(list(university.scientists))
-    # criterias = db_sess.query(Criterias).filter(or_(Criterias.number == '2.1.1.', Criterias.number == '2.1.2.',
-    #                                                 Criterias.number == '2.1.3.', Criterias.number == '2.2.',
-    #                                                 Criterias.number == '2.3.'))
-    # criterias = db_sess.query(Criterias).all()
     values = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'university').filter(
         ItemsAndCriteria.item_id == university.id)
 
@@ -451,18 +452,10 @@ def university_info_rating(university_id):
         value = values.filter(ItemsAndCriteria.criteria_id == i).first()
         if criteria and value:
             criters_values.append([criteria.name, value])
-            # index = 0
-    # for i in range(8, 13):
-    #     criters_values.append([criterias[index].name, values.filter(ItemsAndCriteria.criteria_id == i).first()])
-    #     index += 1
-
-    # for i in range(1, 8):
-    #     criters_values.append([db_sess.query(Criterias).get(i).name, values.filter(ItemsAndCriteria.criteria_id == i).first()])
-    # for i in range(14, 54):
-    #     criters_values.append([db_sess.query(Criterias).get(i).name, values.filter(ItemsAndCriteria.criteria_id == i).first()])
 
     return render_template('university_info_rating.html', univer=university, criters_values=criters_values,
-                           rating_value=calculate_university_rating(university))
+                           rating_value=calculate_university_rating(university),
+                           keywords_cloud = get_word_cloud_picture(get_keyword_frequency_for_university(university_id)))
 
 
 @app.route('/scientist_info/<int:scientist_id>')
@@ -610,7 +603,41 @@ def scientist_info(scientist_id):
 
     return render_template('scientist_info.html', scientist=info, google_articles=google_scholar,
                            publon_articles=publon, photo=photo, univer_id=scientist.univer_id,
-                           depart_id=scientist.department_id, scopus_articles=scopus, graph=graph, stat_info=stat_info)
+                           depart_id=scientist.department_id, scopus_articles=scopus, graph=graph, stat_info=stat_info,
+                           keywords_cloud = get_word_cloud_picture(get_keyword_frequency_for_scientist(scientist_id)))
+
+
+@app.route('/search_keyword', methods=['GET', 'POST'])
+def search_keyword():
+    if not current_user.is_authenticated:
+        return redirect(BASE_URL + '/login')
+
+    db_sess = db_session.create_session()
+    inp = ''
+    univers = []
+    scientists = []
+
+    if request.method == 'POST':
+        if 'inp_val' in request.form.keys():
+            inp = request.form['inp_val']
+
+        if inp:
+            for kw in  db_sess.query(Keywords).filter(Keywords.word.ilike(f"%{inp}%")).all():
+                try:
+                    scientist = db_sess.query(Ukraine_Scientists).get(kw.scientist_id)
+                    univer = db_sess.query(Ukraine_Universities).get(scientist.univer_id) 
+                    if all(map (lambda x: x[1] != scientist.id, scientists)):               
+                        scientists.append([scientist.name, scientist.id])
+                    if all(map (lambda x: x[1] != univer.id, univers)):   
+                        univers.append([univer.univername, univer.id])
+                except:
+                    continue
+
+
+            scientists = sorted (scientists, key=lambda x: x[0])[:500]
+            univers = sorted (univers, key=lambda x: x[0])[:500]
+
+    return render_template('search_keyword.html', value=inp, univers=univers, scientists=scientists)
 
 
 if __name__ == '__main__':

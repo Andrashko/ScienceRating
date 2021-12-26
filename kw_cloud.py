@@ -30,7 +30,7 @@ def get_keyword_frequency_for_scientist(id):
 def get_keyword_frequency_for_department(id):
     db_sess = db_session.create_session()
     department = db_sess.query(UkraineDepartments).get(id)
-    keywords_frequency = {"Наука": 1}
+    keywords_frequency = {}
     for scientist in department.scientists:
         for kw in scientist.keywords:
             if (keywords_frequency.get(kw.word)):
@@ -44,7 +44,7 @@ def get_keyword_frequency_for_department(id):
 def get_keyword_frequency_for_university(id):
     db_sess = db_session.create_session()
     univer = db_sess.query(Ukraine_Universities).get(id)
-    keywords_frequency = {"Наука": 1}
+    keywords_frequency = {}
     for scientist in univer.scientists:
         for kw in scientist.keywords:
             if (keywords_frequency.get(kw.word)):
@@ -58,7 +58,7 @@ def get_keyword_frequency_for_university(id):
 def get_keyword_frequency_for_faculty(id):
     db_sess = db_session.create_session()
     faculty = db_sess.query(UkraineFaculties).get(id)
-    keywords_frequency = {"Наука": 1}
+    keywords_frequency = {}
     for department in faculty.departments:
         for scientist in department.scientists:
             for kw in scientist.keywords:

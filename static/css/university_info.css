@@ -115,3 +115,9 @@ footer {
     }
     
 }
+
+.keywords_cloud{
+    position: absolute;
+    top: 150px;
+    right: 20px;
+}
