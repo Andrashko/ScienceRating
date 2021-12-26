@@ -1,34 +1,145 @@
 {% extends "base.html" %}
 {% block content %}
+<script>
+    function radio_check() {
+        let show_items = document.querySelectorAll('input[type="radio"]');
+
+        for (radio of show_items) {
+            if (radio.checked && radio.value == 'normal') {
+                let art = document.getElementById('normal');
+                if (art) {
+                    art.style.display='block';
+                }
+
+                let art2 = document.getElementById('rev');
+                if (art2) {
+                    art2.style.display='none';
+                }
+                
+                let art3 = document.getElementById('name');
+                if (art3) {
+                    art3.style.display='none';
+                }
+            } else if (radio.checked && radio.value == 'rev') {
+                let art = document.getElementById('rev');
+                if (art) {
+                    art.style.display='';
+                }
+
+                let art2 = document.getElementById('name');
+                if (art2) {
+                    art2.style.display='none';
+                }
+
+                let art3 = document.getElementById('normal');
+                if (art3) {
+                    art3.style.display='none';
+                }
+            } else if (radio.checked && radio.value == 'name') {
+                let art = document.getElementById('name');
+                if (art) {
+                    art.style.display='';
+                }
+
+                let art2 = document.getElementById('normal');
+                if (art2) {
+                    art2.style.display='none';
+                }
+
+                let art3 = document.getElementById('rev');
+                if (art3) {
+                    art3.style.display='none';
+                }
+            }
+        }
+    }
+</script>
+
 <link rel="stylesheet" href="/static/css/university_info.css">
 
 <h1>{{ univer.univername }}</h1>
 {% if univer.projects | length != 0 %}
-    <h3><a style="color: black;" href="/university_projects/{{ univer.id }}">Проектов университета: {{ univer.projects | length }}</a></h2>
+    <h3><a style="color: black;" href="/university_projects/{{ univer.id }}">Проектів університету: {{ univer.projects | length }}</a></h2>
 {% endif %}
 
-{% if not facult_empty or not depart_empty %}
-    <button class="univer-rating-button" onclick="location.href='/university_info_rating/{{ univer.id }}'">Рейтинг университета</button>
+<div id="radios-btn">
+    Сортування: 
+    <input onclick="radio_check()" type="radio" id="normal-rad" name="fd-show" value="normal" checked>
+    <label for="normal">За рейтингом (Вис. - Низь.)</label>
 
-    <table border="1" cellspacing=0>
-        <tbody>
-            <tr>
-                {% if not facult_empty %}<th style="font-size: medium;">Факультеты</th>{% endif %}
-                {% if not depart_empty %}<th style="font-size: medium;">Департаменты</th>{% endif %}
-            </tr>
-            {% for item in facult_depart %}
+    <input onclick="radio_check()" type="radio" id="rev-rad" name="fd-show" value="rev">
+    <label for="rev">За рейтингом (Низь. - Вис.)</label>
+
+    <input onclick="radio_check()" type="radio" id="name-rad" name="fd-show" value="name">
+    <label for="name">За назвою</label>
+</div>
+
+{% if not facult_empty or not depart_empty %}
+    <button class="univer-rating-button" onclick="location.href='/university_info_rating/{{ univer.id }}'">Рейтинг університету</button>
+
+    <div style="display: block;" id="normal">
+        <table border="1" cellspacing=0>
+            <tbody>
                 <tr>
-                    {% if item[0] %}
-                        <td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/faculty_info/{{ item[1] }}">{{ item[0] }}</a></td>
-                    {% elif not facult_empty %}
-                        <td></td>
-                    {% endif %}
-                    {% if item[2] %}<td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/department_info/{{ item[2][1] }}">{{ item[2][0] }}</a></td>{% endif %}
+                    {% if not facult_empty %}<th style="font-size: medium;">Факультети</th>{% endif %}
+                    {% if not depart_empty %}<th style="font-size: medium;">Департаменти</th>{% endif %}
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                {% for item in facult_depart %}
+                    <tr>
+                        {% if item[0] %}
+                            <td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/faculty_info/{{ item[1] }}">{{ item[0] }} - Рейтинг: {{ item[2] }}</a></td>
+                        {% elif not facult_empty %}
+                            <td></td>
+                        {% endif %}
+                        {% if item[3] %}<td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/department_info/{{ item[3][1] }}">{{ item[3][0] }} - Рейтинг: {{ item[3][2] }}</a></td>{% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div style="display: none;" id="rev">
+        <table border="1" cellspacing=0>
+            <tbody>
+                <tr>
+                    {% if not facult_empty %}<th style="font-size: medium;">Факультети</th>{% endif %}
+                    {% if not depart_empty %}<th style="font-size: medium;">Департаменти</th>{% endif %}
+                </tr>
+                {% for item in facult_depart_rev %}
+                    <tr>
+                        {% if item[0] %}
+                            <td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/faculty_info/{{ item[1] }}">{{ item[0] }} - Рейтинг: {{ item[2] }}</a></td>
+                        {% elif not facult_empty %}
+                            <td></td>
+                        {% endif %}
+                        {% if item[3] %}<td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/department_info/{{ item[3][1] }}">{{ item[3][0] }} - Рейтинг: {{ item[3][2] }}</a></td>{% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div style="display: none;" id="name">
+        <table border="1" cellspacing=0>
+            <tbody>
+                <tr>
+                    {% if not facult_empty %}<th style="font-size: medium;">Факультети</th>{% endif %}
+                    {% if not depart_empty %}<th style="font-size: medium;">Департаменти</th>{% endif %}
+                </tr>
+                {% for item in facult_depart_name %}
+                    <tr>
+                        {% if item[0] %}
+                            <td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/faculty_info/{{ item[1] }}">{{ item[0] }}</a></td>
+                        {% elif not facult_empty %}
+                            <td></td>
+                        {% endif %}
+                        {% if item[2] %}<td style="font-size: smaller;"><a style="color: black; text-decoration: none;" href="/department_info/{{ item[2][1] }}">{{ item[2][0] }}</a></td>{% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% else %}
-    <h2>Нет информации</h2>
+    <h2>Немає інформації</h2>
 {% endif %}
 {% endblock %}

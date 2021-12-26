@@ -1,20 +1,27 @@
 table {
     position: absolute;
-    top: 310px;
+    top: 340px;
     left: 20px;
 }
 
+#radios-btn {
+    position: absolute;
+    top: 270px;
+    left: 50px;
+    white-space: nowrap;
+}
+
 h1 {
+    font-size: 30px;
     position: absolute;
     top: 150px;
     left: 20px;
     color: #F63E3E;
-    white-space: nowrap;
 }
 
 h2 {
     position: absolute;
-    top: 260px;
+    top: 290px;
     left: 20px;
     white-space: nowrap;
 }
@@ -45,16 +52,21 @@ footer {
 }
 
 @media (max-width: 1510px) {
+    #radios-btn {
+        top: 235px;
+    }
+
     table {
-        top: 270px;
+        top: 300px;
     }
 
     h1 {
         font-size: 20px;
+        white-space: nowrap;
     }
 
     h2 {
-        top: 220px;
+        top: 250px;
     }
     
     h3 {
@@ -70,6 +82,10 @@ footer {
 }
 
 @media (max-height: 850px) {
+    #radios-btn {
+        top: 180px;
+    }
+
     h1 {
         top: 95px;
         font-size: 20px;
@@ -81,7 +97,7 @@ footer {
     }
 
     h2 {
-        top: 170px;
+        top: 200px;
     }
 
     h3 {
@@ -90,7 +106,7 @@ footer {
     }
 
     table {
-        top: 220px;
+        top: 250px;
     }
     
 }

@@ -8,7 +8,6 @@
 <script>
     function uk() {
             var jsn = {{ map_uk|tojson }};
-            console.log(jsn);
             var data = [
             ['ua-my', jsn['ua-my']],
             ['ua-ks', jsn['ua-ks']],
@@ -46,11 +45,11 @@
             },
 
             title: {
-                text: 'Рейтинг университетов по регионам'
+                text: 'Рейтинг університетів у регіонах (ТОП-50)'
             },
 
             subtitle: {
-                text: 'Украина'
+                text: 'Україна'
             },
 
             mapNavigation: {
@@ -61,12 +60,12 @@
             },
 
             colorAxis: {
-                min: 0
+                min: 0,
             },
 
             series: [{
                 data: data,
-                name: 'data',
+                name: 'Рейтинг',
                 states: {
                     hover: {
                         color: '#BADA55'
@@ -84,7 +83,7 @@
     };
 </script>
 
-<p class="title-rating"><a style="color: black;" href="/universities"><img class="small-gr" src="/static/img/small-graphic.png" alt="Рейтинг"> Рейтинг ВУЗов</a></p>
+<p class="title-rating"><a style="color: black;" href="/universities"><img class="small-gr" src="/static/img/small-graphic.png" alt="Рейтинг"> Рейтинг ВНЗ</a></p>
 <br><br><br><br><br>
 
 <ul type="none">

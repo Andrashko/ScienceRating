@@ -69,21 +69,6 @@ nav {
     top: 40px;
 }
 
-.nav-language-button {
-    position: absolute;
-    border: 0;
-    border-radius: 7px;
-    background: white;
-    color: black;
-    padding: 5px 7px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-    font-size: 18px;
-    top: 55px;
-    left: 680px;
-    cursor: pointer;
-}
-
 .vl-one {
     position: absolute;
     border-left: 1px solid white;
@@ -161,21 +146,6 @@ nav {
 
 
 @media (max-width: 1730px) {
-    .nav-language-button {
-        position: absolute;
-        border: 0;
-        border-radius: 7px;
-        background: white;
-        color: black;
-        padding: 5px 7px;
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 700;
-        font-size: 18px;
-        top: 55px;
-        left: 660px;
-        cursor: pointer;
-    }
-    
     .vl-one {
         position: absolute;
         border-left: 1px solid white;
@@ -239,11 +209,6 @@ nav {
         top: 16px;
     }
 
-    .nav-language-button {
-        top: 34px;
-        font-size: 18px;
-    }
-
     .vl-one {
         position: absolute;
         border-left: 1px solid white;
@@ -291,11 +256,6 @@ nav {
 }
 
 @media (max-width: 1590px) {
-    .nav-language-button {
-        padding: 5px 7px;
-        left: 610px;
-    }
-    
     .vl-one {
         height: 37px;
         right: 665px;
@@ -344,11 +304,6 @@ nav {
         position: absolute;
         font-size: 16px;
         top: 15px;
-    }
-
-    .nav-language-button {
-        top: 34px;
-        font-size: 18px;
     }
 
     .vl-one {
@@ -402,11 +357,6 @@ nav {
         position: absolute;
         font-size: 16px;
         left: 145px;
-    }
-
-    .nav-language-button {
-        font-size: 18px;
-        left: 560px;
     }
 
     .vl-one {
@@ -503,10 +453,6 @@ nav {
     .nav-about {
         font-size: 14px;
         left: 126px;
-    }
-
-    .nav-language-button {
-        left: 466px;
     }
 
     .vl-one {

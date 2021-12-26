@@ -16,7 +16,7 @@
             return
         }
 
-        let d = document.getElementById('canvas_div').style='width: 300px; display: none;';
+        let d = document.getElementById('canvas_div').style='width: 400px; display: none;';
         let el1 = document.getElementById('canvas_div');
         let el2 = document.getElementById('myChart');
         el1.removeChild(el2);
@@ -44,14 +44,14 @@
                     },
                     title: {
                         display: true,
-                        text: 'Кол-во студентов',
+                        text: 'Кількість студентів',
                     }
                 }
             }
         });
 
 
-        let d2 = document.getElementById('canvas_div2').style='width: 300px; display: none;';
+        let d2 = document.getElementById('canvas_div2').style='width: 400px; display: none;';
 
         let el12 = document.getElementById('canvas_div2');
         let el22 = document.getElementById('myChart2');
@@ -80,14 +80,14 @@
                     },
                     title: {
                         display: true,
-                        text: 'Кол-во учёных',
+                        text: 'Кількість вчених',
                     }
                 }
             }
         });
 
 
-        let d3 = document.getElementById('canvas_div3').style='width: 300px; display: none;';
+        let d3 = document.getElementById('canvas_div3').style='width: 400px; display: none;';
 
         let el13 = document.getElementById('canvas_div3');
         let el23 = document.getElementById('myChart3');
@@ -116,14 +116,14 @@
                     },
                     title: {
                         display: true,
-                        text: 'Кол-во факультетов',
+                        text: 'Кількість факультетів',
                     }
                 }
             }
         });
 
 
-        let d4 = document.getElementById('canvas_div4').style='width: 300px; display: none;';
+        let d4 = document.getElementById('canvas_div4').style='width: 400px; display: none;';
 
         let el14 = document.getElementById('canvas_div4');
         let el24 = document.getElementById('myChart4');
@@ -152,7 +152,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Кол-во департаментов',
+                        text: 'Кількість департаментів',
                     }
                 }
             }
@@ -174,7 +174,7 @@
             data: {
                 labels: info['univers'],
                 datasets: [{
-                    data: info['departments'],
+                    data: info['rating'],
                     backgroundColor: ['#e91e63', '#00e676', '#ff5722', '#1e88e5', '#ffd600'],
                     borderWidth: 1,
                     borderColor: '#00'
@@ -197,26 +197,119 @@
 
         for (box of radios) {
             if (box.checked && box.value == 'students') {
-                let d = document.getElementById('canvas_div').style='width: 220px; display: block';
+                let d = document.getElementById('canvas_div').style='width: 270px; display: block';
             }
 
             if (box.checked && box.value == 'scientists') {
-                let d2 = document.getElementById('canvas_div2').style='width: 220px; display: block';
+                let d2 = document.getElementById('canvas_div2').style='width: 270px; display: block';
             }
 
             if (box.checked && box.value == 'faculties') {
-                let d3 = document.getElementById('canvas_div3').style='width: 220px; display: block';
+                let d3 = document.getElementById('canvas_div3').style='width: 270px; display: block';
             }
 
             if (box.checked && box.value == 'departments') {
-                let d4 = document.getElementById('canvas_div4').style='width: 220px; display: block';
+                let d4 = document.getElementById('canvas_div4').style='width: 270px; display: block';
             }
 
             if (box.checked && box.value == 'rating') {
-                let d5 = document.getElementById('canvas_div5').style='width: 570px; display: block';
+                let d5 = document.getElementById('canvas_div5').style='width: 560px; display: block';
             }
         }
         
+    }
+
+    function radio_check() {
+        let show_items = document.querySelectorAll('input[type="radio"]');
+
+        for (radio of show_items) {
+            if (radio.checked && radio.value == 'normal') {
+                let it_del = document.getElementById("reg");
+                for (select of it_del) {
+                    document.getElementById(select.value).style.display='none';
+                }
+
+                let art = document.getElementById('normal');
+                if (art) {
+                    art.style.display='block';
+                }
+
+                let art2 = document.getElementById('rev');
+                if (art2) {
+                    art2.style.display='none';
+                }
+                
+                let art3 = document.getElementById('name');
+                if (art3) {
+                    art3.style.display='none';
+                }
+            } else if (radio.checked && radio.value == 'rev') {
+                let it_del = document.getElementById("reg");
+                for (select of it_del) {
+                    document.getElementById(select.value).style.display='none';
+                }
+
+                let art = document.getElementById('rev');
+                if (art) {
+                    art.style.display='';
+                }
+
+                let art2 = document.getElementById('name');
+                if (art2) {
+                    art2.style.display='none';
+                }
+
+                let art3 = document.getElementById('normal');
+                if (art3) {
+                    art3.style.display='none';
+                }
+            } else if (radio.checked && radio.value == 'name') {
+                let it_del = document.getElementById("reg");
+                for (select of it_del) {
+                    document.getElementById(select.value).style.display='none';
+                }
+
+                let art = document.getElementById('name');
+                if (art) {
+                    art.style.display='';
+                }
+
+                let art2 = document.getElementById('normal');
+                if (art2) {
+                    art2.style.display='none';
+                }
+
+                let art3 = document.getElementById('rev');
+                if (art3) {
+                    art3.style.display='none';
+                }
+            } else if (radio.checked && radio.value == 'region') {
+                let art = document.getElementById('name');
+                if (art) {
+                    art.style.display='none';
+                }
+
+                let art2 = document.getElementById('normal');
+                if (art2) {
+                    art2.style.display='none';
+                }
+
+                let art3 = document.getElementById('rev');
+                if (art3) {
+                    art3.style.display='none';
+                }
+
+                let it = document.getElementById("reg");
+
+                for (select of it) {
+                    if (select.selected) {
+                        document.getElementById(select.value).style.display='block';
+                    } else {
+                        document.getElementById(select.value).style.display='none';
+                    }
+                }
+            }
+        }
     }
 </script>
 
@@ -242,36 +335,759 @@
 </div>
 
 
-<div class="radios-btn">
+<div id="radios-btn">
+    Сортировка: 
+    <input onclick="radio_check()" type="radio" id="normal-rad" name="fd-show" value="normal" checked>
+    <label for="normal">За рейтингом (Вис. - Низь.)</label>
+
+    <input onclick="radio_check()" type="radio" id="rev-rad" name="fd-show" value="rev">
+    <label for="rev">За рейтингом (Низь. - Вис.)</label>
+
+    <input onclick="radio_check()" type="radio" id="name-rad" name="fd-show" value="name">
+    <label for="name">За назвою</label>
+
+    <input onclick="radio_check()" type="radio" id="region-rad" name="fd-show" value="region">
+    <label for="region">По регіону</label>
+</div>
+
+
+<div class="check-btn">
     <input type="checkbox" id="type-students" name="info-type" value="students">
-    <label for="type-students">Кол-во студентов</label>
+    <label for="type-students">Кількість студентів</label>
 
     <input type="checkbox" id="type-scientists" name="info-type" value="scientists">
-    <label for="type-scientists">Кол-во учёных</label>
+    <label for="type-scientists">Кількість вчених</label>
 
     <input type="checkbox" id="type-faculties" name="info-type" value="faculties">
-    <label for="type-faculties">Кол-во факультетов</label>
+    <label for="type-faculties">Кількість факультетів</label>
 
     <input type="checkbox" id="type-departments" name="info-type" value="departments">
-    <label for="type-departments">Кол-во департаментов</label>
+    <label for="type-departments">Кількість департаментів</label>
 
     <input type="checkbox" id="type-rating" name="info-type" value="rating">
     <label for="type-rating">Рейтинг</label>
 
-    <p><input type="button" value="Сравнить" onclick="output()"> (макс. 5){% if univers_compare %} - {% endif %}{% for i in univers_compare %}<a href="/university_info/{{ i[1] }}">{{ i[0] }}</a> <button onclick="location.href='/delete_compare/{{ i[1] }}'">Удалить</button>{% if loop.index != univers_compare|length %}, {% endif %}{% endfor %}</p>
+    <p><input type="button" value="Порівняти" onclick="output()"> (макс. 5){% if univers_compare %} - {% endif %}{% for i in univers_compare %}<a href="/university_info/{{ i[1] }}">{{ i[0] }}</a> <button onclick="location.href='/delete_compare/{{ i[1] }}'">Вилучити</button>{% if loop.index != univers_compare|length %}, {% endif %}{% endfor %}</p>
+</div>
+
+<div id="reg-select">
+    <select name="select" id="reg" onclick="radio_check()">
+        <option value="ua-ch" selected>Чернігівська</option>
+
+        <option value="ua-ck">Черкаська</option>
+
+        <option value="ua-cv">Чернівецька</option>
+
+        <option value="ua-dp">Дніпропетровська</option>
+
+        <option value="ua-dt">Донецька</option>
+
+        <option value="ua-if">Івано-Франківська</option>
+
+        <option value="ua-kc">м. Київ</option>
+
+        <option value="ua-kh">Кіровоградська</option>
+
+        <option value="ua-kk">Харківська</option>
+
+        <option value="ua-km">Хмельницька</option>
+
+        <option value="ua-kr">АР Крим</option>
+
+        <option value="ua-ks">Херсонська</option>
+
+        <option value="ua-kv">Київська</option>
+
+        <option value="ua-lh">Луганська</option>
+
+        <option value="ua-lv">Львівська</option>
+
+        <option value="ua-mk">Миколаївська</option>
+
+        <option value="ua-my">Одеська</option>
+
+        <option value="ua-pl">Полтавська</option>
+
+        <option value="ua-rv">Рівненська</option>
+
+        <option value="ua-sc">м. Севастополь</option>
+
+        <option value="ua-sm">Сумська</option>
+
+        <option value="ua-tp">Тернопільська</option>
+
+        <option value="ua-vi">Вінницька</option>
+
+        <option value="ua-vo">Волинська</option>
+
+        <option value="ua-zk">Закарпатська</option>
+
+        <option value="ua-zp">Запорізька</option>
+
+        <option value="ua-zt">Житомирська</option>
+    </select>
+</div>
+
+<div id="normal" style="display: block;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }} - Рейтинг: {{ i[1] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }} - Рейтинг: {{ i[1] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div id="rev" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_rev %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }} - Рейтинг: {{ i[1] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }} - Рейтинг: {{ i[1] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div id="name" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_name %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[1] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[1] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 
 
-<table border="1" cellspacing=0>
-    <tbody>
-        <tr>
-            <th style="font-size: 16px;">Университеты</th>
-        </tr>
-        {% for i in univers %}
+
+
+
+
+
+
+<div id="ua-ch" style="display: none;">
+    <table>
+        <tbody>
             <tr>
-                <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[1] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[1] }}'">Добавить</button></td>
+                <th style="font-size: 16px;">Університети</th>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
+            {% for i in univers_region["ua-ch"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-ck" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-ck"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-cv" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-cv"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-dp" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-dp"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-dt" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-dt"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-if" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-if"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-kc" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-kc"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-kh" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-kh"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-kk" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-kk"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-km" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-km"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-kr" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-kr"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-ks" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-ks"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-kv" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-kv"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-lh" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-lh"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-lv" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-lv"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-mk" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-mk"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-my" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-my"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-pl" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-pl"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-rv" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-rv"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-sc" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-sc"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-sm" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-sm"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-tp" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-tp"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-vi" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-vi"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-vo" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-vo"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-zk" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-zk"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-zp" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-zp"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div id="ua-zt" style="display: none;">
+    <table>
+        <tbody>
+            <tr>
+                <th style="font-size: 16px;">Університети</th>
+            </tr>
+            {% for i in univers_region["ua-zt"] %}
+                {% if loop.index % 2 == 0 %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><a style="text-decoration: none; color: black;" href="/university_info/{{ i[2] }}">{{ i[0] }}</a> <button onclick="location.href='/add_compare/{{ i[2] }}'">Додати</button></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

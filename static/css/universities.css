@@ -3,14 +3,34 @@ table {
     top: 900px;
     left: 20px;
     width: 1100px;
+    padding-bottom: 50px;
     font-size: 13.5px;
+}
+
+th {
+    border-bottom: 2px solid black;
+}
+
+#reg-select {
+    position: absolute;
+    top: 721px;
+    left: 790px;
+    font-size: 13px;
+}
+
+#radios-btn {
+    position: absolute;
+    top: 720px;
+    left: 50px;
+    font-size: 13px;
+    white-space: nowrap;
 }
 
 footer {
     display: none;
 }
 
-.radios-btn {
+.check-btn {
     position: absolute;
     top: 750px;
     left: 50px;
@@ -23,42 +43,48 @@ a {
 
 #canvas_div {
     position: absolute;
-    top: 160px;
+    top: 150px;
     left: 20px;
 }
 
 #canvas_div2 {
     position: absolute;
-    top: 160px;
-    left: 220px;
+    top: 150px;
+    left: 275px;
 }
 
 #canvas_div3 {
     position: absolute;
-    top: 160px;
-    left: 420px;
+    top: 150px;
+    left: 530px;
 }
 
 #canvas_div4 {
     position: absolute;
-    top: 160px;
-    left: 620px;
+    top: 150px;
+    left: 785px;
 }
 
 #canvas_div5 {
     position: absolute;
     top: 420px;
-    left: 20px;
+    left: 120px;
 }
 
 
 @media (max-height: 850px) {
+    #radios-btn {
+        top: 653px;
+        font-size: 12px;
+    }
+
     table {
-        top: 780px;
+        top: 800px;
     }
     
-    .radios-btn {
-        top: 640px;
+    .check-btn {
+        top: 673px;
+        font-size: 13px;
     }
 
     #canvas_div {
@@ -78,6 +104,6 @@ a {
     }
     
     #canvas_div5 {
-        top: 330px;
+        top: 370px;
     }
 }
