@@ -7,6 +7,8 @@ from data.database.ukraine_universities import Ukraine_Universities
 from data.database.ukraine_faculties import UkraineFaculties
 from data.Standart import db_session
 
+NO_KEYWORDS = {"Наука": 1}
+
 def get_word_cloud_picture(freq):
     pil_img = WordCloud(width=300, height=200, background_color="white", max_words=10, prefer_horizontal=1).generate_from_frequencies(freq).to_image()
     img = io.BytesIO()
@@ -18,10 +20,12 @@ def get_word_cloud_picture(freq):
 def get_keyword_frequency_for_scientist(id):
     db_sess = db_session.create_session()
     scientist = db_sess.query(Ukraine_Scientists).get(id) 
-    keywords_frequency = {"Наука": 1}
+    keywords_frequency = {}
     for kw in scientist.keywords:
         keywords_frequency [kw.word] = kw.priority
-    return keywords_frequency
+    if len(keywords_frequency)>0:
+        return keywords_frequency
+    return NO_KEYWORDS
     
 def get_keyword_frequency_for_department(id):
     db_sess = db_session.create_session()
@@ -33,7 +37,9 @@ def get_keyword_frequency_for_department(id):
                 keywords_frequency [kw.word] += kw.priority
             else:
                 keywords_frequency [kw.word] = kw.priority
-    return keywords_frequency
+    if len(keywords_frequency)>0:
+        return keywords_frequency
+    return NO_KEYWORDS
 
 def get_keyword_frequency_for_university(id):
     db_sess = db_session.create_session()
@@ -45,7 +51,9 @@ def get_keyword_frequency_for_university(id):
                 keywords_frequency [kw.word] += kw.priority
             else:
                 keywords_frequency [kw.word] = kw.priority
-    return keywords_frequency
+    if len(keywords_frequency)>0:
+        return keywords_frequency
+    return NO_KEYWORDS
 
 def get_keyword_frequency_for_faculty(id):
     db_sess = db_session.create_session()
@@ -58,4 +66,6 @@ def get_keyword_frequency_for_faculty(id):
                     keywords_frequency [kw.word] += kw.priority
                 else:
                     keywords_frequency [kw.word] = kw.priority
-    return keywords_frequency
+    if len(keywords_frequency)>0:
+        return keywords_frequency
+    return NO_KEYWORDS

@@ -23,13 +23,14 @@ from data.database.ukraine_faculties import UkraineFaculties
 from data.database.ukraine_departments import UkraineDepartments
 from data.database.ukraine_scientists import Ukraine_Scientists
 from data.database.criteria import Criterias
+from data.database.keywords import Keywords
 
 db_session.global_init("db/database.db")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'rating_sk'
 BASE_URL = "http://science-rating.co.ua"  # необходимо для роботы редиректа на хостинге
-# BASE_URL="" # Для роботы на локахосте
+# BASE_URL = "" # Для роботы на локахосте
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -594,6 +595,38 @@ def scientist_info(scientist_id):
                            depart_id=scientist.department_id, scopus_articles=scopus, graph=graph, stat_info=stat_info,
                            keywords_cloud = get_word_cloud_picture(get_keyword_frequency_for_scientist(scientist_id)))
 
+
+@app.route('/search_keyword', methods=['GET', 'POST'])
+def search_keyword():
+    if not current_user.is_authenticated:
+        return redirect(BASE_URL + '/login')
+
+    db_sess = db_session.create_session()
+    inp = ''
+    univers = []
+    scientists = []
+
+    if request.method == 'POST':
+        if 'inp_val' in request.form.keys():
+            inp = request.form['inp_val']
+
+        if inp:
+            for kw in  db_sess.query(Keywords).filter(Keywords.word.ilike(f"%{inp}%")).all():
+                try:
+                    scientist = db_sess.query(Ukraine_Scientists).get(kw.scientist_id)
+                    univer = db_sess.query(Ukraine_Universities).get(scientist.univer_id) 
+                    if all(map (lambda x: x[1] != scientist.id, scientists)):               
+                        scientists.append([scientist.name, scientist.id])
+                    if all(map (lambda x: x[1] != univer.id, univers)):   
+                        univers.append([univer.univername, univer.id])
+                except:
+                    continue
+
+
+            scientists = sorted (scientists, key=lambda x: x[0])[:500]
+            univers = sorted (univers, key=lambda x: x[0])[:500]
+
+    return render_template('search_keyword.html', value=inp, univers=univers, scientists=scientists)
 
 if __name__ == '__main__':
     app.run()
