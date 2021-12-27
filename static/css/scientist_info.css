@@ -322,3 +322,9 @@ footer {
         width: 1300px;
     }
 }
+
+.keywords_cloud{
+    position: absolute;
+    top: 200px;
+    left: 600px;
+}
