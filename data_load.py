@@ -27,12 +27,11 @@ for i in range(200):
         plus = 70
     elif i <= 50:
         plus = 60
-    else: 
+    else:
         plus = 10
 
     map_uk[universities[i][3]] += plus
-
-map_uk["ua-kc"] -= 3000
+map_uk['ua-kc'] -= 3000
 
 articles_main_page = 0
 for i in db_sess.query(Ukraine_Scientists):

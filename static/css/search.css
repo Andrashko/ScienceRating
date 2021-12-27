@@ -5,6 +5,14 @@ form {
     width: 97%;
 }
 
+
+#radios-btn {
+    position: absolute;
+    top: 254px;
+    left: 100px;
+}
+
+
 .search_inp {
     height: 30px;
     width: 100%;
@@ -47,13 +55,16 @@ footer {
 }
 
 @media (max-height: 850px) {
+    #radios-btn {
+        top: 205px;
+    }
+
     form {
         top: 100px;
     }
     
     ul {
-        position: absolute;
-        top: 720px;
+        top: 230px;
         white-space: nowrap;
     }
 }

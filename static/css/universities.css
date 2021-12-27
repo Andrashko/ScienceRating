@@ -73,6 +73,11 @@ a {
 
 
 @media (max-height: 850px) {
+    #reg-select {
+        top: 654px;
+        left: 741px;
+    }
+
     #radios-btn {
         top: 653px;
         font-size: 12px;

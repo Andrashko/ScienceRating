@@ -11,5 +11,4 @@ class Keywords(SqlAlchemyBase):
     priority = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
 
     scientist_id = sqlalchemy.Column(sqlalchemy.Integer,
-                                   sqlalchemy.ForeignKey('Ukraine_Scientists.id'))
-    
+                                     sqlalchemy.ForeignKey('Ukraine_Scientists.id'))

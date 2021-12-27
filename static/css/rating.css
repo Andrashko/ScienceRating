@@ -74,6 +74,7 @@
     position: absolute;
     top: 655px;
     left: 427px;
+    white-space: nowrap;
 }
 
 .scientists.card {
