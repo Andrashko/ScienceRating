@@ -33,3 +33,54 @@ def calculate_university_rating(univer):
         return 0
     except AttributeError:
         return 0
+
+
+def get_students(univer_id):
+    db_sess = db_session.create_session()
+
+    values = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'university').filter(
+        ItemsAndCriteria.item_id == univer_id)
+
+    criters_values = []
+    for i in range(2, 4):
+        criteria = db_sess.query(Criterias).get(i)
+        value = values.filter(ItemsAndCriteria.criteria_id == i).first()
+        if criteria and value:
+            criters_values.append([criteria.name, int(value.value)])
+    return criters_values
+
+
+def get_scientists(univer_id):
+    db_sess = db_session.create_session()
+
+    values = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'university').filter(
+        ItemsAndCriteria.item_id == univer_id)
+
+    criters_values = []
+    for i in [8, 9, 10, 11, 12]:
+        criteria = db_sess.query(Criterias).get(i)
+        value = values.filter(ItemsAndCriteria.criteria_id == i).first()
+        if criteria and value:
+            criters_values.append([criteria.name, int(value.value)])
+    return criters_values
+
+
+def get_articles(univer_id):
+    db_sess = db_session.create_session()
+
+    values = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'university').filter(
+        ItemsAndCriteria.item_id == univer_id)
+
+    criters_values = []
+    for i in [23, 34, 31]:
+        criteria = db_sess.query(Criterias).get(i)
+        value = values.filter(ItemsAndCriteria.criteria_id == i).first()
+        if criteria and value:
+            criters_values.append([criteria.name, int(value.value)])
+    return criters_values
+
+
+def get_projects(univer_id):
+    db_sess = db_session.create_session()
+
+    return db_sess.query(Ukraine_Universities).get(univer_id).projects

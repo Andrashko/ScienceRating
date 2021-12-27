@@ -14,15 +14,29 @@
         </tr>
         {% for criter in criters_values %}
             {% if loop.index % 2 == 0 %}
-                <tr style="background-color: #D1D1D1;">
-                    <td width=530 height=50>{{ criter[0] }}</td>
-                    <td align="center" width=300>{{ criter[1].value }}</td>
-                </tr>
+                {% if loop.index in [1,4,10,14] %}
+                    <tr style="background-color: rgb(2, 41, 138); color: white">
+                        <td style="text-align: center;" width=530 height=50>{{ criter[0] }}</td>
+                        <td align="center" width=300>{{ criter[1] }}</td>
+                    </tr>
+                {% else %}
+                    <tr style="background-color: #D1D1D1;">
+                        <td width=530 height=50>{{ criter[0] }}</td>
+                        <td align="center" width=300>{{ criter[1] }}</td>
+                    </tr>
+                {% endif %}
             {% else %}
-                <tr>
-                    <td width=530 height=50>{{ criter[0] }}</td>
-                    <td align="center" width=300>{{ criter[1].value }}</td>
-                </tr>
+                {% if loop.index in [1,4,10,14] %}
+                    <tr style="background-color: rgb(2, 41, 138); color: white">
+                        <td width=530 height=50 style="text-align: center;">{{ criter[0] }}</td>
+                        <td align="center" width=300>{{ criter[1] }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td width=530 height=50>{{ criter[0] }}</td>
+                        <td align="center" width=300>{{ criter[1] }}</td>
+                    </tr>
+                {% endif %}
             {% endif %}
         {% endfor %}
         

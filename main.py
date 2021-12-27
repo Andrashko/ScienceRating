@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup as BS
 from sqlalchemy import or_
 from dotenv import load_dotenv
 import threading
-from rating import calculate_university_rating
+from rating import calculate_university_rating, get_articles, get_projects, get_students, get_scientists
 from data_load import universities, map_uk, articles_main_page, students_main_page
 from kw_cloud import get_keyword_frequency_for_department, get_keyword_frequency_for_faculty, \
     get_keyword_frequency_for_scientist, get_keyword_frequency_for_university, get_word_cloud_picture
@@ -31,7 +31,7 @@ db_session.global_init("db/database.db")
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'rating_sk'
 BASE_URL = "http://science-rating.co.ua"  # необходимо для роботы редиректа на хостинге
-# BASE_URL = "" # Для роботы на локахосте
+BASE_URL = ""  # Для роботы на локахосте
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -392,8 +392,8 @@ def university_info(university_id):
     return render_template('university_info.html',
                            facult_depart=facult_depart, facult_depart_rev=facult_depart_rev,
                            facult_depart_name=facult_depart_name, univer=university, facult_empty=facult_empty,
-                           depart_empty=depart_empty, 
-                           keywords_cloud = get_word_cloud_picture(get_keyword_frequency_for_university((university_id))))
+                           depart_empty=depart_empty,
+                           keywords_cloud=get_word_cloud_picture(get_keyword_frequency_for_university((university_id))))
 
 
 @app.route('/university_projects/<int:univer_id>')
@@ -434,7 +434,8 @@ def faculty_info(faculty_id):
 
     return render_template('faculty_info.html', departments=departments, departments_rev=departments_rev,
                            departments_name=departments_name, faculty=faculty,
-                           keywords_cloud = get_word_cloud_picture(get_keyword_frequency_for_faculty((faculty_id))))
+                           keywords_cloud=get_word_cloud_picture(get_keyword_frequency_for_faculty((faculty_id))))
+
 
 @app.route('/department_info/<int:depart_id>')
 def department_info(depart_id):
@@ -445,8 +446,8 @@ def department_info(depart_id):
     depart = db_sess.query(UkraineDepartments).get(depart_id)
     univer_id = db_sess.query(UkraineFaculties).get(depart.faculty_id).univer_id
     return render_template('department_info.html',
-                            depart=depart, univer_id=univer_id,
-                            keywords_cloud = get_word_cloud_picture(get_keyword_frequency_for_department((depart_id))))
+                           depart=depart, univer_id=univer_id,
+                           keywords_cloud=get_word_cloud_picture(get_keyword_frequency_for_department((depart_id))))
 
 
 @app.route('/university_info_rating/<int:university_id>')
@@ -461,15 +462,26 @@ def university_info_rating(university_id):
         ItemsAndCriteria.item_id == university.id)
 
     criters_values = []
-    for i in range(1, 200):
-        criteria = db_sess.query(Criterias).get(i)
-        value = values.filter(ItemsAndCriteria.criteria_id == i).first()
-        if criteria and value:
-            criters_values.append([criteria.name, value])
+    students = get_students(university_id)
+    scientists = get_scientists(university_id)
+    articles = get_articles(university_id)
+    projects = get_projects(university_id)
+
+    criters_values.append(['Освітня діяльність', sum([i[1] for i in students])])
+    criters_values += students
+
+    criters_values.append(['Кадровый потенціал', sum([i[1] for i in scientists])])
+    criters_values += scientists
+
+    criters_values.append(['Публікаційна діяльність', sum([i[1] for i in articles[1:]])])
+    criters_values += articles
+
+    criters_values.append(['Проєктна діяльність', len(projects)])
+
 
     return render_template('university_info_rating.html', univer=university, criters_values=criters_values,
                            rating_value=calculate_university_rating(university),
-                           keywords_cloud = get_word_cloud_picture(get_keyword_frequency_for_university(university_id)))
+                           keywords_cloud=get_word_cloud_picture(get_keyword_frequency_for_university(university_id)))
 
 
 @app.route('/scientist_info/<int:scientist_id>')
@@ -618,7 +630,7 @@ def scientist_info(scientist_id):
     return render_template('scientist_info.html', scientist=info, google_articles=google_scholar,
                            publon_articles=publon, photo=photo, univer_id=scientist.univer_id,
                            depart_id=scientist.department_id, scopus_articles=scopus, graph=graph, stat_info=stat_info,
-                           keywords_cloud = get_word_cloud_picture(get_keyword_frequency_for_scientist(scientist_id)))
+                           keywords_cloud=get_word_cloud_picture(get_keyword_frequency_for_scientist(scientist_id)))
 
 
 if __name__ == '__main__':
