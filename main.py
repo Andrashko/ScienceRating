@@ -424,7 +424,8 @@ def faculty_info(faculty_id):
     if department_rating:
         for i in department_rating:
             try:
-                departments.append([db_sess.query(UkraineDepartments).get(i.item_id).department_name, i.item_id,
+                if db_sess.query(UkraineDepartments).get(i.item_id).faculty_id == faculty_id:
+                    departments.append([db_sess.query(UkraineDepartments).get(i.item_id).department_name, i.item_id,
                                     int(int(i.value) * 100 / scientists)])
             except ZeroDivisionError:
                 departments.append([' ', -1])
