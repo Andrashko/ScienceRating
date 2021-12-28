@@ -10,7 +10,7 @@ from data.Standart import db_session
 NO_KEYWORDS = {"Наука": 1}
 
 def get_word_cloud_picture(freq):
-    pil_img = WordCloud(width=300, height=200, background_color="white", max_words=10, prefer_horizontal=1).generate_from_frequencies(freq).to_image()
+    pil_img = WordCloud(width=300, height=200, background_color="white", max_words=10, prefer_horizontal=1, min_font_size=10).generate_from_frequencies(freq).to_image()
     img = io.BytesIO()
     pil_img.save(img, "PNG")
     img.seek(0)
