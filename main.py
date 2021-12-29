@@ -34,7 +34,7 @@ db_session.global_init("db/database.db")
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'rating_sk'
 BASE_URL = "http://science-rating.co.ua"  # необходимо для роботы редиректа на хостинге
-BASE_URL = ""  # Для роботы на локахосте
+# BASE_URL = ""  # Для роботы на локахосте
 
 login_manager = LoginManager()
 login_manager.init_app(app)
