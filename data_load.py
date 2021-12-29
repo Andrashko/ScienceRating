@@ -1,3 +1,4 @@
+from sqlalchemy.sql.expression import false
 from data.Standart import db_session
 
 from data.database.ukraine_universities import Ukraine_Universities
@@ -8,21 +9,34 @@ from data.database.ukraine_scientists import Ukraine_Scientists
 from data.database.items_and_criteria import ItemsAndCriteria
 from rating import calculate_university_rating
 
+from json import dump, load 
+
 db_session.global_init('db/database.db')
 
 db_sess = db_session.create_session()
 
-scientists = list(sorted([[i.name, i.id, float(db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.criteria_id == 300).filter(ItemsAndCriteria.item_id==i.id).first().value)]\
-    for i in db_sess.query(Ukraine_Scientists).all()[:100]], key=lambda x: x[2], reverse=True))
-universities = []
+# scientists = list(sorted([[i.name, i.id, float(db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.criteria_id == 300).filter(ItemsAndCriteria.item_id==i.id).first().value)]\
+#     for i in db_sess.query(Ukraine_Scientists).all()[:100]], key=lambda x: x[2], reverse=True))
+# with open ("db/scientists.json", "w", encoding="utf-8") as file:
+#     dump(scientists, file, ensure_ascii=False, indent=None)
+# universities = []
+
+# for university in db_sess.query(Ukraine_Universities).all():
+#     rating = calculate_university_rating(university)
+#     map_uk[university.region] = 0
+#     universities.append([university.univername, rating, university.id, university.region])
+# universities = sorted(universities, key=lambda x: x[1], reverse=True)
+# with open ("db/universities.json", "w", encoding="utf-8") as file:
+#     dump(universities, file, ensure_ascii=False, indent=None)
+
+with open ("db/scientists.json", encoding="utf-8") as file:
+    scientists =load(file)
+with open ("db/universities.json", encoding="utf-8") as file:
+    universities=load(file)
+
 map_uk = {}
 for university in db_sess.query(Ukraine_Universities).all():
-    rating = calculate_university_rating(university)
     map_uk[university.region] = 0
-    universities.append([university.univername, rating, university.id, university.region])
-universities = sorted(universities, key=lambda x: x[1], reverse=True)
-
-
 plus = 0
 for i in range(200):
     if i <= 10:
