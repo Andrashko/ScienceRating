@@ -12,7 +12,7 @@ from rating import calculate_scientist_rating, calculate_university_rating
 db_session.global_init("db/database.db")
 db_sess = db_session.create_session()
 
-for sci in db_sess.query(Ukraine_Scientists).all()[7328:]:
+for sci in db_sess.query(Ukraine_Scientists).all()[9700:]:
     val = calculate_scientist_rating(sci)
     is_first = True
     for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "scientist").filter(ItemsAndCriteria.criteria_id == 300).filter(ItemsAndCriteria.item_id == sci.id):
