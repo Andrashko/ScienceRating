@@ -161,12 +161,12 @@ def calculate_scientist_rating(scientist):
         scientists_rating_cache[scientist.id] = calculate_publication_rating(scientist, "scientist")
     return scientists_rating_cache[scientist.id] 
 
-faculties = []
-departments = []
-db_session.global_init("db/database.db")
-db_sess = db_session.create_session()
-for fac in db_sess.query(UkraineFaculties).filter(UkraineFaculties.univer_id == 36).all():
-    if ' - без факультету' not in fac.faculty_name:
-        faculties.append([fac.faculty_name, fac.id, calculate_faculty_rating(fac)])
-        for dep in db_sess.query(UkraineDepartments).filter(UkraineDepartments.faculty_id == fac.id).all():
-            departments.append([dep.department_name, dep.id, calculate_department_rating(dep)])
+# faculties = []
+# departments = []
+# db_session.global_init("db/database.db")
+# db_sess = db_session.create_session()
+# for fac in db_sess.query(UkraineFaculties).filter(UkraineFaculties.univer_id == 36).all():
+#     if ' - без факультету' not in fac.faculty_name:
+#         faculties.append([fac.faculty_name, fac.id, calculate_faculty_rating(fac)])
+#         for dep in db_sess.query(UkraineDepartments).filter(UkraineDepartments.faculty_id == fac.id).all():
+#             departments.append([dep.department_name, dep.id, calculate_department_rating(dep)])
