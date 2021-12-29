@@ -33,7 +33,7 @@ db_session.global_init("db/database.db")
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'rating_sk'
 BASE_URL = "http://science-rating.co.ua"  # необходимо для роботы редиректа на хостинге
-# BASE_URL = ""  # Для роботы на локахосте
+BASE_URL = ""  # Для роботы на локахосте
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -112,6 +112,7 @@ def universities_rating():
 
 @app.route('/scientists')
 def all_scientists():
+    db_sess = db_session.create_session()
     return render_template('scientists.html', scientists=scientists[:500], color_page_three='#F63E3E')
 
 

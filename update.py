@@ -7,15 +7,38 @@ from data.database.ukraine_scientists import Ukraine_Scientists
 from data.database.criteria import Criterias
 from data.database.keywords import Keywords
 from data.database.univer_projects import UniverProjects
-from rating import calculate_scientist_rating
+from rating import calculate_scientist_rating, calculate_university_rating
 
 db_session.global_init("db/database.db")
 db_sess = db_session.create_session()
 
-for sci in db_sess.query(Ukraine_Scientists).all():
-    val = calculate_scientist_rating(sci)
+# for sci in db_sess.query(Ukraine_Scientists).all()[3200:]:
+#     val = calculate_scientist_rating(sci)
+#     is_first = True
+#     for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "scientist").filter(ItemsAndCriteria.criteria_id == 300).filter(ItemsAndCriteria.item_id == sci.id):
+#         if is_first:
+#             criteria.value = val
+#             is_first = False
+#         else:
+#             db_sess.delete(criteria)
+#     if is_first:
+#         criteria = ItemsAndCriteria()
+#         criteria.criteria_id = 300
+#         criteria.item_type = "scientist"
+#         criteria.country = "ukraine"
+#         criteria.item_id = sci.id     
+#         criteria.univer_id = sci.univer_id
+#         criteria.value = val   
+#         db_sess.add(criteria)
+#     db_sess.commit()
+#     print(sci.id)
+
+for univer in db_sess.query(Ukraine_Universities).all():
+    val = calculate_university_rating(univer)
+
+
     is_first = True
-    for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "scientist").filter(ItemsAndCriteria.criteria_id == 300).filter(ItemsAndCriteria.item_id == sci.id):
+    for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "university").filter(ItemsAndCriteria.criteria_id == 301).filter(ItemsAndCriteria.item_id == univer.id):
         if is_first:
             criteria.value = val
             is_first = False
@@ -23,16 +46,15 @@ for sci in db_sess.query(Ukraine_Scientists).all():
             db_sess.delete(criteria)
     if is_first:
         criteria = ItemsAndCriteria()
-        criteria.criteria_id = 300
-        criteria.item_type = "scientist"
+        criteria.criteria_id = 301
+        criteria.item_type = "university"
         criteria.country = "ukraine"
-        criteria.item_id = sci.id     
-        criteria.univer_id = sci.univer_id
-        criteria.value = val   
+        criteria.item_id = univer.id      
+        criteria.univer_id = univer.id
+        criteria.value = val
         db_sess.add(criteria)
     db_sess.commit()
-    print(sci.id)
-
+    print(univer.id)
 
 # for univer in db_sess.query(Ukraine_Universities).all():
 #     mag = 0

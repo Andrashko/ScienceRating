@@ -14,11 +14,10 @@ db_sess = db_session.create_session()
 
 scientists = list(sorted([[i.name, i.id, float(db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.criteria_id == 300).filter(ItemsAndCriteria.item_id==i.id).first().value)]\
     for i in db_sess.query(Ukraine_Scientists).all()[:3000]], key=lambda x: x[2], reverse=True))
-
 universities = []
 map_uk = {}
 for university in db_sess.query(Ukraine_Universities).all():
-    rating = calculate_university_rating(university)
+    rating = float(db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.criteria_id == 301).filter(ItemsAndCriteria.item_id==university.id).first().value)
     map_uk[university.region] = 0
     universities.append([university.univername, rating, university.id, university.region])
 universities = sorted(universities, key=lambda x: x[1], reverse=True)
