@@ -34,7 +34,7 @@ db_session.global_init("db/database.db")
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'rating_sk'
 BASE_URL = "http://science-rating.co.ua"  # необходимо для роботы редиректа на хостинге
-# BASE_URL = ""  # Для роботы на локахосте
+BASE_URL = ""  # Для роботы на локахосте
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -439,17 +439,17 @@ def university_info_rating(university_id):
     criters_values.append(['Освітня діяльність', calculate_students_rating(university), True])
     criters_values += students
 
-    criters_values.append(['Кадровый потенціал', calculate_employee_rating (university, "university"), True])
+    criters_values.append(['Кадровий потенціал', calculate_employee_rating (university, "university"), True])
     criters_values += scientists
 
     criters_values.append(['Публікаційна діяльність', calculate_publication_rating (university, "university"), True])
     criters_values += articles
 
     criters_values.append(['Проєктна діяльність', calculate_project_rating(university), True])
-
+    criters_values.append(['Міжнародне визнання', calculate_international_rating(university), True])
 
     return render_template('university_info_rating.html', univer=university, criters_values=criters_values,
-                           rating_value=calculate_university_rating(university))
+                           rating_value=calculate_university_rating(university)*0.1)
 
 
 @app.route('/scientist_info/<int:scientist_id>')

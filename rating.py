@@ -73,7 +73,7 @@ def calculate_students_rating(univer):
     db_sess = db_session.create_session()
     try:
         ic = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'university').filter(ItemsAndCriteria.item_id == univer.id)
-        value = int(ic.filter(ItemsAndCriteria.criteria_id == 1).first().value*0.1)
+        value = int(ic.filter(ItemsAndCriteria.criteria_id == 1).first().value)*0.1
         return value
     except:
         return 0

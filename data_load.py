@@ -1,4 +1,3 @@
-from sqlalchemy.sql.expression import false
 from data.Standart import db_session
 
 from data.database.ukraine_universities import Ukraine_Universities
@@ -14,10 +13,10 @@ from json import dump, load
 db_session.global_init('db/database.db')
 
 db_sess = db_session.create_session()
+
 # faculties=[]
 # departments =[]
-
-# for university in db_sess.query(Ukraine_Universities).all():
+# for university in db_sess.query(Ukraine_Universities).filter(Ukraine_Universities.id == 36).all():
 #     for fac in db_sess.query(UkraineFaculties).filter(UkraineFaculties.univer_id == university.id).all():
 #         if ' - без факультету' not in fac.faculty_name:
 #             faculties.append([fac.faculty_name, fac.id, calculate_faculty_rating(fac)])

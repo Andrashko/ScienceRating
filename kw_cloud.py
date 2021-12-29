@@ -76,4 +76,3 @@ def get_keyword_frequency_for_faculty(id):
         return keywords_frequency
     return NO_KEYWORDS
 
-cache[36] = get_keyword_frequency_for_university(36)

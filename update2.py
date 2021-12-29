@@ -10,33 +10,33 @@ from data.database.keywords import Keywords
 db_session.global_init("db/database.db")
 db_sess = db_session.create_session()
 
-crit_list = [23,33]
-for dep in db_sess.query(UkraineDepartments).all():
-    for cr in crit_list:
-        value = 0
-        for sc in db_sess.query(Ukraine_Scientists).filter(Ukraine_Scientists.department_id == dep.id).all():
-            for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "scientist").filter(ItemsAndCriteria.criteria_id == cr).filter(ItemsAndCriteria.item_id == sc.id):
-                value += int(criteria.value)
+# crit_list = [23,33]
+# for dep in db_sess.query(UkraineDepartments).all():
+#     for cr in crit_list:
+#         value = 0
+#         for sc in db_sess.query(Ukraine_Scientists).filter(Ukraine_Scientists.department_id == dep.id).all():
+#             for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "scientist").filter(ItemsAndCriteria.criteria_id == cr).filter(ItemsAndCriteria.item_id == sc.id):
+#                 value += int(criteria.value)
             
-        is_first = True
-        for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "department").filter(ItemsAndCriteria.criteria_id == cr).filter(ItemsAndCriteria.item_id == dep.id):
-            if is_first and value != 0:
-                criteria.value = value
-                is_first = False
-            else:
-                db_sess.delete(criteria)
-        if is_first and value != 0:
-            criteria = ItemsAndCriteria()
-            criteria.criteria_id = cr
-            criteria.item_type = "department"
-            criteria.country = "ukraine"
-            criteria.item_id = dep.id      
-            criteria.univer_id = db_sess.query(UkraineFaculties).get(dep.faculty_id).univer_id
-            criteria.value = value
-            db_sess.add(criteria)
+#         is_first = True
+#         for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "department").filter(ItemsAndCriteria.criteria_id == cr).filter(ItemsAndCriteria.item_id == dep.id):
+#             if is_first and value != 0:
+#                 criteria.value = value
+#                 is_first = False
+#             else:
+#                 db_sess.delete(criteria)
+#         if is_first and value != 0:
+#             criteria = ItemsAndCriteria()
+#             criteria.criteria_id = cr
+#             criteria.item_type = "department"
+#             criteria.country = "ukraine"
+#             criteria.item_id = dep.id      
+#             criteria.univer_id = db_sess.query(UkraineFaculties).get(dep.faculty_id).univer_id
+#             criteria.value = value
+#             db_sess.add(criteria)
 
-    db_sess.commit()  
-    print(f"departmrnt {dep.id}")
+#     db_sess.commit()  
+#     print(f"departmrnt {dep.id}")
 
 
 crit_list = [23,33,6,7,9,10,11,12]
