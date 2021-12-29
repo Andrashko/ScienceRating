@@ -5,14 +5,16 @@ from data.database.ukraine_scientists import Ukraine_Scientists
 from data.database.ukraine_faculties import UkraineFaculties
 from data.database.ukraine_departments import UkraineDepartments
 from data.database.ukraine_scientists import Ukraine_Scientists
-from rating import calculate_university_rating, calculate_department_rating, calculate_faculty_rating, calculate_students_rating
+from rating import calculate_university_rating, calculate_scientist_rating
 
 db_session.global_init('db/database.db')
 
 db_sess = db_session.create_session()
+scientists = list(sorted([[i.name, i.id, calculate_scientist_rating(i)] for i in db_sess.query(Ukraine_Scientists).all()], key=lambda x: x[2], reverse=True))
+
 universities = []
 map_uk = {}
-for university in db_sess.query(Ukraine_Universities):
+for university in db_sess.query(Ukraine_Universities).all():
     rating = calculate_university_rating(university)
     map_uk[university.region] = 0
     universities.append([university.univername, rating, university.id, university.region])

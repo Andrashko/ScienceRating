@@ -7,6 +7,8 @@ from data.database.ukraine_universities import Ukraine_Universities
 from data.database.ukraine_faculties import UkraineFaculties
 from data.Standart import db_session
 
+cache = {}
+
 NO_KEYWORDS = {"Наука": 1}
 
 def get_word_cloud_picture(freq):
@@ -42,6 +44,8 @@ def get_keyword_frequency_for_department(id):
     return NO_KEYWORDS
 
 def get_keyword_frequency_for_university(id):
+    if cache.get(id):
+        return cache[id]
     db_sess = db_session.create_session()
     univer = db_sess.query(Ukraine_Universities).get(id)
     keywords_frequency = {}
@@ -52,6 +56,7 @@ def get_keyword_frequency_for_university(id):
             else:
                 keywords_frequency [kw.word] = kw.priority
     if len(keywords_frequency)>0:
+        cache[id] = keywords_frequency
         return keywords_frequency
     return NO_KEYWORDS
 

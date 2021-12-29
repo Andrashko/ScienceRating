@@ -6,136 +6,219 @@ from data.database.ukraine_departments import UkraineDepartments
 from data.database.ukraine_scientists import Ukraine_Scientists
 from data.database.criteria import Criterias
 from data.database.keywords import Keywords
+from data.database.univer_projects import UniverProjects
 
 db_session.global_init("db/database.db")
 db_sess = db_session.create_session()
 
-for dep in db_sess.query(UkraineDepartments).all():
-    sc = db_sess.query(Ukraine_Scientists).filter(Ukraine_Scientists.department_id == dep.id)
-    doctors = sc.filter(Ukraine_Scientists.degree.ilike("%доктор%")).count()
-    candidats = sc.filter(Ukraine_Scientists.degree.ilike("%кандидат%")).count()
-    total = sc.count()
-    
+
+for univer in db_sess.query(Ukraine_Universities).all():
+    mag = 0
+    bak = 0
+    if univer.students_bak:
+        bak = univer.students_bak
+    if univer.students_mag:
+        mag = univer.students_mag
     is_first = True
-    for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "department").filter(ItemsAndCriteria.criteria_id == 6).filter(ItemsAndCriteria.item_id == dep.id):
+    for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "university").filter(ItemsAndCriteria.criteria_id == 1).filter(ItemsAndCriteria.item_id == univer.id):
         if is_first:
-            criteria.value = total
+            criteria.value = bak+mag
             is_first = False
         else:
             db_sess.delete(criteria)
     if is_first:
         criteria = ItemsAndCriteria()
-        criteria.criteria_id = 6
-        criteria.item_type = "department"
+        criteria.criteria_id = 1
+        criteria.item_type = "university"
         criteria.country = "ukraine"
-        criteria.item_id = dep.id      
-        criteria.univer_id = db_sess.query(UkraineFaculties).get(dep.faculty_id).univer_id
-        criteria.value = total
+        criteria.item_id = univer.id      
+        criteria.univer_id = univer.id
+        criteria.value = bak+mag
         db_sess.add(criteria)
 
     is_first = True
-    for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "department").filter(ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.item_id == dep.id):
+    for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "university").filter(ItemsAndCriteria.criteria_id == 2).filter(ItemsAndCriteria.item_id == univer.id):
         if is_first:
-            criteria.value = doctors+candidats
+            criteria.value = bak
             is_first = False
         else:
             db_sess.delete(criteria)
     if is_first:
         criteria = ItemsAndCriteria()
-        criteria.criteria_id = 7
-        criteria.item_type = "department"
+        criteria.criteria_id = 2
+        criteria.item_type = "university"
         criteria.country = "ukraine"
-        criteria.item_id = dep.id      
-        criteria.univer_id = db_sess.query(UkraineFaculties).get(dep.faculty_id).univer_id
-        criteria.value = doctors+candidats
-        db_sess.add(criteria)
-
-    is_first = True
-    for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "department").filter(ItemsAndCriteria.criteria_id == 9).filter(ItemsAndCriteria.item_id == dep.id):
-        if is_first:
-            criteria.value = candidats
-            is_first = False
-        else:
-            db_sess.delete(criteria)
-    if is_first:
-        criteria = ItemsAndCriteria()
-        criteria.criteria_id = 9
-        criteria.item_type = "department"
-        criteria.country = "ukraine"
-        criteria.item_id = dep.id      
-        criteria.univer_id = db_sess.query(UkraineFaculties).get(dep.faculty_id).univer_id
-        criteria.value = candidats
+        criteria.item_id = univer.id      
+        criteria.univer_id = univer.id
+        criteria.value = bak
         db_sess.add(criteria)
     
     is_first = True
-    for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "department").filter(ItemsAndCriteria.criteria_id == 10).filter(ItemsAndCriteria.item_id == dep.id):
+    for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "university").filter(ItemsAndCriteria.criteria_id == 3).filter(ItemsAndCriteria.item_id == univer.id):
         if is_first:
-            criteria.value = doctors
+            criteria.value = mag
             is_first = False
         else:
             db_sess.delete(criteria)
     if is_first:
         criteria = ItemsAndCriteria()
-        criteria.criteria_id = 10
-        criteria.item_type = "department"
+        criteria.criteria_id = 3
+        criteria.item_type = "university"
         criteria.country = "ukraine"
-        criteria.item_id = dep.id      
-        criteria.univer_id = db_sess.query(UkraineFaculties).get(dep.faculty_id).univer_id
-        criteria.value = doctors
+        criteria.item_id = univer.id      
+        criteria.univer_id = univer.id
+        criteria.value = mag
         db_sess.add(criteria)
 
+
+    pr = db_sess.query(UniverProjects).filter(UniverProjects.univer_id == univer.id).count()
     is_first = True
-    for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "department").filter(ItemsAndCriteria.criteria_id == 11).filter(ItemsAndCriteria.item_id == dep.id):
+    for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "university").filter(ItemsAndCriteria.criteria_id == 44).filter(ItemsAndCriteria.item_id == univer.id):
         if is_first:
-            criteria.value = total - (doctors+candidats)
+            criteria.value = pr
             is_first = False
         else:
             db_sess.delete(criteria)
     if is_first:
         criteria = ItemsAndCriteria()
-        criteria.criteria_id = 11
-        criteria.item_type = "department"
+        criteria.criteria_id = 44
+        criteria.item_type = "university"
         criteria.country = "ukraine"
-        criteria.item_id = dep.id      
-        criteria.univer_id = db_sess.query(UkraineFaculties).get(dep.faculty_id).univer_id
-        criteria.value = total - (doctors+candidats)
+        criteria.item_id = univer.id      
+        criteria.univer_id = univer.id
+        criteria.value = pr
         db_sess.add(criteria)
 
-    is_first = True
-    for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "department").filter(ItemsAndCriteria.criteria_id == 12).filter(ItemsAndCriteria.item_id == dep.id):
-        if is_first:
-            criteria.value = total - (doctors+candidats)
-            is_first = False
-        else:
-            db_sess.delete(criteria)
-    if is_first:
-        criteria = ItemsAndCriteria()
-        criteria.criteria_id = 12
-        criteria.item_type = "department"
-        criteria.country = "ukraine"
-        criteria.item_id = dep.id      
-        criteria.univer_id = db_sess.query(UkraineFaculties).get(dep.faculty_id).univer_id
-        criteria.value = total - (doctors+candidats)
-        db_sess.add(criteria)
-    
-    is_first = True
-    for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "department").filter(ItemsAndCriteria.criteria_id == 13).filter(ItemsAndCriteria.item_id == dep.id):
-        if is_first:
-            criteria.value = (doctors+candidats)*100/total if total>0 else 0
-            is_first = False
-        else:
-            db_sess.delete(criteria)
-    if is_first:
-        criteria = ItemsAndCriteria()
-        criteria.criteria_id = 13
-        criteria.item_type = "department"
-        criteria.country = "ukraine"
-        criteria.item_id = dep.id      
-        criteria.univer_id = db_sess.query(UkraineFaculties).get(dep.faculty_id).univer_id
-        criteria.value = (doctors+candidats)*100/total if total>0 else 0
-        db_sess.add(criteria)
+
     db_sess.commit()
-    print(f"dep {dep.id}")
+    print(univer.id)
+
+# for dep in db_sess.query(UkraineDepartments).all():
+#     sc = db_sess.query(Ukraine_Scientists).filter(Ukraine_Scientists.department_id == dep.id)
+#     doctors = sc.filter(Ukraine_Scientists.degree.ilike("%доктор%")).count()
+#     candidats = sc.filter(Ukraine_Scientists.degree.ilike("%кандидат%")).count()
+#     total = sc.count()
+    
+#     is_first = True
+#     for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "department").filter(ItemsAndCriteria.criteria_id == 6).filter(ItemsAndCriteria.item_id == dep.id):
+#         if is_first:
+#             criteria.value = total
+#             is_first = False
+#         else:
+#             db_sess.delete(criteria)
+#     if is_first:
+#         criteria = ItemsAndCriteria()
+#         criteria.criteria_id = 6
+#         criteria.item_type = "department"
+#         criteria.country = "ukraine"
+#         criteria.item_id = dep.id      
+#         criteria.univer_id = db_sess.query(UkraineFaculties).get(dep.faculty_id).univer_id
+#         criteria.value = total
+#         db_sess.add(criteria)
+
+#     is_first = True
+#     for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "department").filter(ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.item_id == dep.id):
+#         if is_first:
+#             criteria.value = doctors+candidats
+#             is_first = False
+#         else:
+#             db_sess.delete(criteria)
+#     if is_first:
+#         criteria = ItemsAndCriteria()
+#         criteria.criteria_id = 7
+#         criteria.item_type = "department"
+#         criteria.country = "ukraine"
+#         criteria.item_id = dep.id      
+#         criteria.univer_id = db_sess.query(UkraineFaculties).get(dep.faculty_id).univer_id
+#         criteria.value = doctors+candidats
+#         db_sess.add(criteria)
+
+#     is_first = True
+#     for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "department").filter(ItemsAndCriteria.criteria_id == 9).filter(ItemsAndCriteria.item_id == dep.id):
+#         if is_first:
+#             criteria.value = candidats
+#             is_first = False
+#         else:
+#             db_sess.delete(criteria)
+#     if is_first:
+#         criteria = ItemsAndCriteria()
+#         criteria.criteria_id = 9
+#         criteria.item_type = "department"
+#         criteria.country = "ukraine"
+#         criteria.item_id = dep.id      
+#         criteria.univer_id = db_sess.query(UkraineFaculties).get(dep.faculty_id).univer_id
+#         criteria.value = candidats
+#         db_sess.add(criteria)
+    
+#     is_first = True
+#     for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "department").filter(ItemsAndCriteria.criteria_id == 10).filter(ItemsAndCriteria.item_id == dep.id):
+#         if is_first:
+#             criteria.value = doctors
+#             is_first = False
+#         else:
+#             db_sess.delete(criteria)
+#     if is_first:
+#         criteria = ItemsAndCriteria()
+#         criteria.criteria_id = 10
+#         criteria.item_type = "department"
+#         criteria.country = "ukraine"
+#         criteria.item_id = dep.id      
+#         criteria.univer_id = db_sess.query(UkraineFaculties).get(dep.faculty_id).univer_id
+#         criteria.value = doctors
+#         db_sess.add(criteria)
+
+#     is_first = True
+#     for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "department").filter(ItemsAndCriteria.criteria_id == 11).filter(ItemsAndCriteria.item_id == dep.id):
+#         if is_first:
+#             criteria.value = total - (doctors+candidats)
+#             is_first = False
+#         else:
+#             db_sess.delete(criteria)
+#     if is_first:
+#         criteria = ItemsAndCriteria()
+#         criteria.criteria_id = 11
+#         criteria.item_type = "department"
+#         criteria.country = "ukraine"
+#         criteria.item_id = dep.id      
+#         criteria.univer_id = db_sess.query(UkraineFaculties).get(dep.faculty_id).univer_id
+#         criteria.value = total - (doctors+candidats)
+#         db_sess.add(criteria)
+
+#     is_first = True
+#     for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "department").filter(ItemsAndCriteria.criteria_id == 12).filter(ItemsAndCriteria.item_id == dep.id):
+#         if is_first:
+#             criteria.value = total - (doctors+candidats)
+#             is_first = False
+#         else:
+#             db_sess.delete(criteria)
+#     if is_first:
+#         criteria = ItemsAndCriteria()
+#         criteria.criteria_id = 12
+#         criteria.item_type = "department"
+#         criteria.country = "ukraine"
+#         criteria.item_id = dep.id      
+#         criteria.univer_id = db_sess.query(UkraineFaculties).get(dep.faculty_id).univer_id
+#         criteria.value = total - (doctors+candidats)
+#         db_sess.add(criteria)
+    
+#     is_first = True
+#     for criteria in db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == "department").filter(ItemsAndCriteria.criteria_id == 13).filter(ItemsAndCriteria.item_id == dep.id):
+#         if is_first:
+#             criteria.value = (doctors+candidats)*100/total if total>0 else 0
+#             is_first = False
+#         else:
+#             db_sess.delete(criteria)
+#     if is_first:
+#         criteria = ItemsAndCriteria()
+#         criteria.criteria_id = 13
+#         criteria.item_type = "department"
+#         criteria.country = "ukraine"
+#         criteria.item_id = dep.id      
+#         criteria.univer_id = db_sess.query(UkraineFaculties).get(dep.faculty_id).univer_id
+#         criteria.value = (doctors+candidats)*100/total if total>0 else 0
+#         db_sess.add(criteria)
+#     db_sess.commit()
+#     print(f"dep {dep.id}")
 
 
 # оновить показатели scopus для ученого

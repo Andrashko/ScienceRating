@@ -5,8 +5,10 @@ from bs4 import BeautifulSoup as BS
 from sqlalchemy import or_
 from dotenv import load_dotenv
 import threading
-from rating import calculate_university_rating, get_articles, get_projects, get_students, get_scientists, calculate_department_rating, calculate_faculty_rating
-from data_load import universities, map_uk, articles_main_page, students_main_page
+from rating import calculate_university_rating, get_articles, get_projects, get_students, get_scientists, \
+    calculate_department_rating, calculate_faculty_rating, calculate_employee_rating, calculate_international_rating, calculate_national_rating,\
+        calculate_national_rating, calculate_project_rating, calculate_students_rating, calculate_publication_rating, calculate_scientist_rating
+from data_load import scientists, universities, map_uk, articles_main_page, students_main_page
 from kw_cloud import get_keyword_frequency_for_department, get_keyword_frequency_for_faculty, \
     get_keyword_frequency_for_scientist, get_keyword_frequency_for_university, get_word_cloud_picture
 
@@ -31,7 +33,7 @@ db_session.global_init("db/database.db")
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'rating_sk'
 BASE_URL = "http://science-rating.co.ua"  # необходимо для роботы редиректа на хостинге
-BASE_URL = ""  # Для роботы на локахосте
+# BASE_URL = ""  # Для роботы на локахосте
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -110,10 +112,7 @@ def universities_rating():
 
 @app.route('/scientists')
 def all_scientists():
-    db_sess = db_session.create_session()
-
-    scientists = list(sorted([[i.name, i.id] for i in db_sess.query(Ukraine_Scientists)], key=lambda x: x[0]))[:100]
-    return render_template('scientists.html', scientists=scientists, color_page_three='#F63E3E')
+    return render_template('scientists.html', scientists=scientists[:500], color_page_three='#F63E3E')
 
 
 @app.route('/add_compare/<int:univer_id>')
@@ -295,13 +294,6 @@ def university_info(university_id):
 
     db_sess = db_session.create_session()
     university = db_sess.query(Ukraine_Universities).get(university_id)
-    # scientists = len(list(university.scientists))
-
-    # faculty_rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'faculty').filter(
-    #     ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.univer_id == university_id)
-
-    # department_rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'department').filter(
-    #     ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.univer_id == university_id)
 
     faculties = []
     faculties_rev = []
@@ -309,15 +301,6 @@ def university_info(university_id):
     departments = []
     departments_rev = []
     departments_name = []
-    # if faculty_rating:
-    #     for i in faculty_rating:
-    #         if (' - без факультету' not in db_sess.query(UkraineFaculties).get(i.item_id).faculty_name) and \
-    #                 (not db_sess.query(UkraineFaculties).get(i.item_id).faculty_name.isdigit()):
-    #             try:
-    #                 faculties.append([db_sess.query(UkraineFaculties).get(i.item_id).faculty_name, i.item_id,
-    #                                   int(int(i.value) * 100 / scientists)])
-    #             except ZeroDivisionError:
-    #                 faculties.append([' ', -1, 0])
     for fac in db_sess.query(UkraineFaculties).filter(UkraineFaculties.univer_id == university_id).all():
         if ' - без факультету' not in fac.faculty_name:
             faculties.append([fac.faculty_name, fac.id, calculate_faculty_rating(fac)])
@@ -327,26 +310,9 @@ def university_info(university_id):
     faculties_rev = faculties[::-1]
     faculties_name = sorted(faculties, key=lambda x: x[0])
 
-   
-    # if department_rating:
-    #     for i in department_rating:
-    #         try:
-    #             departments.append([db_sess.query(UkraineDepartments).get(i.item_id).department_name, i.item_id,
-    #                                 int(int(i.value) * 100 / scientists)])
-    #         except ZeroDivisionError:
-    #             departments.append([' ', -1, 0])
     departments = sorted(departments, key=lambda x: x[2], reverse=True)
     departments_rev = departments[::-1]
     departments_name = sorted(departments, key=lambda x: x[0])
-
-    # departments = []
-    # departments_rev = []
-    # departments_name = []
-    # for dep in db_sess.query(UkraineDepartments).filter(UkraineDepartments.faculty_id == faculty_id).all():
-    #     departments.append([dep.department_name, dep.id, calculate_department_rating(dep)])
-    # departments = sorted(departments, key=lambda x: x[2], reverse=True)
-    # departments_rev = list(reversed(departments))
-    # departments_name = sorted(departments, key=lambda x: x[0])
 
     facult_depart = []
     facult_empty = True
@@ -428,24 +394,11 @@ def faculty_info(faculty_id):
 
     db_sess = db_session.create_session()
     faculty = db_sess.query(UkraineFaculties).get(faculty_id)
-    # scientists = len(db_sess.query(Ukraine_Universities).get(faculty.univer_id).scientists)
-
-    # department_rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'department').filter(
-    #     ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.univer_id == faculty.univer_id)
-
     departments = []
     departments_rev = []
     departments_name = []
     for dep in db_sess.query(UkraineDepartments).filter(UkraineDepartments.faculty_id == faculty_id).all():
         departments.append([dep.department_name, dep.id, calculate_department_rating(dep)])
-    # if department_rating:
-    #     for i in department_rating:
-    #         try:
-    #             if db_sess.query(UkraineDepartments).get(i.item_id).faculty_id == faculty_id:
-    #                 departments.append([db_sess.query(UkraineDepartments).get(i.item_id).department_name, i.item_id,
-    #                                 int(int(i.value) * 100 / scientists)])
-    #         except ZeroDivisionError:
-    #             departments.append([' ', -1])
     departments = sorted(departments, key=lambda x: x[2], reverse=True)
     departments_rev = list(reversed(departments))
     departments_name = sorted(departments, key=lambda x: x[0])
@@ -476,30 +429,26 @@ def university_info_rating(university_id):
     db_sess = db_session.create_session()
 
     university = db_sess.query(Ukraine_Universities).get(university_id)
-    values = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'university').filter(
-        ItemsAndCriteria.item_id == university.id)
 
     criters_values = []
     students = get_students(university_id)
     scientists = get_scientists(university_id)
     articles = get_articles(university_id)
-    projects = get_projects(university_id)
 
-    criters_values.append(['Освітня діяльність', sum([i[1] for i in students])])
+    criters_values.append(['Освітня діяльність', calculate_students_rating(university), True])
     criters_values += students
 
-    criters_values.append(['Кадровый потенціал', sum([i[1] for i in scientists])])
+    criters_values.append(['Кадровый потенціал', calculate_employee_rating (university, "university"), True])
     criters_values += scientists
 
-    criters_values.append(['Публікаційна діяльність', sum([i[1] for i in articles[1:]])])
+    criters_values.append(['Публікаційна діяльність', calculate_publication_rating (university, "university"), True])
     criters_values += articles
 
-    criters_values.append(['Проєктна діяльність', len(projects)])
+    criters_values.append(['Проєктна діяльність', calculate_project_rating(university), True])
 
 
     return render_template('university_info_rating.html', univer=university, criters_values=criters_values,
-                           rating_value=calculate_university_rating(university),
-                           keywords_cloud=get_word_cloud_picture(get_keyword_frequency_for_university(university_id)))
+                           rating_value=calculate_university_rating(university))
 
 
 @app.route('/scientist_info/<int:scientist_id>')
