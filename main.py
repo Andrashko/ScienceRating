@@ -11,6 +11,7 @@ from rating import calculate_university_rating, get_articles, get_projects, get_
 from data_load import scientists, universities, map_uk, articles_main_page, students_main_page
 from kw_cloud import get_keyword_frequency_for_department, get_keyword_frequency_for_faculty, \
     get_keyword_frequency_for_scientist, get_keyword_frequency_for_university, get_word_cloud_picture
+from json import load
 
 from data.Standart import db_session
 from mail_sender import send_mail
@@ -33,7 +34,7 @@ db_session.global_init("db/database.db")
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'rating_sk'
 BASE_URL = "http://science-rating.co.ua"  # необходимо для роботы редиректа на хостинге
-# BASE_URL = ""  # Для роботы на локахосте
+BASE_URL = ""  # Для роботы на локахосте
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -302,11 +303,10 @@ def university_info(university_id):
     departments = []
     departments_rev = []
     departments_name = []
-    for fac in db_sess.query(UkraineFaculties).filter(UkraineFaculties.univer_id == university_id).all():
-        if ' - без факультету' not in fac.faculty_name:
-            faculties.append([fac.faculty_name, fac.id, calculate_faculty_rating(fac)])
-        for dep in db_sess.query(UkraineDepartments).filter(UkraineDepartments.faculty_id == fac.id).all():
-            departments.append([dep.department_name, dep.id, calculate_department_rating(dep)])
+    with open (f"db/structure/{university.id}.json",  encoding="utf-8") as file:
+        s = load(file)
+        faculties = s.get("faculties")
+        departments = s.get("departments")
     faculties = sorted(faculties, key=lambda x: x[2], reverse=True)
     faculties_rev = faculties[::-1]
     faculties_name = sorted(faculties, key=lambda x: x[0])

@@ -7,13 +7,29 @@ from data.database.ukraine_faculties import UkraineFaculties
 from data.database.ukraine_departments import UkraineDepartments
 from data.database.ukraine_scientists import Ukraine_Scientists
 from data.database.items_and_criteria import ItemsAndCriteria
-from rating import calculate_university_rating
+from rating import calculate_university_rating, calculate_faculty_rating, calculate_department_rating
 
 from json import dump, load 
 
 db_session.global_init('db/database.db')
 
 db_sess = db_session.create_session()
+# faculties=[]
+# departments =[]
+
+# for university in db_sess.query(Ukraine_Universities).all():
+#     for fac in db_sess.query(UkraineFaculties).filter(UkraineFaculties.univer_id == university.id).all():
+#         if ' - без факультету' not in fac.faculty_name:
+#             faculties.append([fac.faculty_name, fac.id, calculate_faculty_rating(fac)])
+#         for dep in db_sess.query(UkraineDepartments).filter(UkraineDepartments.faculty_id == fac.id).all():
+#             departments.append([dep.department_name, dep.id, calculate_department_rating(dep)])
+#     res = {
+#         "faculties": faculties,
+#         "departments": departments
+#     }
+#     with open (f"db/structure/{university.id}.json", "w",  encoding="utf-8") as file:
+#         dump(res, file, ensure_ascii=False, indent=None)
+
 
 # scientists = list(sorted([[i.name, i.id, float(db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.criteria_id == 300).filter(ItemsAndCriteria.item_id==i.id).first().value)]\
 #     for i in db_sess.query(Ukraine_Scientists).all()[:100]], key=lambda x: x[2], reverse=True))
