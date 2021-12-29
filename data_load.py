@@ -31,10 +31,10 @@ db_sess = db_session.create_session()
 #         dump(res, file, ensure_ascii=False, indent=None)
 
 
-scientists = list(sorted([[i.name, i.id, float(db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.criteria_id == 300).filter(ItemsAndCriteria.item_id==i.id).first().value)]\
-    for i in db_sess.query(Ukraine_Scientists).all()[:10000]], key=lambda x: x[2], reverse=True))
-with open ("db/scientists.json", "w", encoding="utf-8") as file:
-    dump(scientists, file, ensure_ascii=False, indent=None)
+# scientists = list(sorted([[i.name, i.id, float(db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.criteria_id == 300).filter(ItemsAndCriteria.item_id==i.id).first().value)]\
+#     for i in db_sess.query(Ukraine_Scientists).all()[:10000]], key=lambda x: x[2], reverse=True))
+# with open ("db/scientists.json", "w", encoding="utf-8") as file:
+#     dump(scientists, file, ensure_ascii=False, indent=None)
 # universities = []
 
 # for university in db_sess.query(Ukraine_Universities).all():
