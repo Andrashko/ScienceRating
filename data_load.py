@@ -2,7 +2,10 @@ from data.Standart import db_session
 
 from data.database.ukraine_universities import Ukraine_Universities
 from data.database.ukraine_scientists import Ukraine_Scientists
-from rating import calculate_university_rating
+from data.database.ukraine_faculties import UkraineFaculties
+from data.database.ukraine_departments import UkraineDepartments
+from data.database.ukraine_scientists import Ukraine_Scientists
+from rating import calculate_university_rating, calculate_department_rating, calculate_faculty_rating, calculate_students_rating
 
 db_session.global_init('db/database.db')
 
@@ -14,6 +17,7 @@ for university in db_sess.query(Ukraine_Universities):
     map_uk[university.region] = 0
     universities.append([university.univername, rating, university.id, university.region])
 universities = sorted(universities, key=lambda x: x[1], reverse=True)
+
 
 plus = 0
 for i in range(200):
