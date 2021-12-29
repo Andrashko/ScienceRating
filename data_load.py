@@ -16,15 +16,15 @@ scientists = list(sorted([[i.name, i.id, float(db_sess.query(ItemsAndCriteria).f
     for i in db_sess.query(Ukraine_Scientists).all()[:100]], key=lambda x: x[2], reverse=True))
 universities = []
 map_uk = {}
-for university in db_sess.query(Ukraine_Universities).all()[:100]:
-    rating = float(db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.criteria_id == 301).filter(ItemsAndCriteria.item_id==university.id).first().value)
+for university in db_sess.query(Ukraine_Universities).all():
+    rating = calculate_university_rating(university)
     map_uk[university.region] = 0
     universities.append([university.univername, rating, university.id, university.region])
 universities = sorted(universities, key=lambda x: x[1], reverse=True)
 
 
 plus = 0
-for i in range(100):
+for i in range(200):
     if i <= 10:
         plus = 100
     elif i <= 20:
