@@ -175,23 +175,27 @@ def all_universities():
         else:
             univers_js['students'].append('0')
 
-        faculty_rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'faculty').filter(
-            ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.univer_id == univer.id)
+        # faculty_rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'faculty').filter(
+        #     ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.univer_id == univer.id)
 
-        department_rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'department').filter(
-            ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.univer_id == univer.id)
+        # department_rating = db_sess.query(ItemsAndCriteria).filter(ItemsAndCriteria.item_type == 'department').filter(
+        #     ItemsAndCriteria.criteria_id == 7).filter(ItemsAndCriteria.univer_id == univer.id)
 
-        faculties = []
-        if faculty_rating:
-            for j in faculty_rating:
-                if (' - без факультету' not in db_sess.query(UkraineFaculties).get(j.item_id).faculty_name) and \
-                        (not db_sess.query(UkraineFaculties).get(j.item_id).faculty_name.isdigit()):
-                    faculties.append(db_sess.query(UkraineFaculties).get(j.item_id).faculty_name)
+        # faculties = []
+        # if faculty_rating:
+        #     for j in faculty_rating:
+        #         if (' - без факультету' not in db_sess.query(UkraineFaculties).get(j.item_id).faculty_name) and \
+        #                 (not db_sess.query(UkraineFaculties).get(j.item_id).faculty_name.isdigit()):
+        #             faculties.append(db_sess.query(UkraineFaculties).get(j.item_id).faculty_name)
 
-        departments = []
-        if department_rating:
-            for j in department_rating:
-                departments.append(db_sess.query(UkraineDepartments).get(j.item_id).department_name)
+        # departments = []
+        # if department_rating:
+        #     for j in department_rating:
+        #         departments.append(db_sess.query(UkraineDepartments).get(j.item_id).department_name)
+        with open (f"db/structure/{i[1]}.json",  encoding="utf-8") as file:
+            s = load(file)
+            faculties = s.get("faculties")
+            departments = s.get("departments")
 
         univers_js['faculties'].append(f'{len(faculties)}')
         univers_js['departments'].append(f'{len(departments)}')
